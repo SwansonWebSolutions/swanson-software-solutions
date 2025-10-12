@@ -1,0 +1,45 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Home - Swanson Software Solutions{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to Swanson Software Solutions</h1>
+        <p class="tagline">Your Partner in Website Development Excellence</p>
+        <p>We build exceptional web solutions that drive your business forward. From concept to deployment, we're with you every step of the way.</p>
+        <div class="cta-buttons">
+            <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get Started</a>
+            <a href="{% url 'website:solutions' %}" class="btn btn-secondary">View Solutions</a>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <h2>Why Choose Us?</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>🚀 Fast Development</h3>
+            <p>Quick turnaround times without compromising quality</p>
+        </div>
+        <div class="feature-card">
+            <h3>💡 Innovative Solutions</h3>
+            <p>Cutting-edge technology and modern design practices</p>
+        </div>
+        <div class="feature-card">
+            <h3>🎯 SEO Optimized</h3>
+            <p>Built-in SEO best practices for better visibility</p>
+        </div>
+        <div class="feature-card">
+            <h3>🤝 Client-Focused</h3>
+            <p>Transparent communication and dedicated support</p>
+        </div>
+    </div>
+</section>
+
+<section class="call-to-action">
+    <h2>Ready to Start Your Project?</h2>
+    <p>Let's discuss how we can help your business grow online.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Contact Us Today</a>
+</section>
+{% endblock %}

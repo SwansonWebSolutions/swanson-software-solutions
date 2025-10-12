@@ -1,0 +1,72 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Client Approval - Swanson Software Solutions{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Client Approval Portal</h1>
+    <p>Review and approve your project deliverables</p>
+</section>
+
+<section class="content-section">
+    <h2>Welcome to the Client Approval Portal</h2>
+    <p>This portal allows you to review project milestones, provide feedback, and approve deliverables. Our transparent approval process ensures you're always in control of your project's direction.</p>
+</section>
+
+<section class="content-section">
+    <h2>How It Works</h2>
+    <div class="steps-grid">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Review</h3>
+            <p>Access and review the latest project deliverables</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>Feedback</h3>
+            <p>Provide detailed feedback and comments</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Approve</h3>
+            <p>Approve the work or request revisions</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">4</div>
+            <h3>Progress</h3>
+            <p>Move forward to the next milestone</p>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>Access Your Project</h2>
+    <p>To access your project approval portal, please log in with your credentials. If you don't have login credentials yet, please contact your project manager.</p>
+    
+    <div class="login-box">
+        <form method="post" action="#">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="project_id">Project ID</label>
+                <input type="text" id="project_id" name="project_id" required>
+            </div>
+            <div class="form-group">
+                <label for="access_code">Access Code</label>
+                <input type="password" id="access_code" name="access_code" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Access Portal</button>
+        </form>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>Benefits of Our Approval Process</h2>
+    <ul class="benefits-list">
+        <li>✓ Real-time visibility into project progress</li>
+        <li>✓ Easy-to-use interface for feedback and approvals</li>
+        <li>✓ Documented approval history</li>
+        <li>✓ Quick turnaround on revisions</li>
+        <li>✓ Ensures alignment with your vision</li>
+    </ul>
+</section>
+{% endblock %}

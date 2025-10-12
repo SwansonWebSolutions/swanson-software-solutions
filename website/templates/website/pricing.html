@@ -1,0 +1,102 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Pricing - Swanson Software Solutions{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Pricing Plans</h1>
+    <p>Transparent pricing for exceptional web development services</p>
+</section>
+
+<section class="content-section">
+    <h2>Choose the Right Plan for Your Needs</h2>
+    <p>We offer flexible pricing options to suit businesses of all sizes. All plans include our commitment to quality and customer satisfaction.</p>
+</section>
+
+<section class="pricing-section">
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Starter</h3>
+            <div class="price">
+                <span class="currency">$</span>
+                <span class="amount">2,999</span>
+            </div>
+            <p class="price-description">Perfect for small businesses</p>
+            <ul class="features-list">
+                <li>✓ Up to 5 pages</li>
+                <li>✓ Responsive design</li>
+                <li>✓ Basic SEO setup</li>
+                <li>✓ Contact form</li>
+                <li>✓ 30 days support</li>
+                <li>✓ SSL certificate</li>
+            </ul>
+            <a href="{% url 'website:contact_sales' %}" class="btn btn-secondary">Get Started</a>
+        </div>
+
+        <div class="pricing-card featured">
+            <div class="badge">Most Popular</div>
+            <h3>Professional</h3>
+            <div class="price">
+                <span class="currency">$</span>
+                <span class="amount">5,999</span>
+            </div>
+            <p class="price-description">Ideal for growing businesses</p>
+            <ul class="features-list">
+                <li>✓ Up to 15 pages</li>
+                <li>✓ Custom design</li>
+                <li>✓ Advanced SEO</li>
+                <li>✓ Blog integration</li>
+                <li>✓ E-commerce ready</li>
+                <li>✓ 90 days support</li>
+                <li>✓ SSL certificate</li>
+                <li>✓ Analytics setup</li>
+            </ul>
+            <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get Started</a>
+        </div>
+
+        <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">
+                <span class="currency">$</span>
+                <span class="amount">Custom</span>
+            </div>
+            <p class="price-description">For complex projects</p>
+            <ul class="features-list">
+                <li>✓ Unlimited pages</li>
+                <li>✓ Fully custom solution</li>
+                <li>✓ Premium SEO</li>
+                <li>✓ Advanced features</li>
+                <li>✓ API integrations</li>
+                <li>✓ 1 year support</li>
+                <li>✓ Dedicated account manager</li>
+                <li>✓ Priority support</li>
+            </ul>
+            <a href="{% url 'website:contact_sales' %}" class="btn btn-secondary">Contact Us</a>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>All Plans Include</h2>
+    <div class="included-features">
+        <ul>
+            <li>✓ Mobile-responsive design</li>
+            <li>✓ Fast loading times</li>
+            <li>✓ Cross-browser compatibility</li>
+            <li>✓ Security best practices</li>
+        </ul>
+        <ul>
+            <li>✓ Content management system</li>
+            <li>✓ Training and documentation</li>
+            <li>✓ Regular backups</li>
+            <li>✓ Performance optimization</li>
+        </ul>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>Need Something Different?</h2>
+    <p>We understand that every project is unique. Contact our sales team to discuss a custom solution tailored to your specific requirements and budget.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Request Custom Quote</a>
+</section>
+{% endblock %}
