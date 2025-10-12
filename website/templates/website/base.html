@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Swanson Software Solutions{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Swanson Software Solutions</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'website:landing' %}">Home</a></li>
+                <li><a href="{% url 'website:company' %}">Company</a></li>
+                <li><a href="{% url 'website:solutions' %}">Solutions</a></li>
+                <li><a href="{% url 'website:pricing' %}">Pricing</a></li>
+                <li><a href="{% url 'website:seo' %}">SEO</a></li>
+                <li><a href="{% url 'website:client_approval' %}">Client Approval</a></li>
+                <li><a href="{% url 'website:contact_sales' %}">Contact Sales</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Swanson Software Solutions. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="{% url 'website:company' %}">About</a>
+                <a href="{% url 'website:contact_sales' %}">Contact</a>
+                <a href="{% url 'website:pricing' %}">Pricing</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

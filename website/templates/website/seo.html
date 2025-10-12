@@ -1,0 +1,104 @@
+{% extends 'website/base.html' %}
+
+{% block title %}SEO Services - Swanson Software Solutions{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>SEO Services</h1>
+    <p>Boost your online visibility and drive organic traffic</p>
+</section>
+
+<section class="content-section">
+    <h2>Why SEO Matters</h2>
+    <p>Search Engine Optimization (SEO) is crucial for your online success. It helps your website rank higher in search results, bringing more qualified traffic to your site. At Swanson Software Solutions, we build SEO best practices into every website we create.</p>
+</section>
+
+<section class="content-section">
+    <h2>Our SEO Approach</h2>
+    <div class="seo-services-grid">
+        <div class="seo-card">
+            <h3>🔍 Technical SEO</h3>
+            <p>Optimized site structure, fast loading speeds, mobile responsiveness, and proper indexing</p>
+        </div>
+        <div class="seo-card">
+            <h3>📝 On-Page SEO</h3>
+            <p>Keyword optimization, meta tags, header structure, and quality content</p>
+        </div>
+        <div class="seo-card">
+            <h3>🔗 Link Building</h3>
+            <p>Strategic internal linking and guidance for building quality backlinks</p>
+        </div>
+        <div class="seo-card">
+            <h3>📊 Analytics & Reporting</h3>
+            <p>Track performance with detailed analytics and regular reports</p>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>SEO Features Included</h2>
+    <div class="features-columns">
+        <div class="feature-column">
+            <h3>Built-In Optimization</h3>
+            <ul class="features-list">
+                <li>✓ Clean, semantic HTML</li>
+                <li>✓ Optimized page speed</li>
+                <li>✓ Mobile-first design</li>
+                <li>✓ Schema markup</li>
+                <li>✓ XML sitemap</li>
+                <li>✓ Robots.txt optimization</li>
+            </ul>
+        </div>
+        <div class="feature-column">
+            <h3>Content Optimization</h3>
+            <ul class="features-list">
+                <li>✓ Keyword research</li>
+                <li>✓ Meta tags optimization</li>
+                <li>✓ Image alt text</li>
+                <li>✓ URL structure</li>
+                <li>✓ Internal linking</li>
+                <li>✓ Content strategy</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>SEO Packages</h2>
+    <div class="seo-packages">
+        <div class="package-card">
+            <h3>Basic SEO Setup</h3>
+            <p>Essential SEO foundation for your website</p>
+            <p class="package-price">Included in all website projects</p>
+        </div>
+        <div class="package-card">
+            <h3>Advanced SEO</h3>
+            <p>Comprehensive SEO strategy and implementation</p>
+            <p class="package-price">Starting at $999</p>
+        </div>
+        <div class="package-card">
+            <h3>Ongoing SEO Management</h3>
+            <p>Monthly SEO maintenance and optimization</p>
+            <p class="package-price">Starting at $499/month</p>
+        </div>
+    </div>
+</section>
+
+<section class="content-section">
+    <h2>Why Choose Our SEO Services?</h2>
+    <ul class="benefits-list">
+        <li>✓ White-hat SEO techniques only</li>
+        <li>✓ Proven track record of results</li>
+        <li>✓ Transparent reporting and communication</li>
+        <li>✓ Customized strategies for your industry</li>
+        <li>✓ Stay up-to-date with algorithm changes</li>
+        <li>✓ Focus on sustainable, long-term growth</li>
+    </ul>
+</section>
+
+<section class="call-to-action">
+    <h2>Ready to Improve Your Search Rankings?</h2>
+    <p>Let's discuss how our SEO services can help your business grow.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get SEO Consultation</a>
+</section>
+{% endblock %}
