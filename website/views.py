@@ -79,3 +79,23 @@ def solutions_page(request):
     """Solutions page view"""
     return render(request, 'website/solutions.html')
 
+def custom_web_dev_page(request):
+    """Custom Website Development page view"""
+    return render(request, 'website/custom_web_dev.html')
+
+def shopify_dev_page(request):
+    """Shopify Development page view"""
+    return render(request, 'website/shopify_dev.html')
+
+def wordpress_dev_page(request):
+    """WordPress Development page view"""
+    return render(request, 'website/wordpress_dev.html')
+
+def mobile_app_dev_page(request):
+    """Mobile App Development page view"""
+    return render(request, 'website/mobile_app_dev.html')
+
+def ccpa_compliance_page(request):
+    """CCPA & Do-Not-Call Registration page view"""
+    return render(request, 'website/ccpa_compliance.html')
+

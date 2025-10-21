@@ -1,45 +1,54 @@
 {% extends 'website/base.html' %}
 
-{% block title %}Home - Swanson Software Solutions{% endblock %}
+{% block title %}Home - Swanson Technologies{% endblock %}
 
 {% block content %}
 <section class="hero">
     <div class="hero-content">
-        <h1>Welcome to Swanson Software Solutions</h1>
-        <p class="tagline">Your Partner in Website Development Excellence</p>
-        <p>We build exceptional web solutions that drive your business forward. From concept to deployment, we're with you every step of the way.</p>
+        <h1>Engineering Digital Precision. Delivering Real-World Impact.</h1>
+        <p class="tagline">Custom web, app, and e-commerce development built for performance, security, and scalability.</p>
+        <p>At Swanson Technologies, we combine technical precision with real-world practicality. From dynamic websites and data-driven web apps to Shopify and WordPress solutions, our team builds digital systems that are fast, secure, and future-ready. Whether you're a startup looking for a modern online presence or an established organization needing compliance with California's CCPA and Do-Not-Call regulations — we build with purpose, clarity, and reliability.</p>
         <div class="cta-buttons">
-            <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get Started</a>
-            <a href="{% url 'website:solutions' %}" class="btn btn-secondary">View Solutions</a>
+            <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get a Free Consultation</a>
+            <a href="{% url 'website:solutions' %}" class="btn btn-secondary">View Services</a>
         </div>
     </div>
 </section>
 
 <section class="features">
-    <h2>Why Choose Us?</h2>
+    <h2>Core Services</h2>
     <div class="feature-grid">
         <div class="feature-card">
-            <h3>🚀 Fast Development</h3>
-            <p>Quick turnaround times without compromising quality</p>
+            <h3>⚙️ Custom Website Development</h3>
+            <p>Tailored websites built with performance, SEO, and usability in mind.</p>
+            <a href="{% url 'website:custom_web_dev' %}" class="btn btn-secondary" style="margin-top: 1rem;">Learn More</a>
         </div>
         <div class="feature-card">
-            <h3>💡 Innovative Solutions</h3>
-            <p>Cutting-edge technology and modern design practices</p>
+            <h3>🛒 Shopify Development</h3>
+            <p>Fully integrated, sales-optimized Shopify storefronts.</p>
+            <a href="{% url 'website:shopify_dev' %}" class="btn btn-secondary" style="margin-top: 1rem;">Learn More</a>
         </div>
         <div class="feature-card">
-            <h3>🎯 SEO Optimized</h3>
-            <p>Built-in SEO best practices for better visibility</p>
+            <h3>🌐 WordPress Development</h3>
+            <p>Secure, fast, and scalable WordPress builds with custom themes and plugins.</p>
+            <a href="{% url 'website:wordpress_dev' %}" class="btn btn-secondary" style="margin-top: 1rem;">Learn More</a>
         </div>
         <div class="feature-card">
-            <h3>🤝 Client-Focused</h3>
-            <p>Transparent communication and dedicated support</p>
+            <h3>📱 Mobile App Development</h3>
+            <p>Native and cross-platform apps designed to engage and convert.</p>
+            <a href="{% url 'website:mobile_app_dev' %}" class="btn btn-secondary" style="margin-top: 1rem;">Learn More</a>
+        </div>
+        <div class="feature-card">
+            <h3>🧩 CCPA & Do Not Call Registration</h3>
+            <p>We handle compliance submissions on your behalf, ensuring your business meets privacy regulations without the headache.</p>
+            <a href="{% url 'website:ccpa_compliance' %}" class="btn btn-secondary" style="margin-top: 1rem;">Learn More</a>
         </div>
     </div>
 </section>
 
 <section class="call-to-action">
-    <h2>Ready to Start Your Project?</h2>
-    <p>Let's discuss how we can help your business grow online.</p>
-    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Contact Us Today</a>
+    <h2>Precision-built software. American reliability.</h2>
+    <p>Partner with Swanson Technologies today.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get a Free Consultation</a>
 </section>
 {% endblock %}
