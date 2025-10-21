@@ -1,0 +1,47 @@
+{% extends 'website/base.html' %}
+
+{% block title %}CCPA & Do-Not-Call Registration - Swanson Technologies{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Stay Compliant. Stay Protected.</h1>
+    <p>California privacy and consumer protection compliance made simple</p>
+</section>
+
+<section class="content-section">
+    <h2>🧩 CCPA & Do-Not-Call Registration Services</h2>
+    <p>California's privacy and consumer protection laws are evolving rapidly. As an authorized agent, Swanson Technologies submits CCPA opt-out and Do-Not-Call registry requests on behalf of companies — ensuring your business meets all regulatory obligations without needing to manage the complex paperwork and state portals yourself.</p>
+</section>
+
+<section class="solutions-section">
+    <div class="solution-item">
+        <h3>What's Included</h3>
+        <ul>
+            <li><strong>Filing of CCPA opt-out</strong> and Do-Not-Sell submissions</li>
+            <li><strong>Do-Not-Call Registry</strong> enrollment and confirmation</li>
+            <li><strong>Privacy policy review</strong> and compliance recommendations</li>
+            <li><strong>Documentation and confirmation receipts</strong> for your records</li>
+            <li><strong>Optional monthly monitoring</strong> for ongoing compliance</li>
+        </ul>
+    </div>
+</section>
+
+<section class="technology-section">
+    <h2>Compliance Services</h2>
+    <p>We handle:</p>
+    <div class="tech-grid">
+        <div class="tech-item">CCPA Filing</div>
+        <div class="tech-item">Do-Not-Call</div>
+        <div class="tech-item">Privacy Policy</div>
+        <div class="tech-item">Documentation</div>
+        <div class="tech-item">Monitoring</div>
+        <div class="tech-item">Support</div>
+    </div>
+</section>
+
+<section class="call-to-action">
+    <h2>Protect your company. Simplify your compliance.</h2>
+    <p>Contact us today.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get Compliance Help</a>
+</section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Shopify Development - Swanson Technologies{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Shopify Solutions Built for Growth</h1>
+    <p>E-commerce stores that sell — optimized, automated, and designed to scale</p>
+</section>
+
+<section class="content-section">
+    <h2>🛒 Shopify Development</h2>
+    <p>We develop Shopify stores that sell. From high-performance themes to automation workflows, we build, optimize, and maintain e-commerce systems designed to scale. Whether you're starting from scratch or upgrading an existing store, Swanson Technologies helps your brand stand out.</p>
+</section>
+
+<section class="solutions-section">
+    <div class="solution-item">
+        <h3>What's Included</h3>
+        <ul>
+            <li><strong>Custom Shopify theme development</strong> and app integrations</li>
+            <li><strong>Optimized product pages</strong> with professional SEO structure</li>
+            <li><strong>Payment gateway setup</strong> (Stripe, Shopify Payments, PayPal)</li>
+            <li><strong>Store analytics,</strong> conversion tracking, and retargeting</li>
+            <li><strong>Shipping, inventory,</strong> and order automation</li>
+        </ul>
+    </div>
+</section>
+
+<section class="technology-section">
+    <h2>Shopify Expertise</h2>
+    <p>Our Shopify development services include:</p>
+    <div class="tech-grid">
+        <div class="tech-item">Custom Themes</div>
+        <div class="tech-item">App Integration</div>
+        <div class="tech-item">Payment Processing</div>
+        <div class="tech-item">SEO Optimization</div>
+        <div class="tech-item">Analytics Setup</div>
+        <div class="tech-item">Automation</div>
+    </div>
+</section>
+
+<section class="call-to-action">
+    <h2>Transform your Shopify store into a 24/7 sales engine.</h2>
+    <p>Let's optimize your e-commerce presence.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Get Started</a>
+</section>
+{% endblock %}

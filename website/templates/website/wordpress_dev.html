@@ -1,0 +1,47 @@
+{% extends 'website/base.html' %}
+
+{% block title %}WordPress Development - Swanson Technologies{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>WordPress Done Right — Fast, Secure, and Custom-Tailored</h1>
+    <p>Beautiful, bulletproof WordPress websites without bloated plugins or cookie-cutter themes</p>
+</section>
+
+<section class="content-section">
+    <h2>🌐 WordPress Development</h2>
+    <p>We build WordPress websites that are both beautiful and bulletproof. Whether you need a corporate site, blog, or membership platform, we design with flexibility, speed, and long-term reliability in mind — without relying on bloated plugins or cookie-cutter themes.</p>
+</section>
+
+<section class="solutions-section">
+    <div class="solution-item">
+        <h3>What's Included</h3>
+        <ul>
+            <li><strong>Custom WordPress theme</strong> & plugin development</li>
+            <li><strong>SEO-ready architecture</strong> with schema markup</li>
+            <li><strong>Security hardening</strong> & regular maintenance</li>
+            <li><strong>Migrations</strong> and hosting setup</li>
+            <li><strong>Performance tuning</strong> and caching optimization</li>
+        </ul>
+    </div>
+</section>
+
+<section class="technology-section">
+    <h2>WordPress Capabilities</h2>
+    <p>Our WordPress services cover:</p>
+    <div class="tech-grid">
+        <div class="tech-item">Custom Themes</div>
+        <div class="tech-item">Plugin Development</div>
+        <div class="tech-item">Security</div>
+        <div class="tech-item">Performance</div>
+        <div class="tech-item">SEO</div>
+        <div class="tech-item">Maintenance</div>
+    </div>
+</section>
+
+<section class="call-to-action">
+    <h2>Let's build something powerful, flexible, and uniquely yours.</h2>
+    <p>Start your WordPress project today.</p>
+    <a href="{% url 'website:contact_sales' %}" class="btn btn-primary">Contact Us</a>
+</section>
+{% endblock %}
