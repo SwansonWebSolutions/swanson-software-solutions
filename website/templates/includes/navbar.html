@@ -1,0 +1,89 @@
+{% load static %}
+
+<!-- Header / Navigation -->
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="{% url 'website:index' %}">
+      <span aria-hidden="true" class="brand-mark"></span>
+      <span class="brand-name">SwanTech</span>
+      <span class="pill" style="margin-left:.4rem">Agency</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <!-- Services dropdown (desktop) -->
+      <div class="has-dropdown">
+        <button class="nav-link dropdown-toggle" id="servicesToggle" aria-expanded="false" aria-controls="servicesMenu">
+          Services <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-panel" id="servicesMenu" role="menu">
+          <a class="drop-item" href="{% url 'website:index' %}#shopify" role="menuitem">
+            <i class="fa-brands fa-shopify"></i><span>Shopify</span>
+          </a>
+          <a class="drop-item" href="{% url 'website:index' %}#wordpress" role="menuitem">
+            <i class="fa-brands fa-wordpress"></i><span>WordPress</span>
+          </a>
+          <a class="drop-item" href="{% url 'website:index' %}#saas" role="menuitem">
+            <i class="fa-solid fa-code"></i><span>Custom SaaS</span>
+          </a>
+          <a class="drop-item" href="{% url 'website:index' %}#ios-apps" role="menuitem">
+            <i class="fa-brands fa-apple"></i><span>iOS Apps</span>
+          </a>
+          <a class="drop-item" href="{% url 'website:index' %}#do-not-email" role="menuitem">
+            <i class="fa-solid fa-envelope-circle-check"></i><span>Do Not Email Me</span>
+          </a>
+          <a class="drop-item" href="{% url 'website:index' %}#do-not-call" role="menuitem">
+            <i class="fa-solid fa-phone-slash"></i><span>Do Not Call Me</span>
+          </a>
+        </div>
+      </div>
+
+      <a class="nav-link" href="{% url 'website:company' %}">Company</a>
+      <a class="nav-link" href="{% url 'website:index' %}">Insights</a>
+      <a class="nav-link" href="{% url 'website:contact' %}">Contact</a>
+    </nav>
+
+    <div class="cluster">
+      <a class="btn secondary nav-cta" href="{% url 'website:contact' %}">Get a Quote</a>
+      <button class="burger" id="openMenu" aria-label="Open menu" title="Open menu">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer -->
+<div class="backdrop" id="backdrop" hidden></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Mobile menu">
+  <div class="section">
+    <button class="close-btn" id="closeMenu" aria-label="Close menu" title="Close">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+
+    <!-- Mobile Services accordion -->
+    <button class="btn ghost mobile-accordion" id="mobileServicesToggle" aria-expanded="false" aria-controls="mobileServices">
+      <span>Services</span>
+      <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+    </button>
+    <div class="mobile-submenu stack" id="mobileServices" hidden>
+      <a class="btn ghost" href="{% url 'website:index' %}#shopify"><i class="fa-brands fa-shopify"></i> Shopify</a>
+      <a class="btn ghost" href="{% url 'website:index' %}#wordpress"><i class="fa-brands fa-wordpress"></i> WordPress</a>
+      <a class="btn ghost" href="{% url 'website:index' %}#saas"><i class="fa-solid fa-code"></i> Custom SaaS</a>
+      <a class="btn ghost" href="{% url 'website:index' %}#ios-apps"><i class="fa-brands fa-apple"></i> iOS Apps</a>
+      <a class="btn ghost" href="{% url 'website:index' %}#do-not-email"><i class="fa-solid fa-envelope-circle-check"></i> Do Not Email</a>
+      <a class="btn ghost" href="{% url 'website:index' %}#do-not-call"><i class="fa-solid fa-phone-slash"></i> Do Not Call</a>
+    </div>
+
+    <a class="btn ghost" href="{% url 'website:company' %}">Company</a>
+    <a class="btn ghost" href="{% url 'website:index' %}">Insights</a>
+    <a class="btn secondary" href="{% url 'website:contact' %}">Get a Quote</a>
+  </div>
+</aside>
+
+<script src="{% static 'js/navbar.js' %}?{% now 'U' %}" defer></script>
+
+<!-- Smooth scroll behavior -->
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

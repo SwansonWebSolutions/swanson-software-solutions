@@ -1,0 +1,230 @@
+/*
+  SwanTech Design System — Page CSS (cleaned)
+  - Layout helpers, hero, sections, cards
+  - Clients logo strip
+  - Services + build section overrides (single-row tiles)
+*/
+
+/* Base reset */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; color: var(--ink-5); background: var(--bg);
+  font-family: var(--font-sans); line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas { max-width: 100%; height: auto; }
+
+/* Layout helpers (scoped to index page) */
+.page-index .container { width: min(100%, var(--container)); margin-inline: auto; padding-inline: var(--gutter); }
+.stack > * + * { margin-top: var(--stack-gap, 1rem); }
+.cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cluster-gap, .75rem); }
+
+/* Grid: desktop uses 12 cols; phones collapse to 1 col (scoped) */
+.page-index .grid { display: grid; gap: clamp(16px, 2.2vw, 28px); grid-template-columns: repeat(12, minmax(0,1fr)); }
+.span-3, .span-4, .span-6, .span-8, .span-12 { grid-column: 1 / -1; } /* default to full width */
+@media (min-width: 768px) {
+  .span-3 { grid-column: span 3; }
+  .span-4 { grid-column: span 4; }
+  .span-6 { grid-column: span 6; }
+  .span-8 { grid-column: span 8; }
+}
+@media (max-width: 767px) { .page-index .grid { grid-template-columns: 1fr; } }
+
+/* Header rules removed here to avoid overriding shared navbar.css */
+
+/* Buttons (scoped to index page) */
+.page-index .btn { --bgc: var(--brand); --bgh: var(--brand-600); --fg:#fff; --ring: color-mix(in srgb, var(--brand) 35%, transparent);
+  display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1rem; font-weight:700; text-decoration:none; color:var(--fg);
+  background:var(--bgc); border:1px solid color-mix(in srgb,var(--bgc) 20%,transparent); border-radius:12px; box-shadow:var(--shadow);
+  transition: transform .15s ease, background-color .15s ease, box-shadow .2s ease;
+}
+.page-index .btn:hover{ background:var(--bgh); transform:translateY(-1px) }
+.page-index .btn:focus-visible{ outline:3px solid var(--ring); outline-offset:2px }
+.page-index .btn.secondary{ --bgc:var(--accent); --bgh:var(--accent-600) }
+.page-index .btn.ghost{ --bgc:transparent; --bgh:color-mix(in srgb,var(--ink-2) 10%,transparent); color:var(--ink-6); box-shadow:none; border:1px solid var(--ink-2) }
+.page-index .btn.invert{ background:#fff; color:var(--deep) }
+.page-index .btn.ghost.invert{ background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff }
+.page-index .btn.ghost.invert:hover{ background: rgba(255,255,255,.08) }
+
+/* Badge */
+.badge{ display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .6rem; border-radius:999px; font-size:.8rem;
+  border:1px solid color-mix(in srgb,var(--accent) 35%,transparent); color:var(--accent-600); background:color-mix(in srgb,var(--accent) 10%,transparent);
+}
+
+/* HERO */
+.hero{
+  position: relative; overflow: clip; padding-block: clamp(48px, 6vw, 90px);
+  background:
+    radial-gradient(1200px 600px at 10% -20%, color-mix(in srgb, var(--accent) 18%, transparent), transparent),
+    radial-gradient(1000px 500px at 90% 10%, color-mix(in srgb, var(--brand) 25%, transparent), transparent);
+}
+.hero-inner{
+  display:grid; gap:28px; align-items:center;
+  grid-template-columns: 1fr minmax(220px, 320px); /* slim right column */
+}
+.hero h1{ font-size: clamp(28px, 4vw, 52px); line-height:1.1; color:var(--ink-6); margin:0 }
+.hero p{ font-size: clamp(16px, 1.2vw, 18px); color:var(--ink-4); margin:0 }
+
+/* Icon-only right side */
+.hero-icons{
+  display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:12px;
+  align-content:start; justify-items:center;
+}
+.hero-icon{
+  inline-size: 72px; block-size:72px; border-radius:18px;
+  display:grid; place-items:center; font-weight:900; font-size:24px; color:#fff;
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  border: 1px solid color-mix(in srgb, var(--ink-2) 40%, transparent);
+  box-shadow: var(--shadow);
+  text-decoration:none;
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+}
+.hero-icon:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px rgba(15,23,42,.18) }
+.hero-icon--primary{
+  background: linear-gradient(135deg, var(--accent-600), var(--brand-600));
+  outline: 3px solid color-mix(in srgb, var(--brand) 35%, transparent);
+  outline-offset: 2px;
+}
+.hero-icon--alert{ background: linear-gradient(135deg, #ef4444, #8b5cf6); }
+
+/* Mobile behavior: stack, icons under text */
+@media (max-width: 960px){
+  .hero-inner{ grid-template-columns: 1fr; }
+  .hero-icons{ grid-template-columns: repeat(6, 1fr); max-width: 480px; margin-top: 6px; }
+}
+
+/* Sections */
+.section { padding-block: clamp(48px, 6vw, 48px); }
+.section h2 { margin: 0 0 .2rem; font-size: clamp(22px, 3vw, 36px); color: var(--ink-6); }
+.section p.lead { color: var(--ink-4); margin: 0; max-width: 60ch; }
+
+/* Generic Card */
+.card{ background: var(--surface); border:1px solid color-mix(in srgb,var(--ink-2) 55%, transparent);
+  border-radius: var(--radius); padding:22px; box-shadow: var(--shadow); position:relative; overflow:hidden;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.card:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,23,42,.14); border-color: color-mix(in srgb, var(--brand) 18%, var(--ink-2)); }
+.card h3{ margin:0 0 .25rem; font-size:1.125rem; color:var(--ink-6) }
+.card p{ margin:0; color:var(--ink-4) }
+.card .icon{ inline-size:36px; block-size:36px; border-radius:10px; display:grid; place-items:center; font-size:18px; font-weight:900; color:#fff;
+  background:linear-gradient(135deg, var(--brand), var(--accent));
+}
+
+/* Clients logo strip */
+.logo-strip{ display:grid; grid-template-columns:repeat(5,1fr); gap:18px; opacity:.9; filter:grayscale(100%) }
+.logo-strip img{ width:100%; height:42px; object-fit:contain }
+@media (max-width:720px){ .logo-strip{ grid-template-columns: repeat(3,1fr) } }
+
+
+/* Drawer (scoped to index page) */
+.page-index .drawer{ position:fixed; inset:0 0 0 auto; width:82vw; max-width:420px; background:var(--surface); transform:translateX(100%);
+  transition: transform .25s ease; box-shadow:-10px 0 30px rgba(15,23,42,.2); border-left:1px solid color-mix(in srgb,var(--ink-2) 55%, transparent); z-index:80;
+}
+.page-index .drawer.open{ transform: translateX(0) }
+.page-index .drawer .section{ padding:24px }
+.page-index .backdrop{ position:fixed; inset:0; background:rgba(0,0,0,.3); opacity:0; visibility:hidden; transition:opacity .2s ease; z-index:70 }
+.page-index .backdrop.show{ opacity:1; visibility:visible }
+
+/* ===== Service section styles ===== */
+
+.svc{ box-shadow: var(--shadow-md); overflow: clip; position: relative; border-radius: 0; }
+.svc__inner{ padding: clamp(20px, 4vw, 40px); max-width:1120px; margin-inline:auto; padding-inline: clamp(20px, 3vw, 36px); padding-block: clamp(28px, 5vw, 64px); }
+.svc__head{ margin-bottom:16px }
+.svc__eyebrow{ display:inline-block; font-size:.75rem; font-weight:600; letter-spacing:.02em; padding:4px 10px; border-radius:999px; background: rgba(15,23,42,.06); color: var(--ink) }
+.svc__title{ margin:8px 0 6px; font-size:clamp(1.4rem, 1.2rem + 1.5vw, 2rem); line-height:1.2; color:var(--ink) }
+.svc__desc{ margin:0 0 14px; color:var(--muted); max-width:62ch }
+.svc__cta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px }
+.svc:hover{ box-shadow: var(--shadow-lg); transform: translateY(-1px); transition:.25s ease }
+
+/* Do Not Email */
+.svc--dne{
+  background: radial-gradient(1200px 300px at 10% -40%, rgba(99,220,222,.25), transparent 60%),
+              linear-gradient(180deg, #f7fbff, #ffffff);
+}
+.svc--dne .svc__illust--shield{
+  position:absolute; right:-60px; bottom:-80px; width:320px; height:320px;
+  background: radial-gradient(closest-side, rgba(99,220,222,.25), transparent 65%), conic-gradient(from 180deg at 50% 55%, rgba(15,23,42,.06), rgba(15,23,42,0) 30%);
+  clip-path: path("M160 0 C230 0 320 80 320 160 C320 260 240 320 160 320 C80 320 0 260 0 160 C0 80 90 0 160 0 Z");
+  filter: blur(.3px); opacity:.7;
+}
+
+/* Do Not Call */
+.svc--dnc{
+  background: radial-gradient(900px 300px at 80% -60%, rgba(123,126,230,.25), transparent 60%), linear-gradient(180deg, #0b1424, #0e1a2b);
+  color:#e6edf7; box-shadow: var(--shadow-lg);
+}
+.svc--dnc .svc__eyebrow{ background: rgba(255,255,255,.12); color:#e6edf7 }
+.svc--dnc .svc__title{ color:#fff }
+.svc--dnc .svc__desc{ color:#c4d0e6 }
+.svc--dnc .svc__illust--phone{
+  position:absolute; inset:auto clamp(12px,2vw,24px) -24px auto; width:180px; height:180px;
+  background: radial-gradient(closest-side, rgba(47,141,251,.35), transparent 70%), linear-gradient(130deg, rgba(99,220,222,.25), rgba(123,126,230,.25));
+  border-radius:24px 24px 56px 56px; box-shadow:0 20px 60px rgba(0,0,0,.4); transform:rotate(-8deg); opacity:.9;
+}
+
+/* SaaS split tile */
+.svc--saas{ background: linear-gradient(180deg,#ffffff,#fbfcff); border:1px solid rgba(15,23,42,.06) }
+.svc__grid{ display:grid; gap: clamp(16px,2.5vw,32px); align-items:center }
+@media (min-width:980px){ .svc__grid{ grid-template-columns: minmax(0,1fr) 420px } }
+.svc__features{ --tile-bg:#f5f7fb; list-style:none; padding:16px; margin:0; background:var(--tile-bg); display:grid; gap:10px; grid-template-columns:repeat(2,minmax(0,1fr)) }
+.svc__features li{ padding:10px 12px; background:#fff; border:1px solid rgba(15,23,42,.06); border-radius:12px; box-shadow:0 2px 10px rgba(15,23,42,.04) }
+
+/* iOS tile */
+.svc--ios{ background: radial-gradient(800px 300px at 20% -50%, rgba(71,215,145,.22), transparent 60%), radial-gradient(900px 350px at 120% -60%, rgba(47,141,251,.18), transparent 60%), #f8fbff }
+.device-mock{ width: clamp(200px, 55vw, 260px); height: calc(clamp(200px, 55vw, 260px) * 2); margin-inline:auto; border-radius:38px; background:linear-gradient(180deg,#111,#1d293a); position:relative; box-shadow:0 25px 80px rgba(15,23,42,.25); outline:10px solid #0b1524 }
+.device-notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:160px; height:22px; background:#0b1524; border-radius:12px }
+
+/* Shopify tile */
+.svc--shopify{ background: linear-gradient(0deg, rgba(71,215,145,.10), rgba(71,215,145,.10)), #ffffff; border:1px solid rgba(71,215,145,.25) }
+.svc__badges{ display:flex; gap:10px; flex-wrap:wrap; list-style:none; padding:0; margin:8px 0 2px }
+.svc__badges li{ padding:6px 10px; border-radius:999px; background: rgba(71,215,145,.14); color:#065f46; font-weight:600; font-size:.85rem }
+
+/* WordPress tile */
+.svc--wp{ background: repeating-linear-gradient(0deg, rgba(15,23,42,.04) 0 1px, transparent 1px 28px), repeating-linear-gradient(90deg, rgba(15,23,42,.04) 0 1px, transparent 1px 28px), #ffffff; border:1px solid rgba(15,23,42,.08) }
+.svc__checklist{ list-style:none; padding:0; margin:0; display:grid; gap:10px }
+.svc__checklist li{ position:relative; padding-left:28px; background:#fff; border:1px solid rgba(15,23,42,.06); border-radius:10px; padding-block:10px; box-shadow:0 2px 10px rgba(15,23,42,.04) }
+.svc__checklist li::before{ content:""; position:absolute; left:10px; top:50%; transform:translateY(-50%); width:12px; height:12px; border-radius:3px;
+  background: conic-gradient(from 45deg, var(--mint) 0 25%, transparent 0 100%), radial-gradient(circle at 60% 60%, var(--mint) 45%, transparent 46%) }
+
+/* Narrow phones: feature list stacks */
+@media (max-width: 480px) { .svc__features { grid-template-columns: 1fr; } }
+
+/* ================================
+   WHAT WE BUILD — one full-width row per tile (ALL breakpoints)
+   ================================ */
+
+/* Make the outer grid always single column */
+.build-grid {
+  display: grid;
+  grid-template-columns: 1fr !important;  /* 1 column on all breakpoints */
+  gap: clamp(16px, 2vw, 28px);
+}
+
+/* Ensure any span helpers don't fight this */
+.build-grid > .span-3,
+.build-grid > .span-4,
+.build-grid > .span-6,
+.build-grid > .span-8,
+.build-grid > .span-12,
+.build-grid > .svc {
+  grid-column: 1 / -1 !important;
+}
+
+/* Stop inner two-column layouts from squeezing/overlapping */
+.build-grid .svc__inner,
+.build-grid .svc__grid {
+  display: block !important;
+  min-width: 0;
+}
+
+/* The floating/overlay card: behave like a normal block */
+.build-grid .svc .card {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: none;
+}
+
+/* Device mock: center and s*

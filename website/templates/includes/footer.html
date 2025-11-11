@@ -1,0 +1,39 @@
+
+
+<footer>
+        <div class="container foot">
+          <div class="stack">
+            <div class="cluster" style="align-items:center">
+              <span class="brand-mark" aria-hidden="true"></span>
+              <strong style="font-size:1.05rem">SwanTech</strong>
+            </div>
+            <p class="muted">Precision‑built websites and apps. Shopify, WordPress, Django, and mobile.</p>
+          </div>
+          <div class="stack">
+            <h4>Company</h4>
+            <a href="{% url 'website:company' %}">Company</a>
+            <a href="{% url 'website:clients' %}">clients</a>
+            <a href="{% url 'website:index' %}">Insights</a>
+          </div>
+          <div class="stack">
+            <h4>Services</h4>
+            <a href="{% url 'website:services' %}#shopify">Shopify</a>
+            <a href="{% url 'website:services' %}#wordpress">WordPress</a>
+            <a href="{% url 'website:services' %}#custom">Custom Web</a>
+            <a href="{% url 'website:services' %}#apps">Apps</a>
+          </div>
+          <div class="stack">
+            <h4>Contact</h4>
+            <a href="mailto:hello@swantech.dev">hello@swantech.dev</a>
+            <a href="{% url 'website:contact' %}">Project brief</a>
+          </div>
+        </div>
+        <div class="container" style="margin-top: 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px">
+          <small class="muted">© {% now 'Y' %} SwanTech. All rights reserved.</small>
+          <div class="cluster">
+            <a class="muted" href="{% url 'website:privacy' %}">Privacy</a>
+            <span aria-hidden="true">•</span>
+            <a class="muted" href="{% url 'website:terms' %}">Terms</a>
+          </div>
+        </div>
+      </footer>

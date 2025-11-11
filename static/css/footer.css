@@ -1,0 +1,7 @@
+ /* Footer */
+footer { padding-block: 48px; background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--ink-2) 22%, transparent)); border-top: 1px solid color-mix(in srgb, var(--ink-2) 35%, transparent); }
+.foot { display: grid; gap: 24px; grid-template-columns: 1.5fr 1fr 1fr 1fr; }
+.foot h4 { margin: 0 0 .5rem; color: var(--ink-6); }
+.foot a { color: var(--ink-4); text-decoration: none; }
+.foot a:hover { color: var(--ink-6); }
+@media (max-width: 960px) { .foot { grid-template-columns: 1fr 1fr; } }

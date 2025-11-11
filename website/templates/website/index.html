@@ -1,0 +1,182 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-index">
+<!-- =============================
+     HERO
+     ============================= -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="stack" style="--stack-gap:1rem">
+      <span class="badge">Shopify • WordPress • Custom Web • iOS</span>
+      <h1>Technology. Data Privacy. Innovation.</h1>
+      <p>We ship conversion‑focused storefronts, content sites, and apps with a defense‑contractor aesthetic—precise, reliable, and built to scale.</p>
+      <div class="cluster" style="--cluster-gap:.5rem">
+        <a class="btn" href="{% url 'website:contact' %}">Free scope call</a>
+        <a class="btn ghost" href="{% url 'website:clients' %}">See our clients</a>
+      </div>
+    </div>
+
+    <!-- icon-only right column -->
+    <div class="hero-icons" aria-hidden="true">
+      <a class="hero-icon hero-icon--primary" href="{% url 'website:contact' %}" title="Contact">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span class="sr-only">Contact</span>
+      </a>
+      <span class="hero-icon"><i class="fa-solid fa-microchip"></i></span>
+      <span class="hero-icon hero-icon--alert"><i class="fa-solid fa-lightbulb"></i></span>
+      <span class="hero-icon"><i class="fa-solid fa-lock"></i></span>
+      <span class="hero-icon"><i class="fa-solid fa-chart-line"></i></span>
+      <span class="hero-icon"><i class="fa-solid fa-mobile-screen"></i></span>
+    </div>
+  </div>
+</section>
+
+<!-- =============================
+     CLIENTS STRIP (images only)
+     ============================= -->
+<section class="section">
+  <div class="container stack" style="--stack-gap:.75rem">
+    <h2>Trusted by teams who move fast</h2>
+    <p class="lead">A few brands we've supported.</p>
+    <div class="logo-strip">
+      <img src="{% static 'images/torqsports.png' %}" alt="Torq Sports logo">
+      <img src="{% static 'images/wwsalliances.png' %}" alt="Worldwide Strategic Alliances logo">
+      <img src="{% static 'images/hkrzgolf.png' %}" alt="HKRZ Golf logo">
+      <img src="{% static 'images/mlbweeklyai.png' %}" alt="MLB Weekly AI logo">
+      <img src="{% static 'images/NodeBoiler.png' %}" alt="NodeBoiler logo">
+    </div>
+  </div>
+</section>
+
+<!-- =============================
+     DO NOT EMAIL REGISTRATION
+     ============================= -->
+<section class="section">
+  <div class="container">
+    <article class="svc svc--dne svc__inner">
+      <header class="svc__head">
+        <span class="svc__eyebrow">Data Privacy</span>
+        <h3 class="svc__title">Do Not Email Registration</h3>
+        <p class="svc__desc">We will maintain your record to ensure that cold emails never hit your inbox again.</p>
+        <div class="svc__cta">
+          <a class="btn secondary" href="{% url 'website:do-not-email' %}">Register — Do Not Email</a>
+          <a class="btn ghost" href="{% url 'website:contact' %}">Questions? Talk to us</a>
+        </div>
+      </header>
+      <div class="svc__illust--shield" aria-hidden="true"></div>
+    </article>
+  </div>
+</section>
+
+<!-- =============================
+     DO NOT CALL REGISTRATION (dark)
+     ============================= -->
+<section class="section">
+  <div class="container">
+    <article class="svc svc--dnc svc__inner">
+      <header class="svc__head">
+        <span class="svc__eyebrow">Compliance</span>
+        <h3 class="svc__title">Do Not Call Registration</h3>
+        <p class="svc__desc">We will sign you up for the National Do Not Call Registry to stop cold callers from marketing to you.</p>
+        <div class="svc__cta">
+          <a class="btn invert" href="{% url 'website:do-not-call' %}">Register — Do Not Call</a>
+          <a class="btn ghost invert" href="{% url 'website:contact' %}">Learn more</a>
+        </div>
+      </header>
+      <div class="svc__illust--phone" aria-hidden="true"></div>
+    </article>
+  </div>
+</section>
+
+<!-- =============================
+     CORE SERVICES GRID
+     ============================= -->
+<section class="section">
+  <div class="container stack" style="--stack-gap:1.25rem">
+    <h2>What we build</h2>
+    <p class="lead">From SaaS platforms to pixel‑perfect mobile apps and high‑performance storefronts.</p>
+
+    <div class="grid build-grid">
+      <!-- Custom Web / SaaS -->
+      <article class="span-6 svc svc--saas">
+        <div class="svc__inner svc__grid">
+          <div class="stack">
+            <span class="svc__eyebrow">Custom Development</span>
+            <h3 class="svc__title">SaaS Web Development</h3>
+            <p class="svc__desc">Develop SaaS products or bespoke web solutions with secure auth, role‑based access, and dashboards.</p>
+            <ul class="svc__features">
+              <li>Secure auth & RBAC</li>
+              <li>Real‑time analytics</li>
+              <li>API design & integrations</li>
+              <li>CI/CD & cloud deploys</li>
+            </ul>
+            <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Start a project</a></div>
+          </div>
+          <div class="card">
+            <div class="icon"><i class="fa-solid fa-gears"></i></div>
+            <h3>Architecture workshops</h3>
+            <p class="muted">We help you design a scalable, maintainable foundation.</p>
+          </div>
+        </div>
+      </article>
+
+      <!-- iOS App Development -->
+      <article class="span-6 svc svc--ios">
+        <div class="svc__inner grid">
+          <div class="span-6 stack">
+            <span class="svc__eyebrow">Mobile</span>
+            <h3 class="svc__title">iOS App Development</h3>
+            <p class="svc__desc">We will build a beautiful iPhone application with native performance and clean UX.</p>
+            <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Discuss your app</a></div>
+          </div>
+          <div class="span-6">
+            <div class="device-mock" aria-hidden="true">
+              <div class="device-notch"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Shopify -->
+      <article class="span-6 svc svc--shopify">
+        <div class="svc__inner">
+          <span class="svc__eyebrow">eCommerce</span>
+          <h3 class="svc__title">Shopify Development</h3>
+          <p class="svc__desc">We will build a Shopify eCommerce store focused on speed, conversion, and maintainability.</p>
+          <ul class="svc__badges">
+            <li>Theme builds</li>
+            <li>Checkout UX</li>
+            <li>App integrations</li>
+            <li>SEO setup</li>
+          </ul>
+          <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Launch on Shopify</a></div>
+        </div>
+      </article>
+
+      <!-- WordPress -->
+      <article class="span-6 svc svc--wp">
+        <div class="svc__inner">
+          <span class="svc__eyebrow">CMS</span>
+          <h3 class="svc__title">WordPress Development</h3>
+          <p class="svc__desc">We will build a WordPress blog or any application‑tangible site with robust blocks and performance.</p>
+          <ul class="svc__checklist">
+            <li>Custom block patterns</li>
+            <li>Headless or classic theme</li>
+            <li>Security hardening</li>
+            <li>Content workflows</li>
+          </ul>
+          <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Say hello</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+</div>
+{% endblock %}

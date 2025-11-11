@@ -5,13 +5,54 @@ from django.shortcuts import render
 from django.contrib import messages
 # Create your views here.
 
-def landing_page(request):
+def index(request):
     """Landing page view"""
-    return render(request, 'website/landing.html')
+    return render(request, 'website/index.html')
 
 def company_page(request):
     """Company page view"""
     return render(request, 'website/company.html')
+
+def services_page(request):
+    """Services page view"""
+    return render(request, 'website/services.html')
+
+def clients_page(request):
+    """Clients page view"""
+    return render(request, 'website/clients.html')
+
+def privacy_policy_page(request):
+    """Privacy Policy page view"""
+    return render(request, 'website/privacy_policy.html')
+
+def terms_of_service_page(request):
+    """Terms of Service page view"""
+    return render(request, 'website/terms_of_service.html')
+
+def insights_page(request):
+    """Insights page view"""
+    return render(request, 'website/insights.html')
+
+def shopify_page(request):
+    """Shopify Development page view"""
+    return render(request, 'website/shopify.html')
+
+def custom_web_dev_page(request):
+    """Custom Website Development page view"""
+    return render(request, 'website/custom_web_dev.html')
+
+def mobile_app_dev_page(request):
+    """Mobile App Development page view"""
+    return render(request, 'website/mobile_app_dev.html')
+
+def do_not_call(request):
+    """Do Not Call page view"""
+    return render(request, 'website/do_not_call.html')
+
+def do_not_email(request):
+    """Do Not Email page view"""
+    return render(request, 'website/do_not_email.html')
+
 
 def contact_sales_page(request):
     """Contact Sales page view"""
@@ -22,6 +63,7 @@ def contact_sales_page(request):
         company = request.POST.get('company', 'No Company Provided')
         phone = request.POST.get('phone', 'No Phone Provided')
         message_body = request.POST.get('message', 'No Message Provided')
+        inquiry_type = request.POST.get('inquiry_type', 'General Inquiry')
 
         # Email details (to you)
         subject = "New Contact Sales Inquiry"
@@ -31,6 +73,7 @@ def contact_sales_page(request):
             f"Email: {email}\n"
             f"Company: {company}\n"
             f"Phone: {phone}\n"
+            f"Inquiry Type: {inquiry_type}\n"
             f"Message: {message_body}"
         )
         from_email = "Swanson Technologies <daswanson22@gmail.com>"

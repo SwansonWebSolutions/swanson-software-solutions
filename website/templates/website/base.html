@@ -3,41 +3,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=7">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Swanson Technologies{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}?v={% now 'U' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    {% block head_extra %}
+    {% endblock %}
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <a href="/" class="logo-link">
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="{% url 'website:landing' %}">Home</a></li>
-                <li><a href="{% url 'website:company' %}">Company</a></li>
-                <li><a href="{% url 'website:solutions' %}">Services</a></li>
-                <li><a href="{% url 'website:pricing' %}">Pricing</a></li>
-                <li><a href="{% url 'website:contact_sales' %}">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    {% include 'includes/navbar.html' %}
 
     <main>
         {% block content %}
+        <!-- Page-specific content will be injected here -->
         {% endblock %}
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2025 Swanson Technologies. All rights reserved.</p>
-            <div class="footer-links">
-                <a href="{% url 'website:company' %}">About</a>
-                <a href="{% url 'website:contact_sales' %}">Contact</a>
-                <a href="{% url 'website:pricing' %}">Pricing</a>
-            </div>
-        </div>
-    </footer>
+    {% include 'includes/footer.html' %}
+    
 </body>
 </html>

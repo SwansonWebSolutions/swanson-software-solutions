@@ -1,0 +1,94 @@
+
+
+.clients-page .c-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.clients-page .c-hero {
+  background: radial-gradient(1200px 600px at 20% -20%, rgba(14,165,233,.15), transparent), radial-gradient(900px 500px at 85% 0%, rgba(52,211,153,.15), transparent);
+  padding: 5rem 1rem;
+  text-align: center;
+}
+.clients-page .c-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: .5rem;
+}
+.clients-page .c-hero p {
+  color: var(--ink-4);
+}
+.clients-page .c-badge {
+  display: inline-block;
+  background: rgba(14,165,233,.1);
+  color: var(--accent);
+  font-weight: 700;
+  padding: .35rem .75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+.clients-page .c-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 3rem;
+}
+.clients-page .c-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  transition: .2s ease;
+}
+.clients-page .c-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(15,23,42,.18);
+}
+.clients-page .c-card .c-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.clients-page .c-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.clients-page .c-pill {
+  background: rgba(14,165,233,.1);
+  color: var(--accent);
+  padding: .25rem .5rem;
+  border-radius: 8px;
+  font-size: .875rem;
+}
+.clients-page .c-cta {
+  background: #fff;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  margin-top: 4rem;
+}
+.clients-page .c-muted {
+  color: var(--ink-4);
+}
+.clients-page .c-btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 600;
+  padding: .6rem 1rem;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  transition: .2s ease;
+}
+.clients-page .c-btn:hover {
+  opacity: .9;
+}
+.clients-page a { text-decoration: underline; }
+.clients-page ul { margin: 0; padding: 0; }
