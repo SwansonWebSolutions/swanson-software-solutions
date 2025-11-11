@@ -1,0 +1,40 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <script>
+    // On load, read cached form data and submit it to the server as POST
+    document.addEventListener('DOMContentLoaded', function(){
+      try {
+        var kind = '{{ kind }}';
+        var key = kind === 'dne' ? 'dneForm' : 'dncForm';
+        var raw = localStorage.getItem(key);
+        if (!raw) { return; }
+        var data = JSON.parse(raw || '{}');
+        // Build a hidden form and submit
+        var form = document.getElementById('bridgeForm');
+        Object.keys(data).forEach(function(k){
+          var inp = document.createElement('input');
+          inp.type = 'hidden';
+          inp.name = k;
+          inp.value = data[k];
+          form.appendChild(inp);
+        });
+        form.submit();
+      } catch (e) { console.error('Bridge error', e); }
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+<main class="policy" style="min-height:40vh; display:grid; place-items:center">
+  <form id="bridgeForm" action="{{ post_url }}" method="post">
+    {% csrf_token %}
+    <noscript>
+      JavaScript is required to complete your submission.
+    </noscript>
+  </form>
+  <p class="muted">Finalizing your request…</p>
+</main>
+{% endblock %}
+

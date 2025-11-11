@@ -17,22 +17,40 @@
       <h1>Technology. Data Privacy. Innovation.</h1>
       <p>We ship conversion‑focused storefronts, content sites, and apps with a defense‑contractor aesthetic—precise, reliable, and built to scale.</p>
       <div class="cluster" style="--cluster-gap:.5rem">
-        <a class="btn" href="{% url 'website:contact' %}">Free scope call</a>
-        <a class="btn ghost" href="{% url 'website:clients' %}">See our clients</a>
+        <a class="btn" href="{% url 'website:contact' %}?inquiry=web">Need something Built?</a>
+        <a class="btn secondary" href="{% url 'website:index' %}#do-not-email">Protect your privacy</a>
       </div>
     </div>
 
     <!-- icon-only right column -->
     <div class="hero-icons" aria-hidden="true">
-      <a class="hero-icon hero-icon--primary" href="{% url 'website:contact' %}" title="Contact">
-        <i class="fa-solid fa-shield-halved"></i>
-        <span class="sr-only">Contact</span>
-      </a>
-      <span class="hero-icon"><i class="fa-solid fa-microchip"></i></span>
-      <span class="hero-icon hero-icon--alert"><i class="fa-solid fa-lightbulb"></i></span>
-      <span class="hero-icon"><i class="fa-solid fa-lock"></i></span>
-      <span class="hero-icon"><i class="fa-solid fa-chart-line"></i></span>
-      <span class="hero-icon"><i class="fa-solid fa-mobile-screen"></i></span>
+      <div class="hero-item">
+        <a class="hero-icon hero-icon--primary" href="{% url 'website:contact' %}?inquiry=general" title="Contact">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span class="sr-only">Contact</span>
+        </a>
+        <small class="hero-label">Contact</small>
+      </div>
+      <div class="hero-item">
+        <span class="hero-icon"><i class="fa-solid fa-microchip"></i></span>
+        <small class="hero-label">Tech</small>
+      </div>
+      <div class="hero-item">
+        <span class="hero-icon hero-icon--alert"><i class="fa-solid fa-lightbulb"></i></span>
+        <small class="hero-label">Ideas</small>
+      </div>
+      <div class="hero-item">
+        <span class="hero-icon"><i class="fa-solid fa-lock"></i></span>
+        <small class="hero-label">Security</small>
+      </div>
+      <div class="hero-item">
+        <span class="hero-icon"><i class="fa-solid fa-chart-line"></i></span>
+        <small class="hero-label">Analytics</small>
+      </div>
+      <div class="hero-item">
+        <span class="hero-icon"><i class="fa-solid fa-mobile-screen"></i></span>
+        <small class="hero-label">Mobile</small>
+      </div>
     </div>
   </div>
 </section>
@@ -44,7 +62,7 @@
   <div class="container stack" style="--stack-gap:.75rem">
     <h2>Trusted by teams who move fast</h2>
     <p class="lead">A few brands we've supported.</p>
-    <div class="logo-strip">
+    <div class="logo-strip" id="do-not-email">
       <img src="{% static 'images/torqsports.png' %}" alt="Torq Sports logo">
       <img src="{% static 'images/wwsalliances.png' %}" alt="Worldwide Strategic Alliances logo">
       <img src="{% static 'images/hkrzgolf.png' %}" alt="HKRZ Golf logo">
@@ -62,12 +80,15 @@
     <article class="svc svc--dne svc__inner">
       <header class="svc__head">
         <span class="svc__eyebrow">Data Privacy</span>
+        <div class="svc__icons" aria-hidden="true">
+          <span class="chip"><i class="fa-solid fa-envelope-circle-check"></i></span>
+          <span class="chip"><i class="fa-solid fa-ban"></i></span>
+        </div>
         <h3 class="svc__title">Do Not Email Registration</h3>
         <p class="svc__desc">We will maintain your record to ensure that cold emails never hit your inbox again.</p>
         <div class="svc__cta">
-          <a class="btn secondary" href="{% url 'website:do-not-email' %}">Register — Do Not Email</a>
-          <a class="btn ghost" href="{% url 'website:contact' %}">Questions? Talk to us</a>
-        </div>
+          <a class="btn secondary" href="{% url 'website:do-not-email' %}">Register</a>
+          <a class="btn ghost" href="{% url 'website:faq' %}">Frequently Asked Questions</a>
       </header>
       <div class="svc__illust--shield" aria-hidden="true"></div>
     </article>
@@ -82,11 +103,15 @@
     <article class="svc svc--dnc svc__inner">
       <header class="svc__head">
         <span class="svc__eyebrow">Compliance</span>
+        <div class="svc__icons" aria-hidden="true">
+          <span class="chip"><i class="fa-solid fa-phone-slash"></i></span>
+          <span class="chip"><i class="fa-solid fa-shield-halved"></i></span>
+        </div>
         <h3 class="svc__title">Do Not Call Registration</h3>
         <p class="svc__desc">We will sign you up for the National Do Not Call Registry to stop cold callers from marketing to you.</p>
         <div class="svc__cta">
-          <a class="btn invert" href="{% url 'website:do-not-call' %}">Register — Do Not Call</a>
-          <a class="btn ghost invert" href="{% url 'website:contact' %}">Learn more</a>
+          <a class="btn invert" href="{% url 'website:do-not-call' %}">Register</a>
+          <a class="btn ghost invert" href="{% url 'website:contact' %}?inquiry=general">Questions? Talk to Us</a>
         </div>
       </header>
       <div class="svc__illust--phone" aria-hidden="true"></div>
@@ -108,6 +133,10 @@
         <div class="svc__inner svc__grid">
           <div class="stack">
             <span class="svc__eyebrow">Custom Development</span>
+            <div class="svc__icons" aria-hidden="true">
+              <span class="chip"><i class="fa-solid fa-code"></i></span>
+              <span class="chip"><i class="fa-solid fa-diagram-project"></i></span>
+            </div>
             <h3 class="svc__title">SaaS Web Development</h3>
             <p class="svc__desc">Develop SaaS products or bespoke web solutions with secure auth, role‑based access, and dashboards.</p>
             <ul class="svc__features">
@@ -116,7 +145,7 @@
               <li>API design & integrations</li>
               <li>CI/CD & cloud deploys</li>
             </ul>
-            <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Start a project</a></div>
+            <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}?inquiry=web">Start a project</a></div>
           </div>
           <div class="card">
             <div class="icon"><i class="fa-solid fa-gears"></i></div>
@@ -131,9 +160,13 @@
         <div class="svc__inner grid">
           <div class="span-6 stack">
             <span class="svc__eyebrow">Mobile</span>
+            <div class="svc__icons" aria-hidden="true">
+              <span class="chip"><i class="fa-brands fa-apple"></i></span>
+              <span class="chip"><i class="fa-solid fa-mobile-screen-button"></i></span>
+            </div>
             <h3 class="svc__title">iOS App Development</h3>
             <p class="svc__desc">We will build a beautiful iPhone application with native performance and clean UX.</p>
-            <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Discuss your app</a></div>
+            <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}?inquiry=app">Discuss your app</a></div>
           </div>
           <div class="span-6">
             <div class="device-mock" aria-hidden="true">
@@ -147,6 +180,10 @@
       <article class="span-6 svc svc--shopify">
         <div class="svc__inner">
           <span class="svc__eyebrow">eCommerce</span>
+          <div class="svc__icons" aria-hidden="true">
+            <span class="chip"><i class="fa-brands fa-shopify"></i></span>
+            <span class="chip"><i class="fa-solid fa-cart-shopping"></i></span>
+          </div>
           <h3 class="svc__title">Shopify Development</h3>
           <p class="svc__desc">We will build a Shopify eCommerce store focused on speed, conversion, and maintainability.</p>
           <ul class="svc__badges">
@@ -155,7 +192,7 @@
             <li>App integrations</li>
             <li>SEO setup</li>
           </ul>
-          <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Launch on Shopify</a></div>
+          <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}?inquiry=Shopify">Launch on Shopify</a></div>
         </div>
       </article>
 
@@ -163,6 +200,10 @@
       <article class="span-6 svc svc--wp">
         <div class="svc__inner">
           <span class="svc__eyebrow">CMS</span>
+          <div class="svc__icons" aria-hidden="true">
+            <span class="chip"><i class="fa-brands fa-wordpress"></i></span>
+            <span class="chip"><i class="fa-solid fa-pen-ruler"></i></span>
+          </div>
           <h3 class="svc__title">WordPress Development</h3>
           <p class="svc__desc">We will build a WordPress blog or any application‑tangible site with robust blocks and performance.</p>
           <ul class="svc__checklist">
@@ -171,7 +212,7 @@
             <li>Security hardening</li>
             <li>Content workflows</li>
           </ul>
-          <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}">Say hello</a></div>
+          <div class="svc__cta"><a class="btn" href="{% url 'website:contact' %}?inquiry=Wordpress">Say hello</a></div>
         </div>
       </article>
     </div>

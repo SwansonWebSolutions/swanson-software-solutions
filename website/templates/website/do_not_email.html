@@ -1,0 +1,86 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/policy.css' %}?v={% now 'U' %}">
+  <script src="{% static 'js/checkout_redirect.js' %}?v={% now 'U' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="policy-hero policy-hero--left">
+  <div class="container">
+    <h1>Do Not Email Registration</h1>
+    <p class="lead">We’ll submit and maintain your opt-out requests under applicable privacy laws. Fill out the brief form below to get started.</p>
+  </div>
+</section>
+
+<section class="policy-body">
+  <div class="policy">
+    <div class="card">
+      <form action="{% url 'website:submit-do-not-email' %}" method="post" novalidate>
+        {% csrf_token %}
+        <div class="grid-2">
+          <div class="field">
+            <label for="first_name">First Name</label>
+            <input id="first_name" name="first_name" type="text" placeholder="Jane" required>
+          </div>
+          <div class="field">
+            <label for="last_name">Last Name</label>
+            <input id="last_name" name="last_name" type="text" placeholder="Doe" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="primary_email">Primary Email</label>
+            <input id="primary_email" name="primary_email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="field">
+            <label for="secondary_email">Secondary Email (optional)</label>
+            <input id="secondary_email" name="secondary_email" type="email" placeholder="you+alt@example.com">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="address1">Home Address</label>
+          <input id="address1" name="address1" type="text" placeholder="123 Main St" required>
+        </div>
+        <div class="field">
+          <label for="address2">Address Line 2 (optional)</label>
+          <input id="address2" name="address2" type="text" placeholder="Apt, suite, unit, etc.">
+        </div>
+        <div class="grid-3">
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" placeholder="Springfield" required>
+          </div>
+          <div class="field">
+            <label for="region">State/Province/Region</label>
+            <input id="region" name="region" type="text" placeholder="CA" required>
+          </div>
+          <div class="field">
+            <label for="postal">Postal Code</label>
+            <input id="postal" name="postal" type="text" placeholder="90210" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="US" selected>United States</option>
+            <option value="CA">Canada</option>
+            <option value="GB">United Kingdom</option>
+            <option value="AU">Australia</option>
+            <option value="DE">Germany</option>
+            <option value="FR">France</option>
+            <option value="IN">India</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button id="dneCheckout" class="btn secondary" type="button">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

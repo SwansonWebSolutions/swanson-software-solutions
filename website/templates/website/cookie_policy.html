@@ -1,0 +1,61 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/policy.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+<section class="policy-hero">
+  <div class="container">
+    <h1>Cookie Policy</h1>
+    <p class="lead">This Cookie Policy explains how SwanTech uses cookies and similar technologies and how you can manage your preferences.</p>
+  </div>
+</section>
+
+<section class="policy-body">
+  <div class="policy">
+    <div class="card">
+      <p><strong>Effective date:</strong> {% now 'F d, Y' %}</p>
+      <p>By using our site, you consent to our use of cookies in accordance with this policy, subject to your preferences.</p>
+    </div>
+
+    <h2>What Are Cookies?</h2>
+    <p>Cookies are small text files placed on your device to store data that can be retrieved by the website that set them. Similar technologies include pixels, local storage, and server logs.</p>
+
+    <h2>Types of Cookies We Use</h2>
+    <ul>
+      <li><strong>Strictly necessary:</strong> Required to operate the site and enable core functions (e.g., security, load balancing).</li>
+      <li><strong>Performance:</strong> Help us understand how visitors use the site to improve it (aggregated analytics).</li>
+      <li><strong>Functional:</strong> Remember choices (e.g., language) to provide enhanced features.</li>
+      <li><strong>Marketing:</strong> Used to deliver or measure ads and track campaign performance (used sparingly, if at all).</li>
+    </ul>
+
+    <h2>How We Use Cookies</h2>
+    <ul>
+      <li>To keep the site secure and reliable.</li>
+      <li>To measure traffic and improve content.</li>
+      <li>To remember preferences where available.</li>
+    </ul>
+
+    <h2>Your Choices</h2>
+    <ul>
+      <li>Use browser settings to block or delete cookies. Blocking strictly necessary cookies may impact functionality.</li>
+      <li>Some browsers offer “Do Not Track” or global privacy controls — we honor such signals where legally required.</li>
+    </ul>
+
+    <h2>Third-Party Cookies</h2>
+    <p>Some cookies may be set by third parties that provide services to us (e.g., analytics). These providers have their own policies.</p>
+
+    <h2>Retention</h2>
+    <p>Cookies persist for different periods depending on their purpose. Session cookies expire when you close your browser; persistent cookies last until their set expiration.</p>
+
+    <h2>Changes</h2>
+    <p>We may update this policy to reflect changes in technology, law, or our practices. Changes take effect when posted.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about cookies? Email <a href="mailto:hello@swantech.dev">hello@swantech.dev</a>.</p>
+  </div>
+</section>
+{% endblock %}
+

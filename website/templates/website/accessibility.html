@@ -1,0 +1,49 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/policy.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+<section class="policy-hero">
+  <div class="container">
+    <h1>Accessibility Statement</h1>
+    <p class="lead">SwanTech is committed to ensuring digital accessibility for people with disabilities. We continually improve the user experience for everyone and apply relevant accessibility standards.</p>
+  </div>
+</section>
+
+<section class="policy-body">
+  <div class="policy">
+    <div class="card">
+      <p><strong>Standard:</strong> We aim for WCAG 2.1 Level AA conformance across core user journeys.</p>
+      <p><strong>Assessment:</strong> We use a combination of automated testing, manual audits, and assistive technology checks during development.</p>
+    </div>
+
+    <h2>Measures We Take</h2>
+    <ul>
+      <li>Semantic HTML, proper labels, and ARIA where appropriate.</li>
+      <li>Keyboard navigability and logical focus order.</li>
+      <li>Sufficient color contrast and scalable typography.</li>
+      <li>Responsive design that supports multiple device sizes.</li>
+      <li>Continuous monitoring and iterative fixes.</li>
+    </ul>
+
+    <h2>Compatibility</h2>
+    <p>Our site is designed to work with modern browsers and assistive technologies. Some older browsers may not fully support accessibility features.</p>
+
+    <h2>Limitations and Alternatives</h2>
+    <p>Despite our best efforts, some content may not yet be fully accessible. We welcome your feedback and will prioritize remediation.</p>
+
+    <h2>Feedback</h2>
+    <p>If you experience a barrier, please contact us with a description of the issue and the page URL:</p>
+    <ul>
+      <li>Email: <a href="mailto:hello@swantech.dev">hello@swantech.dev</a></li>
+    </ul>
+
+    <h2>Date</h2>
+    <p>This statement was last updated on {% now 'F d, Y' %}.</p>
+  </div>
+</section>
+{% endblock %}
+

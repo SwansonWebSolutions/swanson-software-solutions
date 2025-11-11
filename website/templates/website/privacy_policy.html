@@ -1,0 +1,85 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/policy.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+<section class="policy-hero">
+  <div class="container">
+    <h1>Privacy Policy</h1>
+    <p class="lead">We respect your privacy. This policy explains what information we collect, why we collect it, and how we use and protect it.</p>
+  </div>
+  </section>
+
+<section class="policy-body">
+  <div class="policy">
+    <div class="card">
+      <p><strong>Effective date:</strong> {% now 'F d, Y' %}</p>
+      <p>This Privacy Policy describes how SwanTech ("we", "us", or "our") collects, uses, and shares information about you when you use our websites, products, and services (collectively, the "Services"). If you do not agree with this policy, please do not use the Services.</p>
+    </div>
+
+    <h2>Information We Collect</h2>
+    <p>We collect information that you provide directly and information automatically collected when you use the Services.</p>
+    <h3>Information you provide</h3>
+    <ul>
+      <li>Contact details such as name, email address, company, and phone number.</li>
+      <li>Project details and messages submitted via forms.</li>
+      <li>Account or billing information if provided for paid services.</li>
+    </ul>
+    <h3>Information collected automatically</h3>
+    <ul>
+      <li>Log and device data (e.g., IP address, browser type, pages visited, timestamps).</li>
+      <li>Cookie and similar technology data (see our Cookie Policy for details).</li>
+    </ul>
+
+    <h2>How We Use Information</h2>
+    <ul>
+      <li>Provide, operate, and improve the Services.</li>
+      <li>Respond to inquiries, provide customer support, and send transactional communications.</li>
+      <li>Personalize content and measure performance.</li>
+      <li>Maintain security, prevent fraud, and comply with legal obligations.</li>
+    </ul>
+
+    <h2>Lawful Bases (EEA/UK)</h2>
+    <p>Where applicable, our legal bases include: performance of a contract, legitimate interests (e.g., to secure and improve Services), consent (e.g., certain marketing or cookies), and compliance with legal obligations.</p>
+
+    <h2>Sharing of Information</h2>
+    <ul>
+      <li><strong>Service providers:</strong> Trusted vendors who process data on our behalf under contract (e.g., hosting, analytics).</li>
+      <li><strong>Legal compliance:</strong> If required by law or to protect rights, safety, or the Services.</li>
+      <li><strong>Business transfers:</strong> In connection with a merger, acquisition, or asset sale.</li>
+    </ul>
+
+    <h2>Retention</h2>
+    <p>We keep information only as long as necessary for the purposes described in this policy, to comply with legal obligations, or resolve disputes.</p>
+
+    <h2>Your Choices and Rights</h2>
+    <ul>
+      <li><strong>Marketing:</strong> You may opt out of non-essential marketing at any time.</li>
+      <li><strong>Cookies:</strong> Manage cookie preferences via your browser or device settings and our consent tools (see Cookie Policy).</li>
+      <li><strong>EEA/UK:</strong> Rights to access, correct, delete, restrict, or object to processing, and data portability.</li>
+      <li><strong>California (CPRA):</strong> Rights to know, delete, correct, and opt out of the sale/share of personal information. We do not knowingly sell personal information.</li>
+    </ul>
+
+    <h2>Security</h2>
+    <p>We use reasonable administrative, technical, and organizational safeguards designed to protect information. No system is 100% secure; please use the Services with appropriate care.</p>
+
+    <h2>Children</h2>
+    <p>Our Services are not directed to children under 13 (or the minimum age in your jurisdiction). We do not knowingly collect personal information from children.</p>
+
+    <h2>International Transfers</h2>
+    <p>We may process information in countries other than your own. Where required, we use appropriate safeguards for cross-border transfers.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this policy from time to time. We will post the updated version with a new effective date.</p>
+
+    <h2>Contact</h2>
+    <p>Questions or requests? Email us at <a href="mailto:hello@swantech.dev">hello@swantech.dev</a>.</p>
+
+    <p class="muted" style="margin-top:12px">This template is provided for general informational purposes and does not constitute legal advice.</p>
+  </div>
+</section>
+{% endblock %}
+

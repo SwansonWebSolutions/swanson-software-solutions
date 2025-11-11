@@ -3,6 +3,7 @@
 
 {% block head_extra %}
 <link rel="stylesheet" href="{% static 'css/contact_sales.css' %}?v={% now 'U' %}">
+<script src="{% static 'js/contact_sales.js' %}?v={% now 'U' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -54,17 +55,17 @@
         <div class="field">
           <label for="inquiry_type">Inquiry Type<span aria-hidden="true">*</span></label>
           <select id="inquiry_type" name="inquiry_type" required>
-            <option value="" selected disabled>Select one</option>
-            <option>Web Development</option>
-            <option>iOS App Development</option>
-            <option>Shopify</option>
-            <option>Wordpress</option>
-            <option>General Inquiry</option>
+            <option value="" {% if not inquiry_prefill %}selected{% endif %} disabled>Select one</option>
+            <option {% if inquiry_prefill == 'Web Development' %}selected{% endif %}>Web Development</option>
+            <option {% if inquiry_prefill == 'iOS App Development' %}selected{% endif %}>iOS App Development</option>
+            <option {% if inquiry_prefill == 'Shopify' %}selected{% endif %}>Shopify</option>
+            <option {% if inquiry_prefill == 'Wordpress' %}selected{% endif %}>Wordpress</option>
+            <option {% if inquiry_prefill == 'General Inquiry' %}selected{% endif %}>General Inquiry</option>
           </select>
         </div>
       </div>
 
-      <div class="field">
+      <div class="field field--message">
         <label for="message">Project Details / Message<span aria-hidden="true">*</span></label>
         <textarea id="message" name="message" rows="7" required placeholder="Goals, timeline, budget range, links, and any must-haves."></textarea>
       </div>

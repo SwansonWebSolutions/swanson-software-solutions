@@ -70,6 +70,8 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
   display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:12px;
   align-content:start; justify-items:center;
 }
+.hero-item{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+.hero-label{ font-size:.75rem; color: var(--ink-4); }
 .hero-icon{
   inline-size: 72px; block-size:72px; border-radius:18px;
   display:grid; place-items:center; font-weight:900; font-size:24px; color:#fff;
@@ -86,7 +88,6 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
   outline-offset: 2px;
 }
 .hero-icon--alert{ background: linear-gradient(135deg, #ef4444, #8b5cf6); }
-
 /* Mobile behavior: stack, icons under text */
 @media (max-width: 960px){
   .hero-inner{ grid-template-columns: 1fr; }
@@ -134,7 +135,14 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
 .svc__title{ margin:8px 0 6px; font-size:clamp(1.4rem, 1.2rem + 1.5vw, 2rem); line-height:1.2; color:var(--ink) }
 .svc__desc{ margin:0 0 14px; color:var(--muted); max-width:62ch }
 .svc__cta{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px }
-.svc:hover{ box-shadow: var(--shadow-lg); transform: translateY(-1px); transition:.25s ease }
+  .svc:hover{ box-shadow: var(--shadow-lg); transform: translateY(-1px); transition:.25s ease }
+
+  /* Small icon row for DNE/DNC sections */
+  .svc__icons { display: flex; gap: 8px; margin: 8px 0 6px; }
+  .svc__icons .chip { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 8px;
+    background: color-mix(in srgb, var(--ink-2) 18%, transparent); color: var(--ink-6); border: 1px solid color-mix(in srgb, var(--ink-2) 40%, transparent);
+  }
+  .svc--dnc .svc__icons .chip { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.25); }
 
 /* Do Not Email */
 .svc--dne{

@@ -1,0 +1,45 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/policy.css' %}?v={% now 'U' %}">
+  <script src="{% static 'js/checkout_redirect.js' %}?v={% now 'U' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="policy-hero policy-hero--left">
+  <div class="container">
+    <h1>Do Not Call Registration</h1>
+    <p class="lead">We’ll submit your number to the official Do Not Call Registry and related suppression systems. Provide your details to begin.</p>
+  </div>
+</section>
+
+<section class="policy-body">
+  <div class="policy">
+    <div class="card">
+      <form action="{% url 'website:submit-do-not-call' %}" method="post" novalidate>
+        {% csrf_token %}
+        <div class="grid-2">
+          <div class="field">
+            <label for="full_name">Full Name</label>
+            <input id="full_name" name="full_name" type="text" placeholder="Jane Doe" required>
+          </div>
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" placeholder="(555)-123-4567" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes (optional)</label>
+          <textarea id="notes" name="notes" placeholder="Preferred contact method, best times, etc."></textarea>
+        </div>
+
+        <div class="actions">
+          <button id="dncCheckout" class="btn secondary" type="button">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

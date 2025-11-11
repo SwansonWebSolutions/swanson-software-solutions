@@ -88,6 +88,7 @@
   transition: box-shadow .15s ease, border-color .15s ease;
 }
 .field textarea{ resize: vertical; }
+.field.field--message{ margin-top: 8px; }
 .field input:focus,
 .field select:focus,
 .field textarea:focus{

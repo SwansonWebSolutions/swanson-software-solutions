@@ -3,6 +3,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.shortcuts import render
 from django.contrib import messages
+from django.urls import reverse
+from .models import DoNotEmailRequest, DoNotCallRequest
 # Create your views here.
 
 def index(request):
@@ -53,9 +55,88 @@ def do_not_email(request):
     """Do Not Email page view"""
     return render(request, 'website/do_not_email.html')
 
+def submit_do_not_call(request):
+    """POST endpoint placeholder for Do Not Call submissions.
+    Currently no processing; returns the same form page.
+    """
+    if request.method == 'GET' and request.GET.get('paid') == '1':
+        # Bridge page will collect cached values from localStorage and post them here
+        return render(request, 'website/checkout_bridge.html', {
+            'kind': 'dnc',
+            'post_url': reverse('website:submit-do-not-call')
+        })
+    if request.method == 'POST':
+        # Persist after (assumed) payment
+        full_name = request.POST.get('full_name', '')
+        phone = request.POST.get('phone', '')
+        notes = request.POST.get('notes', '')
+        DoNotCallRequest.objects.create(
+            full_name=full_name,
+            phone=phone,
+            notes=notes,
+            paid_confirmed=True,
+        )
+        messages.success(request, 'Your Do Not Call request has been received.')
+        return render(request, 'website/checkout_success.html')
+    return render(request, 'website/do_not_call.html')
+
+def submit_do_not_email(request):
+    """POST endpoint placeholder for Do Not Email submissions.
+    Currently no processing; returns the same form page.
+    """
+    if request.method == 'GET' and request.GET.get('paid') == '1':
+        # Bridge page will collect cached values from localStorage and post them here
+        return render(request, 'website/checkout_bridge.html', {
+            'kind': 'dne',
+            'post_url': reverse('website:submit-do-not-email')
+        })
+    if request.method == 'POST':
+        # Persist after (assumed) payment
+        obj = DoNotEmailRequest.objects.create(
+            first_name=request.POST.get('first_name',''),
+            last_name=request.POST.get('last_name',''),
+            primary_email=request.POST.get('primary_email',''),
+            secondary_email=request.POST.get('secondary_email') or None,
+            address1=request.POST.get('address1',''),
+            address2=request.POST.get('address2') or None,
+            city=request.POST.get('city',''),
+            region=request.POST.get('region',''),
+            postal=request.POST.get('postal',''),
+            country=request.POST.get('country','US'),
+            notes=request.POST.get('notes') or None,
+            paid_confirmed=True,
+        )
+        messages.success(request, 'Your Do Not Email request has been received.')
+        return render(request, 'website/checkout_success.html')
+    return render(request, 'website/do_not_email.html')
+
+
+def do_not_contact_faq_page(request):
+    """FAQ page for Do Not Call & Do Not Email services."""
+    return render(request, 'website/do_not_contact_faq.html')
+
 
 def contact_sales_page(request):
-    """Contact Sales page view"""
+    """Contact Sales page view with optional prefilled inquiry via ?inquiry= query.
+
+    Accepts one of the dropdown options:
+    - Web Development
+    - iOS App Development
+    - Shopify
+    - Wordpress
+    - General Inquiry
+    """
+    # Normalize and whitelist inquiry prefill from query string
+    allowed = {
+        'web': 'Web Development',
+        'app': 'iOS App Development',
+        'shopify': 'Shopify',
+        'wordpress': 'Wordpress',
+        'general': 'General Inquiry',
+    }
+    inquiry_param = request.GET.get('inquiry', '')
+    inquiry_prefill = allowed.get(inquiry_param.lower().strip(), '') if inquiry_param else ''
+
     if request.method == 'POST':
         # Parse form data from the request
         name = request.POST.get('name', 'No Name Provided')
@@ -102,43 +183,7 @@ def contact_sales_page(request):
         confirmation_email.send()
 
         messages.success(request, "Your message has been sent! We'll get back to you soon.")
-        return render(request, 'website/contact_sales.html')
+        return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
+    return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
 
-    return render(request, 'website/contact_sales.html')
-
-def client_approval_page(request):
-    """Client Approval page view"""
-    return render(request, 'website/client_approval.html')
-
-def pricing_page(request):
-    """Pricing page view"""
-    return render(request, 'website/pricing.html')
-
-def seo_page(request):
-    """SEO page view"""
-    return render(request, 'website/seo.html')
-
-def solutions_page(request):
-    """Solutions page view"""
-    return render(request, 'website/solutions.html')
-
-def custom_web_dev_page(request):
-    """Custom Website Development page view"""
-    return render(request, 'website/custom_web_dev.html')
-
-def shopify_dev_page(request):
-    """Shopify Development page view"""
-    return render(request, 'website/shopify_dev.html')
-
-def wordpress_dev_page(request):
-    """WordPress Development page view"""
-    return render(request, 'website/wordpress_dev.html')
-
-def mobile_app_dev_page(request):
-    """Mobile App Development page view"""
-    return render(request, 'website/mobile_app_dev.html')
-
-def ccpa_compliance_page(request):
-    """CCPA & Do-Not-Call Registration page view"""
-    return render(request, 'website/ccpa_compliance.html')
 

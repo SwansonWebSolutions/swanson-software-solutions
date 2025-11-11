@@ -83,6 +83,12 @@
   .site-header .nav { display:flex; gap:.25rem; }
   .nav-cta { display:inline-flex; }
   .burger { display:none; }
+  /* Center header content and add desktop side padding */
+  .site-header .nav-wrap { 
+    width: min(100%, var(--container));
+    margin-inline: auto;
+    padding-inline: clamp(16px, 3vw, 32px);
+  }
   .site-header .has-dropdown:hover .dropdown-panel { display: grid; }
 }
 
