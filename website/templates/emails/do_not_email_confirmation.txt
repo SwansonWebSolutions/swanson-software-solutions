@@ -1,0 +1,20 @@
+Hi {{ first_name|default:"there" }},
+
+Thanks for registering for Stop My Spam.
+
+We have received your request for: {{ primary_email }}
+and have started processing your opt-out.
+
+What happens next:
+- We will submit official suppression/opt-out requests to applicable registries and databases.
+- We will confirm your status and keep a record for your reference.
+- We will maintain your opt-out for 12 months to keep lists updated.
+
+Timeline: Most marketing emails stop within 7–14 days.
+
+Questions? Reply to this email or visit our FAQ at /faq
+
+If you didn’t make this request, please reply and let us know.
+
+— Stop My Spam
+

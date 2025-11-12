@@ -1,0 +1,44 @@
+{% extends 'website/base.html' %}
+{% block head_extra %}
+  <style>
+    .compliance { width:min(100%, 740px); margin: 24px auto; padding: 20px; }
+    .card { background:#fff; border:1px solid var(--ink-2); border-radius:16px; padding:20px; box-shadow: var(--shadow); }
+    .field{ display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+    label{ font-weight:600; }
+    input, textarea{ padding:12px 14px; border:1px solid var(--ink-2); border-radius:12px; font:inherit; }
+    textarea{ resize:vertical; min-height:120px; }
+    .actions{ display:flex; gap:12px; align-items:center; margin-top:14px; }
+  </style>
+{% endblock %}
+
+{% block content %}
+<section class="compliance">
+  <div class="card">
+    <h1>Confirm Suppression Completed</h1>
+    <p>Please confirm that all records associated with the consumer were removed or suppressed.</p>
+
+    <p><strong>Broker:</strong> {{ broker.name }}</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="t" value="{{ token }}">
+      <div class="field">
+        <label for="contact_name">Your name</label>
+        <input id="contact_name" name="contact_name" type="text" placeholder="Jane Doe">
+      </div>
+      <div class="field">
+        <label for="contact_email">Your email</label>
+        <input id="contact_email" name="contact_email" type="email" placeholder="you@company.com">
+      </div>
+      <div class="field">
+        <label for="notes">Notes (optional)</label>
+        <textarea id="notes" name="notes" placeholder="Any details, ticket number, confirmation code, etc."></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit">Confirm Removal</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+

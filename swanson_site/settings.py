@@ -14,6 +14,12 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+LOGS_ROOT = BASE_DIR / 'logs'
+try:
+    LOGS_ROOT.mkdir(parents=True, exist_ok=True)
+except Exception:
+    # Directory creation failure should not crash Django startup
+    pass
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website',
+    'email_service',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +135,33 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Base URL used when building absolute links in outbound emails
+PUBLIC_BASE_URL = 'http://127.0.0.1:8000'
+
+# Optional Django logging config (console only by default). App-specific
+# file logging is handled by email_service.logger.get_script_logger which writes
+# to LOGS_ROOT/<script>/<script>.log with daily rotation.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s | %(levelname)s | %(name)s | %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

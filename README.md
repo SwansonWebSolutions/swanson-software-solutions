@@ -61,6 +61,25 @@ This website includes the following pages:
    
    Open your browser and navigate to `http://127.0.0.1:8000/`
 
+## California Data Broker Registry (2025)
+
+- A dedicated table `DataBrokers2025` stores the 2025 CA Data Broker Registry.
+- Source file expected at the project root: `California Data Broker Registry 2025.csv`.
+
+### Setup
+
+1. Make migrations and migrate:
+   - `python manage.py makemigrations website`
+   - `python manage.py migrate`
+2. Import the CSV into the table:
+   - `python manage.py import_brokers_2025 --truncate`
+   - Optional: pass a custom path with `--path /path/to/file.csv`
+
+### Admin
+
+- The dataset is available in Django Admin as “Data Brokers (2025)”.
+- Search by name/DBA/website/email; filter by state/country.
+
 ## Project Structure
 
 ```

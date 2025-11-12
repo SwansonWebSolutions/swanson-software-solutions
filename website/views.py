@@ -5,6 +5,11 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.urls import reverse
 from .models import DoNotEmailRequest, DoNotCallRequest
+from .models import BrokerCompliance
+from django.http import HttpResponseBadRequest, Http404
+from django.utils import timezone
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 # Create your views here.
 
 def index(request):
@@ -66,10 +71,26 @@ def submit_do_not_call(request):
             'post_url': reverse('website:submit-do-not-call')
         })
     if request.method == 'POST':
-        # Persist after (assumed) payment
-        full_name = request.POST.get('full_name', '')
-        phone = request.POST.get('phone', '')
+        # Validate required fields
+        full_name = (request.POST.get('full_name') or '').strip()
+        phone = (request.POST.get('phone') or '').strip()
         notes = request.POST.get('notes', '')
+        missing = []
+        if not full_name:
+            missing.append('Full Name')
+        if not phone:
+            missing.append('Phone')
+        # Require agreement to terms/privacy
+        ack = (request.POST.get('acknowledge') or '').strip().lower() in ('true','on','1','yes')
+        if not ack:
+            messages.error(request, 'You must agree to the Terms of Service and Privacy Policy.')
+            return render(request, 'website/do_not_call.html')
+        if missing:
+            for m in missing:
+                messages.error(request, f"{m} is required.")
+            return render(request, 'website/do_not_call.html')
+
+        # Persist after validation (assumed payment)
         DoNotCallRequest.objects.create(
             full_name=full_name,
             phone=phone,
@@ -91,22 +112,66 @@ def submit_do_not_email(request):
             'post_url': reverse('website:submit-do-not-email')
         })
     if request.method == 'POST':
-        # Persist after (assumed) payment
+        # Validate required fields
+        data = {k: (request.POST.get(k) or '').strip() for k in [
+            'first_name','last_name','primary_email','address1','city','region','postal','country'
+        ]}
+        missing = [label for key,label in [
+            ('first_name','First Name'),('last_name','Last Name'),('primary_email','Primary Email'),
+            ('address1','Home Address'),('city','City'),('region','State/Region'),('postal','Postal Code'),('country','Country')
+        ] if not data.get(key)]
+        email_value = data.get('primary_email')
+        if email_value:
+            try:
+                validate_email(email_value)
+            except ValidationError:
+                messages.error(request, 'Primary Email is not a valid email address.')
+                return render(request, 'website/do_not_email.html')
+        ack = (request.POST.get('acknowledge') or '').strip().lower() in ('true','on','1','yes')
+        if not ack:
+            messages.error(request, 'You must agree to the Terms of Service and Privacy Policy.')
+            return render(request, 'website/do_not_email.html')
+        if missing:
+            for m in missing:
+                messages.error(request, f"{m} is required.")
+            return render(request, 'website/do_not_email.html')
+
+        # Persist after validation (assumed payment)
         obj = DoNotEmailRequest.objects.create(
-            first_name=request.POST.get('first_name',''),
-            last_name=request.POST.get('last_name',''),
-            primary_email=request.POST.get('primary_email',''),
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            primary_email=email_value,
             secondary_email=request.POST.get('secondary_email') or None,
-            address1=request.POST.get('address1',''),
+            address1=data['address1'],
             address2=request.POST.get('address2') or None,
-            city=request.POST.get('city',''),
-            region=request.POST.get('region',''),
-            postal=request.POST.get('postal',''),
-            country=request.POST.get('country','US'),
+            city=data['city'],
+            region=data['region'],
+            postal=data['postal'],
+            country=data['country'] or 'US',
             notes=request.POST.get('notes') or None,
             paid_confirmed=True,
         )
-        messages.success(request, 'Your Do Not Email request has been received.')
+        
+        # Send follow up email to the user
+        subject = "Your Stop My Spam Request Received"
+        context = {
+            "first_name": obj.first_name,
+            "last_name": obj.last_name,
+            "primary_email": obj.primary_email,
+        }
+        text_content = render_to_string('emails/do_not_email_confirmation.txt', context)
+        html_content = render_to_string('emails/do_not_email_confirmation.html', context)
+        from_email = "Stop My Spam <daswanson22@gmail.com>"
+        confirmation_email = EmailMultiAlternatives(
+            subject,
+            text_content,
+            from_email,
+            [obj.primary_email],
+        )
+        confirmation_email.attach_alternative(html_content, "text/html")
+        confirmation_email.send()
+
+        messages.success(request, 'Your Stop My Spam request has been received.')
         return render(request, 'website/checkout_success.html')
     return render(request, 'website/do_not_email.html')
 
@@ -187,3 +252,33 @@ def contact_sales_page(request):
     return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
 
 
+def broker_compliance(request):
+    """Display and accept broker compliance confirmations via tokenized link.
+
+    GET: expects ?t=<token>; renders confirmation form if valid.
+    POST: accepts token and marks the associated record as submitted.
+    """
+    token = request.GET.get('t') if request.method == 'GET' else request.POST.get('t')
+    if not token:
+        return HttpResponseBadRequest('Missing token.')
+    try:
+        compliance = BrokerCompliance.objects.select_related('broker').get(token=token)
+    except BrokerCompliance.DoesNotExist:
+        raise Http404('Invalid token.')
+
+    if request.method == 'POST':
+        compliance.submitted = True
+        compliance.submitted_at = timezone.now()
+        compliance.contact_name = request.POST.get('contact_name', '')
+        compliance.contact_email = request.POST.get('contact_email', '')
+        compliance.notes = request.POST.get('notes', '')
+        compliance.save(update_fields=['submitted', 'submitted_at', 'contact_name', 'contact_email', 'notes', 'updated_at'])
+        messages.success(request, 'Thank you. Your confirmation has been recorded.')
+        return render(request, 'website/broker_compliance_success.html', {
+            'broker': compliance.broker,
+        })
+
+    return render(request, 'website/broker_compliance.html', {
+        'broker': compliance.broker,
+        'token': compliance.token,
+    })

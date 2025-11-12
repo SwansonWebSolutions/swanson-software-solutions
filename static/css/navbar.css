@@ -17,6 +17,8 @@
   align-items: center;
   justify-content: space-between;
   height: 64px;
+  box-sizing: border-box; /* include padding in width to avoid clipping */
+  padding-inline: var(--gutter);
 }
 
 /* Brand */
@@ -89,7 +91,12 @@
     margin-inline: auto;
     padding-inline: clamp(16px, 3vw, 32px);
   }
-  .site-header .has-dropdown:hover .dropdown-panel { display: grid; }
+  /* Keep dropdown open while moving cursor from button to panel */
+  .site-header .has-dropdown::after {
+    content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 12px;
+  }
+  .site-header .has-dropdown:hover .dropdown-panel,
+  .site-header .has-dropdown:focus-within .dropdown-panel { display: grid; }
 }
 
 /* CTA + Burger */

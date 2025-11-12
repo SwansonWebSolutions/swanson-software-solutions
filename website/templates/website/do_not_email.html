@@ -9,13 +9,20 @@
 {% block content %}
 <section class="policy-hero policy-hero--left">
   <div class="container">
-    <h1>Do Not Email Registration</h1>
+    <h1>Stop My Spam</h1>
     <p class="lead">We’ll submit and maintain your opt-out requests under applicable privacy laws. Fill out the brief form below to get started.</p>
   </div>
 </section>
 
 <section class="policy-body">
   <div class="policy">
+    {% if messages %}
+      <div class="messages" style="margin-bottom:12px">
+        {% for message in messages %}
+          <div class="alert" style="padding:10px 12px;border:1px solid #d7dee8;border-radius:12px;background:#fff">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
     <div class="card">
       <form action="{% url 'website:submit-do-not-email' %}" method="post" novalidate>
         {% csrf_token %}
@@ -76,9 +83,17 @@
           </select>
         </div>
 
+        <div class="field">
+          <label>
+            <input id="dne_ack" name="acknowledge" type="checkbox" required>
+            I agree to the <a href="{% url 'website:terms' %}" target="_blank" rel="noopener">Terms of Service</a> and <a href="{% url 'website:privacy' %}" target="_blank" rel="noopener">Privacy Policy</a>.
+          </label>
+        </div>
+
         <div class="actions">
           <button id="dneCheckout" class="btn secondary" type="button">Submit Request</button>
         </div>
+        <p class="muted" style="margin-top:8px">Questions? Read our <a href="{% url 'website:faq' %}">Frequently Asked Questions</a>.</p>
       </form>
     </div>
   </div>

@@ -46,6 +46,19 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
 .page-index .btn.ghost.invert{ background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff }
 .page-index .btn.ghost.invert:hover{ background: rgba(255,255,255,.08) }
 
+/* Smaller hero buttons on narrow phones */
+@media (max-width: 480px){
+  .page-index .hero .btn{ padding: .55rem .8rem; font-size: .9rem; border-radius:10px }
+  .page-index .hero .cluster{ --cluster-gap: .4rem }
+}
+
+/* Extra-small phones: stack CTAs full-width */
+@media (max-width: 360px){
+  .page-index .hero .cluster{ flex-direction: column; align-items: stretch; --cluster-gap: .4rem }
+  .page-index .hero .btn{ width: 100%; justify-content: center; padding: .5rem .7rem; font-size: .85rem }
+  .page-index .badge{ font-size: .72rem; padding: .28rem .48rem }
+}
+
 /* Badge */
 .badge{ display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .6rem; border-radius:999px; font-size:.8rem;
   border:1px solid color-mix(in srgb,var(--accent) 35%,transparent); color:var(--accent-600); background:color-mix(in srgb,var(--accent) 10%,transparent);
@@ -94,10 +107,23 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
   .hero-icons{ grid-template-columns: repeat(6, 1fr); max-width: 480px; margin-top: 6px; }
 }
 
+/* Small mobiles: shrink icon tiles and show 3x2 grid */
+@media (max-width: 480px){
+  .hero-icons{ grid-template-columns: repeat(3, 1fr); max-width: 420px; }
+  .hero-icon{ inline-size:58px; block-size:58px; border-radius:14px; font-size:20px }
+  .hero-item{ gap:4px }
+  .hero-label{ font-size:.7rem }
+}
+
 /* Sections */
 .section { padding-block: clamp(48px, 6vw, 48px); }
 .section h2 { margin: 0 0 .2rem; font-size: clamp(22px, 3vw, 36px); color: var(--ink-6); }
 .section p.lead { color: var(--ink-4); margin: 0; max-width: 60ch; }
+
+/* Mobile: make service sections edge-to-edge */
+@media (max-width: 720px){
+  .page-index .svc{ margin-inline: calc(var(--gutter) * -1); border-radius: 0; }
+}
 
 /* Generic Card */
 .card{ background: var(--surface); border:1px solid color-mix(in srgb,var(--ink-2) 55%, transparent);

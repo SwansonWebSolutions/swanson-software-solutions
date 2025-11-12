@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Basic, safe email styles */
+    body { margin:0; padding:0; background:#0b1220; }
+    .container { max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 10px; padding: 24px; font-family: Arial, Helvetica, sans-serif; color:#0f172a; }
+    h1 { margin:0 0 8px 0; font-size: 22px; color:#0f172a; }
+    h2 { margin:18px 0 8px 0; font-size: 18px; color:#0f172a; }
+    p { margin: 0 0 12px 0; line-height: 1.55; }
+    .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:#0f172a; font-weight:bold; }
+    .mark { width:28px; height:28px; border-radius:50%; background: linear-gradient(135deg, #2f8dfb, #1fbf8a); display:inline-block; }
+    .btn { display:inline-block; background:#1fbf8a; color:#0b2015 !important; text-decoration:none; font-weight:bold; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,.08); }
+    .card { border:1px solid #d7dee8; border-radius:10px; padding:12px 14px; background:#ffffff; }
+    .muted { color:#5e6b7a; font-size:13px; }
+    .footer { text-align:center; margin-top:24px; color:#8b94a7; font-size:12px; }
+  </style>
+  <title>Stop My Spam • Confirmation</title>
+  <!-- Preheader text -->
+  <meta name="preheader" content="We received your Stop My Spam registration and started processing." />
+</head>
+<body>
+  <div class="container">
+    <a class="brand" href="https://swantech.org">
+      <span class="mark"></span>
+      <span style="color: black;">Stop My Spam</span>
+    </a>
+
+    <h1>We received your request</h1>
+    <p>Hi {{ first_name|default:"there" }}, thanks for registering for <strong>Stop My Spam</strong>. We have your submission for <strong>{{ primary_email }}</strong> and have begun processing.</p>
+
+    <h2>What happens next</h2>
+    <div class="card">
+      <p style="margin:0 0 6px 0">Our team will:</p>
+      <ul style="margin:0 0 0 18px; padding:0; line-height:1.55">
+        <li>Submit official opt-out/suppression requests to applicable registries.</li>
+        <li>Confirm your status and log the request details for your records.</li>
+        <li>Maintain your opt-out for 12 months to keep lists updated.</li>
+      </ul>
+    </div>
+
+    <h2>Timeline</h2>
+    <p>Most marketing emails stop within <strong>14-30 days</strong>. We will notify you if additional information is required.</p>
+
+    <h2>Need help?</h2>
+    <p>Visit our <a href="https://www.swantech.org/faq">FAQ</a> or reply to this email if you have questions.</p>
+
+    <p class="muted">If you did not submit this request, please reply to let us know.</p>
+
+    <div class="footer">
+        <p>&copy; {% now 'Y' %} Stop My Spam. All rights reserved.</p>
+        <p>Stop My Spam is not responsible for communications or marketing messages that you have voluntarily opted into with third-party organizations.</p>
+    </div>
+  </div>
+  <!--[if mso]>
+    <style type="text/css">.mark{display:none!important}</style>
+  <![endif]-->
+  
+</body>
+</html>
+

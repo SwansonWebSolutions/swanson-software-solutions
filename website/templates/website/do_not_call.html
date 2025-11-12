@@ -16,6 +16,13 @@
 
 <section class="policy-body">
   <div class="policy">
+    {% if messages %}
+      <div class="messages" style="margin-bottom:12px">
+        {% for message in messages %}
+          <div class="alert" style="padding:10px 12px;border:1px solid #d7dee8;border-radius:12px;background:#fff">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
     <div class="card">
       <form action="{% url 'website:submit-do-not-call' %}" method="post" novalidate>
         {% csrf_token %}
@@ -35,9 +42,17 @@
           <textarea id="notes" name="notes" placeholder="Preferred contact method, best times, etc."></textarea>
         </div>
 
+        <div class="field">
+          <label>
+            <input id="dnc_ack" name="acknowledge" type="checkbox" required>
+            I agree to the <a href="{% url 'website:terms' %}" target="_blank" rel="noopener">Terms of Service</a> and <a href="{% url 'website:privacy' %}" target="_blank" rel="noopener">Privacy Policy</a>.
+          </label>
+        </div>
+
         <div class="actions">
           <button id="dncCheckout" class="btn secondary" type="button">Submit Request</button>
         </div>
+        <p class="muted" style="margin-top:8px">Questions? Read our <a href="{% url 'website:faq' %}">Frequently Asked Questions</a>.</p>
       </form>
     </div>
   </div>

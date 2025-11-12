@@ -14,7 +14,7 @@
   margin: 0 0 6px; color: var(--ink-6);
   font-size: clamp(28px, 3.6vw, 40px); line-height: 1.15;
 }
-.policy-hero p.lead { margin: 0; color: var(--ink-4); max-width: 70ch; }
+.policy-hero p.lead { margin: 0 auto; color: var(--ink-4); max-width: 70ch; text-align: center; }
 /* Center hero like Contact page and add horizontal padding */
 .policy-hero .container {
   max-width: 1100px;
@@ -28,6 +28,7 @@
 .policy-hero--left .container{ text-align: left; }
 .policy-hero--left h1,
 .policy-hero--left p.lead{ text-align: left; }
+.policy-hero--left p.lead{ margin-inline: 0; }
 
 .policy-body { background: var(--bg); }
 .policy {
@@ -50,11 +51,16 @@
 @media (max-width: 720px){ .policy .grid-3 { grid-template-columns: 1fr; } }
 .policy .field { display: grid; gap: 6px; }
 .policy .field label { font-weight: 600; color: var(--ink-6); }
-.policy .field input, .policy .field select, .policy .field textarea {
+.policy .field input:not([type="checkbox"]):not([type="radio"]), .policy .field select, .policy .field textarea {
   appearance: none; border: 1px solid color-mix(in srgb, var(--ink-2) 55%, transparent);
   background: var(--surface); color: var(--ink-6);
   border-radius: 12px; padding: 12px 14px; font: inherit; outline: none;
 }
+.policy .field input[type="checkbox"] {
+  appearance: auto; width: 18px; height: 18px; margin: 0 .5rem 0 0; accent-color: var(--accent);
+}
+.policy .field label input[type="checkbox"] { vertical-align: middle; }
+.policy .field label a { text-decoration: underline; }
 .policy .field textarea { resize: vertical; min-height: 120px; }
 .policy .actions { display: flex; gap: 12px; align-items: center; }
 
@@ -66,6 +72,10 @@
   padding: 16px;
   box-shadow: var(--shadow);
 }
+
+/* Centered intro card directly under page titles */
+.policy .card.intro { text-align: center; max-width: 800px; margin-inline: auto; }
+.policy .card.intro p { text-align: center; }
 
 /* Centered compact support card */
 .policy .cta-card{

@@ -1,0 +1,71 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO: Personal introduction -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="stack" style="--stack-gap:1rem">
+      <h1>Building technology with precision, privacy, and purpose.</h1>
+      <p class="lead">We’re a small, focused team that ships reliable software — fast. Our roots are in engineering and operations, not hype. Every project is treated like it’s mission‑critical.</p>
+      <div class="cluster" style="--cluster-gap:.5rem">
+        <a class="btn" href="{% url 'website:contact' %}">Start a Conversation</a>
+        <a class="btn secondary" href="{% url 'website:index' %}#clients">See Clients</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR COMPANY: Story & principles -->
+<section class="section">
+  <div class="container grid build-grid">
+    <div class="card">
+      <h3>Our Story</h3>
+      <p>SwanTech started with a simple belief: great software should feel calm — predictable releases, clear communication, and no surprises. We build Shopify stores, WordPress sites, custom web platforms, and iOS apps with the same ethos you’d expect from critical infrastructure: secure, fast, and maintainable.</p>
+    </div>
+    <div class="card">
+      <h3>How We Work</h3>
+      <p>We scope precisely, design pragmatically, and iterate quickly. We sweat the details — from accessibility and privacy obligations to the tiny UI edges that make experiences feel polished.</p>
+    </div>
+    <div class="card">
+      <h3>Founder’s Note</h3>
+      <p>“I built SwanTech to bridge code and business outcomes. Communication is direct, estimates are honest, and craftsmanship matters.” - <strong>Dylan Swanson</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- THE INDUSTRY: Where we operate -->
+<section class="section">
+  <div class="container stack" style="--stack-gap:.75rem">
+    <h2>The industry we serve</h2>
+    <p class="lead">We operate at the intersection of commerce and privacy. That means fast storefronts, editor‑friendly sites, and tools that respect user data.</p>
+    <div class="grid build-grid">
+      <div class="card"><h3>E‑commerce & Content</h3><p>Performance, SEO, and UX that convert — without sacrificing maintainability.</p></div>
+      <div class="card"><h3>Privacy‑Tech</h3><p>Practical automation for CCPA/CPRA and Do Not Contact flows for both businesses and consumers.</p></div>
+      <div class="card"><h3>Internal Tools</h3><p>Dashboards and data workflows that make operations measurable and repeatable.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS: Near‑term focus -->
+<section class="section">
+  <div class="container stack" style="--stack-gap:1rem">
+    <h2>Where we’re headed</h2>
+    <div class="grid build-grid">
+      <div class="card"><h3>Ship measurable outcomes</h3><p>Tie launches to load‑time, conversion, and reliability metrics — not just feature lists.</p></div>
+      <div class="card"><h3>Privacy by default</h3><p>Expand consumer privacy tools and make compliance effortless for our clients.</p></div>
+      <div class="card"><h3>Craft for longevity</h3><p>Fewer dependencies, clean architecture, and docs that make hand‑offs painless.</p></div>
+    </div>
+    <div class="cluster" style="justify-content:center">
+      <a class="btn" href="{% url 'website:contact' %}">Get a Free Scope Review</a>
+      <a class="btn secondary" href="{% url 'website:faq' %}">Read our FAQ</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
