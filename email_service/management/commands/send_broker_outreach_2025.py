@@ -4,7 +4,7 @@ import csv
 from io import StringIO
 from typing import Iterable
 
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.utils import timezone
@@ -13,7 +13,7 @@ from zoneinfo import ZoneInfo
 
 from email_service.logger import get_script_logger
 from website.models import DataBrokers2025, BrokerCompliance, DoNotEmailRequest
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 
 
 TEST_RECIPIENTS = [
@@ -31,6 +31,18 @@ def chunked(iterable: Iterable, size: int):
             buf = []
     if buf:
         yield buf
+
+
+def build_compliance_link(base_url: str, token: str) -> str:
+    """Prefer the UUID route, but fall back to legacy query-string endpoint."""
+    normalized_base = (base_url or "").rstrip("/")
+    try:
+        path = reverse("website:broker-compliance-token", args=[token])
+        return f"{normalized_base}{path}"
+    except NoReverseMatch:
+        path = reverse("website:broker-compliance")
+        separator = "&" if "?" in path else "?"
+        return f"{normalized_base}{path}{separator}t={token}"
 
 
 class Command(BaseCommand):
@@ -81,6 +93,10 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **opts):
+        raise CommandError(
+            "send_broker_outreach_2025 is deprecated. Use send_consumer_broker_drip instead."
+        )
+        # The remaining logic is kept for reference but should not be invoked.
         logger = get_script_logger("send_broker_outreach_2025")
         # Build weekly CSV: 8AM Monday -> 8AM next Monday (local time)
         # We choose the most recent Monday 8AM that is <= now as the end,
@@ -155,7 +171,6 @@ class Command(BaseCommand):
 
         sent = 0
         base = getattr(settings, 'PUBLIC_BASE_URL', 'http://127.0.0.1:8000')
-        path = reverse('website:broker-compliance')
 
         for idx, broker in enumerate(qs, start=1):
             # Ensure a per-broker token exists
@@ -165,7 +180,7 @@ class Command(BaseCommand):
                     'token': BrokerCompliance.generate_token(),
                 },
             )
-            link = f"{base}{path}?t={compliance.token}"
+            link = build_compliance_link(base, compliance.token)
             # Determine recipients
             if opts["real"]:
                 recipients = self._parse_recipients(broker.contact_email)

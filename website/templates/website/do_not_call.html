@@ -33,13 +33,20 @@
           </div>
           <div class="field">
             <label for="phone">Phone Number</label>
-            <input id="phone" name="phone" type="tel" placeholder="(555)-123-4567" required>
+            <input id="phone" name="phone" type="tel" placeholder="5551234567" pattern="\d{10}" inputmode="numeric" minlength="10" maxlength="10" required>
           </div>
         </div>
 
         <div class="field">
           <label for="notes">Notes (optional)</label>
           <textarea id="notes" name="notes" placeholder="Preferred contact method, best times, etc."></textarea>
+        </div>
+
+        <div class="field">
+          <label>
+            <input id="dnc_weekly_opt_in" name="weekly_status_opt_in" type="checkbox" checked>
+            Email me weekly updates about broker responses (optional).
+          </label>
         </div>
 
         <div class="field">

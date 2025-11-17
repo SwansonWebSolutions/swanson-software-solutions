@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { margin:0; padding:0; background:#0b1220; }
+    .container { max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 10px; padding: 24px; font-family: Arial, Helvetica, sans-serif; color:#0f172a; }
+    h1 { margin:0 0 8px 0; font-size: 22px; color:#0f172a; }
+    p { margin: 0 0 12px 0; line-height: 1.55; }
+    .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:#0f172a; font-weight:bold; }
+    .mark { width:28px; height:28px; border-radius:50%; background: linear-gradient(135deg, #2f8dfb, #1fbf8a); display:inline-block; }
+    .grid { display:grid; grid-template-columns: 1fr; gap:8px; margin:12px 0; }
+    .stat { background:#f2f6fb; border:1px solid #d7dee8; border-radius:10px; padding:14px; text-align:left; }
+    .stat h2 { margin:0 0 6px 0; font-size:14px; color:#5e6b7a; text-transform:uppercase; letter-spacing:0.03em; }
+    .stat .value { margin:0; font-size:26px; font-weight:700; color:#0f172a; }
+    .muted { color:#5e6b7a; font-size:13px; }
+    .footer { text-align:left; margin-top:18px; color:#8b94a7; font-size:12px; }
+    @media only screen and (max-width: 520px) {
+      .container { padding: 18px; }
+    }
+  </style>
+  <title>Weekly Status Update from Stop My Spam</title>
+</head>
+<body>
+  <div class="container">
+    <a class="brand" href="https://swantech.org">
+      <span class="mark"></span>
+      <span style="color: black;">Stop My Spam</span>
+    </a>
+
+    <h1>Weekly Status Update</h1>
+    <p>Hi {{ consumer.first_name }}, here is your latest Stop My Spam update:</p>
+
+    <div class="stat-summary" style="margin:10px 0 6px 0;">
+      <p class="muted" style="margin:0;">Total brokers tracked: <strong>{{ total_brokers }}</strong></p>
+    </div>
+
+    <div class="grid">
+      <div class="stat">
+        <h2>Completed</h2>
+        <p class="value">
+          {% if total_brokers %}
+            {% widthratio snapshot.completed|default:0 total_brokers 100 %}%
+          {% else %}
+            0%
+          {% endif %}
+        </p>
+      </div>
+      <div class="stat">
+        <h2>In Processing</h2>
+        <p class="value">{{ snapshot.processing|default:"0" }}</p>
+      </div>
+      <div class="stat">
+        <h2>New Confirmations This Week</h2>
+        <p class="value">{{ snapshot.recent_completions|default:"0" }}</p>
+      </div>
+      <div class="stat">
+        <h2>Contacted</h2>
+        <p class="value">{{ snapshot.contacted|default:"0" }}</p>
+      </div>
+    </div>
+
+    <p>We continue to follow up with every broker until your request is confirmed. If you have questions, contact us at <a href="mailto:support@swantech.org">support@swantech.org</a>.</p>
+
+    <div class="footer">
+      <p>&copy; {% now 'Y' %} Stop My Spam. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

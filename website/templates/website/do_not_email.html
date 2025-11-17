@@ -10,7 +10,19 @@
 <section class="policy-hero policy-hero--left">
   <div class="container">
     <h1>Stop My Spam</h1>
-    <p class="lead">We’ll submit and maintain your opt-out requests under applicable privacy laws. Fill out the brief form below to get started.</p>
+    <p class="lead">
+    Tired of endless marketing emails? We handle the opt-out process for you.
+    <br><br>
+    When you sign up, we contact over 500+ verified data brokers on your behalf under the CCPA and other privacy laws. We submit formal requests for them to delete your information, remove you from marketing lists, and stop selling or sharing your data.
+    <br><br>
+    You simply enter your details — we do the rest.
+    We track every request, monitor responses, and send you weekly updates on the status of your removal.
+    <br><br>
+    <small><em>
+    SwanTech acts as your authorized agent to submit privacy and opt-out requests under applicable laws. We are not affiliated with any government agency, and we cannot guarantee compliance by third-party organizations.
+    </em></small>
+
+    </p>
   </div>
 </section>
 
@@ -48,6 +60,17 @@
           </div>
         </div>
 
+        <div class="grid-2">
+          <div class="field">
+            <label for="primary_phone">Primary Phone</label>
+            <input id="primary_phone" name="primary_phone" type="tel" placeholder="5551234567" pattern="\d{10}" inputmode="numeric" minlength="10" maxlength="10" required>
+          </div>
+          <div class="field">
+            <label for="secondary_phone">Secondary Phone (optional)</label>
+            <input id="secondary_phone" name="secondary_phone" type="tel" placeholder="5559876543" pattern="\d{10}" inputmode="numeric" minlength="10" maxlength="10">
+          </div>
+        </div>
+
         <div class="field">
           <label for="address1">Home Address</label>
           <input id="address1" name="address1" type="text" placeholder="123 Main St" required>
@@ -81,6 +104,13 @@
             <option value="FR">France</option>
             <option value="IN">India</option>
           </select>
+        </div>
+
+        <div class="field">
+          <label>
+            <input id="dne_weekly_opt_in" name="weekly_status_opt_in" type="checkbox" checked>
+            Email me weekly updates about broker responses (optional).
+          </label>
         </div>
 
         <div class="field">

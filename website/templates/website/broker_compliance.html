@@ -1,41 +1,60 @@
 {% extends 'website/base.html' %}
 {% block head_extra %}
   <style>
-    .compliance { width:min(100%, 740px); margin: 24px auto; padding: 20px; }
-    .card { background:#fff; border:1px solid var(--ink-2); border-radius:16px; padding:20px; box-shadow: var(--shadow); }
-    .field{ display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+    .compliance { width:min(100%, 760px); margin: 24px auto; padding: 20px; }
+    .card { background:#fff; border:1px solid var(--ink-2); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
+    .meta { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:4px; margin-bottom:14px; }
+    .meta span{ font-weight:600; }
+    .field{ display:flex; flex-direction:column; gap:6px; margin-top:12px; }
     label{ font-weight:600; }
-    input, textarea{ padding:12px 14px; border:1px solid var(--ink-2); border-radius:12px; font:inherit; }
+    input, textarea, select{ padding:12px 14px; border:1px solid var(--ink-2); border-radius:12px; font:inherit; }
     textarea{ resize:vertical; min-height:120px; }
-    .actions{ display:flex; gap:12px; align-items:center; margin-top:14px; }
+    .actions{ display:flex; gap:12px; align-items:center; margin-top:18px; flex-wrap:wrap; }
   </style>
 {% endblock %}
 
 {% block content %}
 <section class="compliance">
   <div class="card">
-    <h1>Confirm Suppression Completed</h1>
-    <p>Please confirm that all records associated with the consumer were removed or suppressed.</p>
+    <h1>Broker Confirmation</h1>
+    <p>Please confirm how you are handling this consumer suppression request.</p>
 
-    <p><strong>Broker:</strong> {{ broker.name }}</p>
+    <ul class="meta">
+      <li><span>Broker:</span> {% if status_record %}{{ status_record.broker.name }}{% elif compliance %}{{ compliance.broker.name }}{% endif %}</li>
+      {% if status_record %}
+        <li><span>Consumer:</span> {{ status_record.consumer.full_name }} ({{ status_record.consumer.primary_email }})</li>
+        <li><span>Requested action:</span> {{ status_record.get_request_type_display }}</li>
+      {% else %}
+        <li><span>Requested action:</span> Stop My Spam suppression (daily CSV)</li>
+      {% endif %}
+    </ul>
 
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="t" value="{{ token }}">
       <div class="field">
+        <label for="response_status">Current status</label>
+        <select id="response_status" name="response_status" required>
+          <option value="" disabled {% if not preselected_status %}selected{% endif %}>Select a status</option>
+          {% for value,label in status_choices %}
+            <option value="{{ value }}" {% if preselected_status == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
         <label for="contact_name">Your name</label>
-        <input id="contact_name" name="contact_name" type="text" placeholder="Jane Doe">
+        <input id="contact_name" name="contact_name" type="text" placeholder="Jane Doe" value="{% if status_record %}{{ status_record.broker_contact_name }}{% elif compliance %}{{ compliance.contact_name }}{% endif %}">
       </div>
       <div class="field">
         <label for="contact_email">Your email</label>
-        <input id="contact_email" name="contact_email" type="email" placeholder="you@company.com">
+        <input id="contact_email" name="contact_email" type="email" placeholder="you@company.com" value="{% if status_record %}{{ status_record.broker_contact_email }}{% elif compliance %}{{ compliance.contact_email }}{% endif %}">
       </div>
       <div class="field">
         <label for="notes">Notes (optional)</label>
-        <textarea id="notes" name="notes" placeholder="Any details, ticket number, confirmation code, etc."></textarea>
+        <textarea id="notes" name="notes" placeholder="Ticket numbers, remaining steps, or reasons">{% if status_record %}{{ status_record.notes }}{% elif compliance %}{{ compliance.notes }}{% endif %}</textarea>
       </div>
       <div class="actions">
-        <button class="btn" type="submit">Confirm Removal</button>
+        <button class="btn" type="submit">Submit response</button>
       </div>
     </form>
   </div>

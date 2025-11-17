@@ -17,11 +17,24 @@
     dneBtn.addEventListener('click', () => {
       const form = dneBtn.closest('form');
       if (form && !form.checkValidity()) { form.reportValidity(); return; }
+      const normalize = (val) => (val || '').replace(/\D/g, '');
+      const primary_phone = normalize(val('primary_phone'));
+      const secondary_phone = normalize(val('secondary_phone'));
+      if (primary_phone.length !== 10) {
+        alert('Primary Phone must be 10 digits (numbers only).');
+        return;
+      }
+      if (secondary_phone && secondary_phone.length !== 10) {
+        alert('Secondary Phone must be 10 digits (numbers only).');
+        return;
+      }
       const payload = {
         first_name: val('first_name'),
         last_name: val('last_name'),
         primary_email: val('primary_email'),
         secondary_email: val('secondary_email'),
+        primary_phone,
+        secondary_phone,
         address1: val('address1'),
         address2: val('address2'),
         city: val('city'),
@@ -30,6 +43,7 @@
         country: val('country'),
         notes: val('notes'),
         acknowledge: (document.getElementById('dne_ack')?.checked ? 'true' : 'false'),
+        weekly_status_opt_in: (document.getElementById('dne_weekly_opt_in')?.checked ? 'true' : 'false'),
         t: Date.now(),
       };
       localStorage.setItem('dneForm', JSON.stringify(payload));
@@ -42,11 +56,18 @@
     dncBtn.addEventListener('click', () => {
       const form = dncBtn.closest('form');
       if (form && !form.checkValidity()) { form.reportValidity(); return; }
+      const normalize = (val) => (val || '').replace(/\D/g, '');
+      const phone = normalize(val('phone'));
+      if (phone.length !== 10) {
+        alert('Phone must be 10 digits (numbers only).');
+        return;
+      }
       const payload = {
         full_name: val('full_name'),
-        phone: val('phone'),
+        phone,
         notes: val('notes'),
         acknowledge: (document.getElementById('dnc_ack')?.checked ? 'true' : 'false'),
+        weekly_status_opt_in: (document.getElementById('dnc_weekly_opt_in')?.checked ? 'true' : 'false'),
         t: Date.now(),
       };
       localStorage.setItem('dncForm', JSON.stringify(payload));

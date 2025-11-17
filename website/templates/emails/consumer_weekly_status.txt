@@ -1,0 +1,14 @@
+Hi {{ consumer.first_name }},
+
+Here is your latest Stop My Spam update (generated {{ generated_at|date:"M j, Y" }}):
+
+- Total brokers tracked: {{ total_brokers }}
+- Contacted so far: {{ snapshot.contacted|default:"0" }}
+- Completed confirmations: {{ snapshot.completed|default:"0" }}
+- In processing: {{ snapshot.processing|default:"0" }}
+- Still queued: {{ snapshot.queued|default:"0" }}
+- New confirmations this week: {{ snapshot.recent_completions|default:"0" }}
+
+We continue to follow up with every broker until your request is confirmed. Reply to this email if you have any questions.
+
+— Stop My Spam Compliance

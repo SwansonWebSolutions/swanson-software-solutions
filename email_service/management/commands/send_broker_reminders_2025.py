@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.utils import timezone
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 
 from email_service.logger import get_script_logger
 from website.models import DataBrokers2025, BrokerCompliance
@@ -52,14 +52,13 @@ class Command(BaseCommand):
             return
 
         base = getattr(settings, "PUBLIC_BASE_URL", "http://127.0.0.1:8000")
-        path = reverse("website:broker-compliance")
         duration = max(0, int(opts["duration_seconds"]))
         interval = duration / total if total else 0
         logger.info("Starting reminders: total=%s interval=%.2fs", total, interval)
 
         for idx, compliance in enumerate(qs, start=1):
             broker = compliance.broker
-            link = f"{base}{path}?t={compliance.token}"
+            link = build_compliance_link(base, compliance.token)
             if opts["real"]:
                 recipients = self._parse_recipients(broker.contact_email)
                 if not recipients:
@@ -99,3 +98,14 @@ class Command(BaseCommand):
             return []
         parts = [p.strip() for p in value.replace(";", ",").split(",")]
         return [p for p in parts if p]
+
+
+def build_compliance_link(base_url: str, token: str) -> str:
+    normalized_base = (base_url or "").rstrip("/")
+    try:
+        path = reverse("website:broker-compliance-token", args=[token])
+        return f"{normalized_base}{path}"
+    except NoReverseMatch:
+        path = reverse("website:broker-compliance")
+        separator = "&" if "?" in path else "?"
+        return f"{normalized_base}{path}{separator}t={token}"

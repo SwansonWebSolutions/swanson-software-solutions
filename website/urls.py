@@ -9,8 +9,6 @@ urlpatterns = [
     path('clients/', views.clients_page, name='clients'),
     path('contact/', views.contact_sales_page, name='contact'),
     path('insights/', views.insights_page, name='insights'),
-    path('do-not-call-me/', views.do_not_call, name='do-not-call'),
-    path('do-not-call-me/submit/', views.submit_do_not_call, name='submit-do-not-call'),
     # New Stop My Spam routes (preserve existing URL names for compatibility)
     path('stop-my-spam/', views.do_not_email, name='do-not-email'),
     path('stop-my-spam/submit/', views.submit_do_not_email, name='submit-do-not-email'),
@@ -20,5 +18,6 @@ urlpatterns = [
     path('faq/', views.do_not_contact_faq_page, name='faq'),
     path('privacy/', views.privacy_policy_page, name='privacy'),
     path('terms/', views.terms_of_service_page, name='terms'),
+    path('broker-compliance/<uuid:tracking_token>/', views.broker_compliance, name='broker-compliance-token'),
     path('broker-compliance/', views.broker_compliance, name='broker-compliance'),
 ]

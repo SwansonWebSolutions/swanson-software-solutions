@@ -113,6 +113,16 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'daswanson22@gmail.com'
 EMAIL_HOST_PASSWORD = 'exfz xyvc emcp cdhz'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Centralized email test settings
+EMAIL_TEST_MODE = False
+TEST_BROKER_RECIPIENTS = [
+    "daswanson22@gmail.com",
+    "cyberswanie@yahoo.com",
+]
+
+# Broker outreach tuning
+BROKER_DRIP_BATCH_SEQUENCE = [5, 10, 20, 30, 50, 75, 100]
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

@@ -4,10 +4,15 @@
   <div class="container">
     <article class="stack" style="--stack-gap:1rem">
       <h1>Thank you</h1>
-      <p>Your confirmation for <strong>{{ broker.name }}</strong> has been recorded.</p>
+      {% if status_record %}
+        <p>Your confirmation for <strong>{{ status_record.broker.name }}</strong> regarding {{ status_record.consumer.full_name }} has been recorded.</p>
+      {% elif compliance %}
+        <p>Your confirmation for <strong>{{ compliance.broker.name }}</strong> has been recorded.</p>
+      {% else %}
+        <p>Your confirmation has been recorded.</p>
+      {% endif %}
       <p>We appreciate your timely cooperation.</p>
     </article>
   </div>
   </section>
 {% endblock %}
-

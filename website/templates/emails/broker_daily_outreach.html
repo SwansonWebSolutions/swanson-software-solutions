@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { margin:0; padding:0; background:#0b1220; }
+    .container { max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 10px; padding: 24px; font-family: Arial, Helvetica, sans-serif; color:#0f172a; }
+    h1 { margin:0 0 8px 0; font-size: 22px; color:#0f172a; }
+    p { margin: 0 0 12px 0; line-height: 1.55; }
+    .brand { display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:#0f172a; font-weight:bold; }
+    .mark { width:28px; height:28px; border-radius:50%; background: linear-gradient(135deg, #2f8dfb, #1fbf8a); display:inline-block; }
+    .btn { display:inline-block; background:#1fbf8a; color:#0b2015 !important; text-decoration:none; font-weight:bold; padding:10px 14px; border-radius:10px; border:1px solid rgba(0,0,0,.08); }
+    .muted { color:#5e6b7a; font-size:13px; }
+  </style>
+  <title>Stop My Spam CCPA Compliance</title>
+</head>
+<body>
+  <div class="container">
+    <a class="brand" href="https://swantech.org">
+      <span class="mark"></span>
+      <span style="color: black;">Stop My Spam</span>
+    </a>
+
+    <h1>Stop My Spam CCPA Compliance</h1>
+    <p>Hello {{ broker_name }},</p>
+
+    <p>This is a consumer privacy request submitted through Stop My Spam for the deletion of the following records in the attached CSV.</p>
+
+    <p><strong>Requested action:</strong> Delete/Remove</p>
+
+    <p>Please confirm completion or provide the current status using the secure link below:</p>
+    <p><a class="btn" href="{{ compliance_link }}">Review &amp; confirm</a></p>
+
+    <p>If you have questions you can reply to this email and our compliance team will follow up promptly.</p>
+
+    <p>Thank you for your cooperation,<br>
+    Stop My Spam Compliance</p>
+  </div>
+</body>
+</html>
