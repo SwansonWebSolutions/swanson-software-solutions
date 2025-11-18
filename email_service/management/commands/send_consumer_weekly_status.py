@@ -63,12 +63,13 @@ class Command(BaseCommand):
             text_body = render_to_string("emails/consumer_weekly_status.txt", context)
             html_body = render_to_string("emails/consumer_weekly_status.html", context)
             from_email = getattr(
-                settings, "DEFAULT_FROM_EMAIL", getattr(settings, "EMAIL_HOST_USER", None)
+                settings, "DEFAULT_FROM_EMAIL", getattr(settings, "DEFAULT_FROM_EMAIL", None)
             )
+            from_email_str = f"Stop My Spam <{from_email}>" if from_email else "Stop My Spam"
             email = EmailMultiAlternatives(
                 subject,
                 text_body,
-                from_email,
+                from_email_str,
                 [consumer.primary_email],
             )
             email.attach_alternative(html_body, "text/html")

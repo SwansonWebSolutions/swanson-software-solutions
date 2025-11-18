@@ -1,6 +1,7 @@
 import re
 import re
 import uuid
+from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -235,9 +236,10 @@ def submit_do_not_email(request):
                 "last_name": obj.last_name,
                 "primary_email": obj.primary_email,
             }
+
             text_content = render_to_string('emails/do_not_email_confirmation.txt', context)
             html_content = render_to_string('emails/do_not_email_confirmation.html', context)
-            from_email = "Stop My Spam <daswanson22@gmail.com>"
+            from_email = f"Stop My Spam <{getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@swantech.org')}>"
             confirmation_email = EmailMultiAlternatives(
                 subject,
                 text_content,

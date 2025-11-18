@@ -110,15 +110,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'daswanson22@gmail.com'
-EMAIL_HOST_PASSWORD = 'exfz xyvc emcp cdhz'
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
+EMAIL_HOST_USER = 'admin@swantech.org'
+EMAIL_HOST_PASSWORD = 'mfom yrwe gjnx jcss'
+DEFAULT_FROM_EMAIL = 'no-reply@swantech.org'
+NO_REPLY_EMAIL_HOST_USER = 'no-reply@swantech.org'
+SUPPORT_EMAIL_HOST_USER = 'support@swantech.org'
+COMPLIANCE_EMAIL_HOST_USER = 'compliance@swantech.org'
+CONTACT_EMAIL_HOST_USER = 'contact@swantech.org'
 # Centralized email test settings
 EMAIL_TEST_MODE = False
 TEST_BROKER_RECIPIENTS = [
     "daswanson22@gmail.com",
-    "cyberswanie@yahoo.com",
 ]
 
 # Broker outreach tuning
