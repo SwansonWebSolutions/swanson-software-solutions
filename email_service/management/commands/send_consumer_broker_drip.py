@@ -157,15 +157,23 @@ class Command(BaseCommand):
 
             if dry_run:
                 logger.info(
-                    "[DRY RUN] Would send to %s for consumer %s broker %s",
+                    "[DRY RUN] Would send to %s for consumer %s broker %s subject=%s",
                     recipients,
                     consumer.id,
                     status.broker_id,
+                    subject,
                 )
                 continue
 
             try:
                 email.send()
+                logger.info(
+                    "Sent outreach to %s for consumer %s broker %s subject=%s",
+                    recipients,
+                    consumer.id,
+                    status.broker_id,
+                    subject,
+                )
                 status.mark_contacted(subject=subject, batch_number=batch_number)
                 BrokerContactLog.objects.create(
                     consumer=consumer,

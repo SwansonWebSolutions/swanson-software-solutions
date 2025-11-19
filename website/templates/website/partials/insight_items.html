@@ -1,0 +1,8 @@
+{% for insight in insights %}
+    <article class="insight-card topic-{{ insight.topic }}">
+        <span class="insight-topic">{{ insight.get_topic_display }}</span>
+        <h2 class="insight-title">{{ insight.title }}</h2>
+        <p class="insight-date">{{ insight.created_at|date:"F j, Y" }}</p>
+        <p class="insight-desc">{{ insight.description }}</p>
+    </article>
+{% endfor %}

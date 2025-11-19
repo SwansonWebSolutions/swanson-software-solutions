@@ -1,0 +1,131 @@
+{% extends "website/base.html" %}
+{% block head_extra %}
+<style>
+    .insights-hero { padding: 48px 24px 24px; text-align: center; max-width: 860px; margin: 0 auto; }
+    .insights-list { display: flex; flex-direction: column; gap: 24px; padding: 0 24px 48px; max-width: 860px; margin: 0 auto; }
+    .insight-card { padding: 0 0 24px; border-bottom: 1px solid #e5e7eb; display: flex; flex-direction: column; gap: 10px; background: none; border-radius: 0; box-shadow: none; }
+    .insight-card:last-child { border-bottom: none; padding-bottom: 0; }
+    .insight-topic { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+    .insight-title { font-size: 20px; margin: 0; color: #0f172a; }
+    .insight-date { font-size: 12px; color: #6b7280; }
+    .insight-desc { margin: 0; color: #1f2937; line-height: 1.5; }
+    /* Topic color accents */
+    .topic-web-development .insight-topic { color: #0ea5e9; } /* teal-ish blue */
+    .topic-marketing .insight-topic { color: #ec4899; }      /* pink */
+    .topic-ios-development .insight-topic { color: #2563eb; }/* keep current blue */
+    .topic-ecommerce .insight-topic { color: #16a34a; }      /* green */
+    .topic-data-privacy .insight-topic { color: #f59e0b; }    /* amber */
+    .filters { max-width: 860px; margin: 0 auto 24px; padding: 0 24px; display: flex; justify-content: center; }
+    .filters form { display: flex; flex-direction: column; gap: 12px; align-items: center; width: 100%; }
+    .filter-row { display: flex; flex-direction: column; gap: 12px; justify-content: center; width: 100%; }
+    .filters select, .filters button { padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; }
+    .filters button { background: #2563eb; color: #fff; border-color: #2563eb; cursor: pointer; width: 100%; }
+    .filters .filter-actions { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+    .filters .link { color: #2563eb; text-decoration: none; text-align: center; display: block; width: 100%; }
+    .filters label { display: flex; flex-direction: column; font-size: 12px; color: #4b5563; gap: 4px; width: 100%; }
+    .filters select { width: 100%; }
+    @media (min-width: 768px) {
+        .filters form { flex-direction: row; align-items: flex-end; gap: 12px; }
+        .filter-row { flex-direction: row; flex-wrap: nowrap; width: auto; gap: 12px; align-items: flex-end; }
+        .filters label { width: auto; min-width: 220px; }
+        .filters select { width: auto; min-width: 180px; }
+        .filters .filter-actions { flex-direction: row; align-items: center; gap: 12px; width: auto; }
+        .filters button { width: auto; align-self: flex-end; }
+        .filters .link { width: auto; display: inline; }
+    }
+    .empty-state { text-align: center; padding: 24px; color: #1f2937; }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="insights-hero">
+    <p class="insight-topic">Insights</p>
+    <h1 class="insight-title" style="font-size:32px;">Fresh takes on marketing, tech, and privacy</h1>
+    <p class="insight-desc" style="max-width:720px; margin:12px auto 0;">
+        Curated AI-assisted perspectives across marketing, web development, iOS, eCommerce, and data privacy—
+        updated as new ideas roll in.
+    </p>
+</section>
+
+<section class="filters" aria-label="Insights filters">
+    <form method="get">
+        <div class="filter-row">
+            <label>
+                Topic
+                <select name="topic">
+                    <option value="">All topics</option>
+                    {% for value, label in topics %}
+                        <option value="{{ value }}" {% if current_topic == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                Sort
+                <select name="sort">
+                    <option value="newest" {% if current_sort == "newest" %}selected{% endif %}>Newest</option>
+                    <option value="oldest" {% if current_sort == "oldest" %}selected{% endif %}>Oldest</option>
+                </select>
+            </label>
+        </div>
+        <div class="filter-actions">
+            <button type="submit">Apply</button>
+            {% if current_topic or current_sort != "newest" %}
+                <a class="link" href="{% url 'website:insights' %}">Clear</a>
+            {% endif %}
+        </div>
+    </form>
+</section>
+
+<section class="insights-list" id="insights-list" data-next-page="{{ next_page|default_if_none:'' }}">
+    {% include "website/partials/insight_items.html" with insights=insights %}
+    {% if not insights %}
+        <p class="empty-state">There are no insights to display yet.</p>
+    {% endif %}
+</section>
+<div id="insights-sentinel" style="height: 1px;"></div>
+
+{% block extra_scripts %}
+<script>
+  (function() {
+    const list = document.getElementById("insights-list");
+    const sentinel = document.getElementById("insights-sentinel");
+    if (!list || !sentinel) return;
+
+    const params = new URLSearchParams(window.location.search);
+    let nextPage = list.dataset.nextPage || "";
+    let isLoading = false;
+
+    async function loadMore() {
+      if (!nextPage || isLoading) return;
+      isLoading = true;
+      params.set("page", nextPage);
+      params.set("partial", "1");
+      try {
+        const resp = await fetch(`${window.location.pathname}?${params.toString()}`, {
+          headers: { "X-Requested-With": "fetch" }
+        });
+        if (!resp.ok) throw new Error("Failed to load more insights");
+        const data = await resp.json();
+        if (data.html) {
+          list.insertAdjacentHTML("beforeend", data.html);
+        }
+        nextPage = data.has_next ? data.next_page : "";
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadMore();
+        }
+      });
+    });
+    observer.observe(sentinel);
+  })();
+</script>
+{% endblock %}
+{% endblock %}

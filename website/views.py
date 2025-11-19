@@ -9,7 +9,12 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+
 from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance
+from insights.models import Insight
 from django.http import HttpResponseBadRequest
 from django.utils import timezone
 from django.core.validators import validate_email
@@ -84,7 +89,48 @@ def terms_of_service_page(request):
 
 def insights_page(request):
     """Insights page view"""
-    return render(request, 'website/insights.html')
+    topic = request.GET.get("topic") or ""
+    sort = request.GET.get("sort") or "newest"
+
+    insights_qs = Insight.objects.all()
+    valid_topics = [choice[0] for choice in Insight.TOPIC_CHOICES]
+
+    if topic in valid_topics:
+        insights_qs = insights_qs.filter(topic=topic)
+
+    if sort == "oldest":
+        insights_qs = insights_qs.order_by("created_at")
+    else:
+        insights_qs = insights_qs.order_by("-created_at")
+
+    paginator = Paginator(insights_qs, 10)
+    page_number = request.GET.get("page") or 1
+    page_obj = paginator.get_page(page_number)
+
+    if request.GET.get("partial") == "1":
+        html = render_to_string(
+            "website/partials/insight_items.html",
+            {"insights": page_obj.object_list},
+            request=request,
+        )
+        return JsonResponse(
+            {
+                "html": html,
+                "has_next": page_obj.has_next(),
+                "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+            }
+        )
+
+    context = {
+        "insights": page_obj.object_list,
+        "current_topic": topic if topic in valid_topics else "",
+        "current_sort": sort if sort in ["newest", "oldest"] else "newest",
+        "topics": Insight.TOPIC_CHOICES,
+        "has_next": page_obj.has_next(),
+        "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
+        "base_query": request.META.get("QUERY_STRING", ""),
+    }
+    return render(request, 'website/insights.html', context)
 
 def shopify_page(request):
     """Shopify Development page view"""

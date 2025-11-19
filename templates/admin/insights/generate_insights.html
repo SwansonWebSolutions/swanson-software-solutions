@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>Generate AI Insights</h1>
+  <p>Use the OpenAI-powered generator to create new insights. Choose your mode and (optionally) a topic, then generate.</p>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" class="default" value="Generate">
+    <a href="{% url 'admin:insights_insight_changelist' %}">Cancel</a>
+  </form>
+{% endblock %}

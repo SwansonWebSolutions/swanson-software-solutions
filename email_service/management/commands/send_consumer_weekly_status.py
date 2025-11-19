@@ -76,13 +76,20 @@ class Command(BaseCommand):
 
             if dry_run:
                 logger.info(
-                    "[DRY RUN] Would send weekly status to consumer id=%s email=%s",
+                    "[DRY RUN] Would send weekly status to consumer id=%s email=%s subject=%s",
                     consumer.id,
                     consumer.primary_email,
+                    subject,
                 )
                 continue
 
             email.send()
+            logger.info(
+                "Sent weekly status to consumer id=%s email=%s subject=%s",
+                consumer.id,
+                consumer.primary_email,
+                subject,
+            )
             consumer.last_status_email_at = timezone.now()
             consumer.save(update_fields=["last_status_email_at", "updated_at"])
             sent += 1

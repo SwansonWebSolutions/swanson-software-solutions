@@ -102,3 +102,21 @@ class BrokerComplianceViewTests(TestCase):
         url = reverse("website:broker-compliance") + "?t=not-found"
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 404)
+
+    def test_tracking_token_submission_returns_success_page(self):
+        url = reverse("website:broker-compliance-token", args=[self.status.tracking_token])
+        resp = self.client.post(
+            url,
+            {
+                "response_status": ConsumerBrokerStatus.Status.PROCESSING,
+                "contact_name": "Agent",
+                "contact_email": "agent@example.com",
+                "notes": "Working on it",
+                "t": str(self.status.tracking_token),
+            },
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, "Thank you")
+        self.assertContains(resp, "has been recorded")
+        self.status.refresh_from_db()
+        self.assertEqual(self.status.status, ConsumerBrokerStatus.Status.PROCESSING)
