@@ -1,16 +1,13 @@
-"""
-WSGI config for swanson_site project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
-"""
-
 import os
+import sys
+from pathlib import Path
 
-from django.core.wsgi import get_wsgi_application
-
+root = Path('/home/daswanson22/swanson-software-solutions')
+sys.path.insert(0, str(root))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'swanson_site.settings')
 
+from dotenv import load_dotenv
+load_dotenv(root / '.env')  # adjust path if needed
+
+from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
