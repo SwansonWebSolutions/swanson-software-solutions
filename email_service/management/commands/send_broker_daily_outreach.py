@@ -97,7 +97,8 @@ class Command(BaseCommand):
             self.stdout.write("No paid Stop My Spam signups in the window; no emails sent.")
             return
 
-        csv_payload = self._build_csv(dne_qs, la, start, end)
+        record_count = dne_qs.count()
+        csv_filename, csv_body = self._build_csv(dne_qs, la, start, end)
 
         qs = DataBrokers2025.objects.filter(is_active=True).order_by("id")
         if opts["offset"]:
@@ -116,7 +117,7 @@ class Command(BaseCommand):
         interval = duration / total if total else 0
 
         base_url = getattr(settings, "PUBLIC_BASE_URL", "http://127.0.0.1:8000")
-        from_email = getattr(settings, "DEFAULT_FROM_EMAIL", None) or getattr(settings, "EMAIL_HOST_USER", None)
+        from_email = getattr(settings, "COMPLIANCE_EMAIL_HOST_USER", None) or getattr(settings, "EMAIL_HOST_USER", None)
         subject = opts["subject"]
         message_template = opts["message"]
         test_mode = opts.get("test", False)
@@ -143,7 +144,22 @@ class Command(BaseCommand):
             compliance.token = BrokerCompliance.generate_token()
             compliance.submitted = False
             compliance.submitted_at = None
-            compliance.save(update_fields=["token", "submitted", "submitted_at", "updated_at"])
+            compliance.last_request_count = record_count
+            compliance.last_window_start = start
+            compliance.last_window_end = end
+            compliance.last_export_filename = csv_filename
+            compliance.save(
+                update_fields=[
+                    "token",
+                    "submitted",
+                    "submitted_at",
+                    "last_request_count",
+                    "last_window_start",
+                    "last_window_end",
+                    "last_export_filename",
+                    "updated_at",
+                ]
+            )
             link = build_compliance_link(base_url, compliance.token)
 
             if test_mode:
@@ -166,7 +182,7 @@ class Command(BaseCommand):
                     },
                 )
                 email.attach_alternative(html_body, "text/html")
-                email.attach(csv_payload[0], csv_payload[1], "text/csv")
+                email.attach(csv_filename, csv_body, "text/csv")
                 email.send()
                 sent += 1
                 now_ts = timezone.now()

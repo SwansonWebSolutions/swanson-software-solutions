@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=7">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head_extra %}
+    {% endblock %}
     <link rel="stylesheet" href="{% static 'css/core.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}?v={% now 'U' %}">
@@ -14,8 +16,6 @@
     <!-- Load Inter with 800 so brand weight stays consistent site-wide -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    {% block head_extra %}
-    {% endblock %}
 </head>
 <body>
     {% include 'includes/navbar.html' %}

@@ -57,7 +57,21 @@ class ConsumerAdmin(admin.ModelAdmin):
 
 admin.site.register(BrokerContactLog)
 admin.site.register(EmailDripState)
-admin.site.register(ConsumerBrokerStatus)
+
+
+@admin.register(ConsumerBrokerStatus)
+class ConsumerBrokerStatusAdmin(admin.ModelAdmin):
+    list_display = (
+        "consumer",
+        "broker",
+        "status",
+        "request_type",
+        "tracking_token",
+        "updated_at",
+    )
+    list_filter = ("status", "request_type")
+    search_fields = ("consumer__first_name", "consumer__last_name", "broker__name", "tracking_token")
+    readonly_fields = ("tracking_token", "created_at", "updated_at")
 
 @admin.register(DataBrokers2025)
 class DataBrokers2025Admin(admin.ModelAdmin):

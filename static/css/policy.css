@@ -19,13 +19,18 @@
 .policy-hero .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: clamp(16px, 2.5vw, 36px);
+  padding: clamp(32px, 4vw, 64px);
   text-align: center;
 }
 .policy-hero h1, .policy-hero p.lead { text-align: center; }
 
 /* Variant: left-aligned hero for specific pages */
-.policy-hero--left .container{ text-align: left; }
+.policy-hero--left .container{
+  text-align: left;
+  max-width: 900px;
+  padding-inline: clamp(16px, 3vw, 32px);
+  padding-block: clamp(32px, 6vw, 72px);
+}
 .policy-hero--left h1,
 .policy-hero--left p.lead{ text-align: left; }
 .policy-hero--left p.lead{ margin-inline: 0; }

@@ -40,13 +40,7 @@
     <div class="grid">
       <div class="stat">
         <h2>Completed</h2>
-        <p class="value">
-          {% if total_brokers %}
-            {% widthratio snapshot.completed|default:0 total_brokers 100 %}%
-          {% else %}
-            0%
-          {% endif %}
-        </p>
+        <p class="value">{{ snapshot.completed_percentage_display|default:"0%" }}</p>
       </div>
       <div class="stat">
         <h2>In Processing</h2>

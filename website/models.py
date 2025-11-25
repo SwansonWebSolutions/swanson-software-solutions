@@ -113,6 +113,10 @@ class BrokerCompliance(models.Model):
     last_sent_at = models.DateTimeField(blank=True, null=True)
     reminders_sent = models.PositiveIntegerField(default=0)
     last_reminder_at = models.DateTimeField(blank=True, null=True)
+    last_window_start = models.DateTimeField(blank=True, null=True)
+    last_window_end = models.DateTimeField(blank=True, null=True)
+    last_request_count = models.PositiveIntegerField(default=0)
+    last_export_filename = models.CharField(max_length=255, blank=True)
 
     class Meta:
         verbose_name = "Broker Compliance Link"
@@ -219,8 +223,34 @@ class Consumer(models.Model):
         qs = self.broker_statuses.all()
         total = qs.count()
         snapshot = {"total": total}
+        status_counts = {}
         for choice, _ in ConsumerBrokerStatus.Status.choices:
-            snapshot[choice] = qs.filter(status=choice).count()
+            count = qs.filter(status=choice).count()
+            snapshot[choice] = count
+            status_counts[choice] = count
+        engaged_statuses = [
+            ConsumerBrokerStatus.Status.CONTACTED,
+            ConsumerBrokerStatus.Status.PROCESSING,
+            ConsumerBrokerStatus.Status.COMPLETED,
+            ConsumerBrokerStatus.Status.REJECTED,
+            ConsumerBrokerStatus.Status.BOUNCED,
+            ConsumerBrokerStatus.Status.NO_RESPONSE,
+        ]
+        contacted_total = qs.filter(
+            models.Q(contacted_at__isnull=False) | models.Q(status__in=engaged_statuses)
+        ).count()
+        snapshot["contacted"] = contacted_total
+        completed_count = status_counts.get(ConsumerBrokerStatus.Status.COMPLETED, 0)
+        if contacted_total > 0:
+            completed_pct = (completed_count / contacted_total) * 100
+        else:
+            completed_pct = 0
+        if 0 < completed_pct < 1:
+            completed_display = "<1%"
+        else:
+            completed_display = f"{completed_pct:.0f}%"
+        snapshot["completed_percentage"] = completed_pct
+        snapshot["completed_percentage_display"] = completed_display
         if window_start:
             snapshot["recent_completions"] = qs.filter(
                 status=ConsumerBrokerStatus.Status.COMPLETED,
@@ -315,15 +345,17 @@ class ConsumerBrokerStatus(models.Model):
         now = timezone.now()
         self.status = status
         self.last_response_at = now
+        update_fields = ["status", "last_response_at", "notes", "broker_contact_name", "broker_contact_email", "updated_at"]
+        if not self.contacted_at:
+            self.contacted_at = now
+            update_fields.append("contacted_at")
         if status == self.Status.COMPLETED:
             self.completed_at = now
+            update_fields.append("completed_at")
         self.notes = notes
         self.broker_contact_name = contact_name
         self.broker_contact_email = contact_email
-        fields = ["status", "last_response_at", "notes", "broker_contact_name", "broker_contact_email", "updated_at"]
-        if status == self.Status.COMPLETED:
-            fields.append("completed_at")
-        self.save(update_fields=fields)
+        self.save(update_fields=update_fields)
 
 
 class EmailDripState(models.Model):
