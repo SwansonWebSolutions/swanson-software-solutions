@@ -9,6 +9,7 @@ from website.models import (
     BrokerCompliance,
     NewsletterSubscriber,
 )
+from django.core import mail
 
 
 class BrokerComplianceViewTests(TestCase):
@@ -124,6 +125,9 @@ class BrokerComplianceViewTests(TestCase):
 
 
 class NewsletterSubscribeTests(TestCase):
+    def setUp(self):
+        mail.outbox.clear()
+
     def test_subscribe_creates_record_and_redirects(self):
         resp = self.client.post(
             reverse("website:newsletter-subscribe"),
@@ -132,6 +136,8 @@ class NewsletterSubscribeTests(TestCase):
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(NewsletterSubscriber.objects.filter(email="test@example.com").exists())
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Welcome to the SwanTech newsletter", mail.outbox[0].subject)
 
     def test_invalid_email_shows_error(self):
         resp = self.client.post(
@@ -151,3 +157,4 @@ class NewsletterSubscribeTests(TestCase):
         )
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(NewsletterSubscriber.objects.filter(email="hello@example.com").count(), 1)
+        self.assertEqual(len(mail.outbox), 0)

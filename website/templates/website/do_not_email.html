@@ -3,6 +3,10 @@
 
 {% block head_extra %}
   <link rel="stylesheet" href="{% static 'css/policy.css' %}?v={% now 'U' %}">
+  <script>
+    window.__STRIPE_LINKS = window.__STRIPE_LINKS || {};
+    window.__STRIPE_LINKS.dne = "{{ stripe_dne_link }}";
+  </script>
   <script src="{% static 'js/checkout_redirect.js' %}?v={% now 'U' %}" defer></script>
 {% endblock %}
 

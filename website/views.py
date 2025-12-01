@@ -27,6 +27,15 @@ def _normalize_phone(raw: str) -> str | None:
     digits = re.sub(r"\D", "", raw or "")
     return digits if len(digits) == 10 else None
 
+
+def _stripe_dne_link() -> str:
+    """Select Stripe Payment Link based on environment."""
+    live = "https://buy.stripe.com/4gM14ofqafII3Xw7xDcEw02"
+    test = "https://buy.stripe.com/test_eVqfZi1zkeEE79I5pvcEw01"
+    env = getattr(settings, "ENVIRONMENT", "").lower()
+    return live if env == "production" else test
+
+
 def _ensure_consumer(email: str, first: str, last: str, phone: str, weekly_opt_in: bool) -> Consumer:
     """Create or update a Consumer (and auth user) for the given email."""
     User = get_user_model()
@@ -89,7 +98,20 @@ def newsletter_subscribe(request):
 
     subscriber, created = NewsletterSubscriber.objects.get_or_create(email=email)
     if created:
-        messages.success(request, "You're subscribed! Thanks for joining our newsletter.")
+        # Send welcome email
+        context = {"email": email}
+        text_content = render_to_string("emails/newsletter_welcome.txt", context)
+        html_content = render_to_string("emails/newsletter_welcome.html", context)
+        from_email = f"SwanTech Newsletter <{getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@swantech.org')}>"
+        welcome_email = EmailMultiAlternatives(
+            "Welcome to the SwanTech newsletter",
+            text_content,
+            from_email,
+            [email],
+        )
+        welcome_email.attach_alternative(html_content, "text/html")
+        welcome_email.send()
+        messages.success(request, "You're subscribed! Thanks for joining our weekly 3-insight newsletter.")
     else:
         messages.info(request, "You're already subscribed to our newsletter.")
 
@@ -178,7 +200,8 @@ def do_not_call(request):
 
 def do_not_email(request):
     """Do Not Email page view"""
-    return render(request, 'website/do_not_email.html')
+    context = {"stripe_dne_link": _stripe_dne_link()}
+    return render(request, 'website/do_not_email.html', context)
 
 def submit_do_not_call(request):
     """POST endpoint placeholder for Do Not Call submissions.
@@ -231,6 +254,7 @@ def submit_do_not_email(request):
     """POST endpoint placeholder for Do Not Email submissions.
     Currently no processing; returns the same form page.
     """
+    context = {"stripe_dne_link": _stripe_dne_link()}
     if request.method == 'GET' and request.GET.get('paid') == '1':
         # Bridge page will collect cached values from localStorage and post them here
         return render(request, 'website/checkout_bridge.html', {
@@ -254,26 +278,26 @@ def submit_do_not_email(request):
                 validate_email(email_value)
             except ValidationError:
                 messages.error(request, 'Primary Email is not a valid email address.')
-                return render(request, 'website/do_not_email.html')
+                return render(request, 'website/do_not_email.html', context)
         primary_phone = _normalize_phone(data.get('primary_phone'))
         if data.get('primary_phone') and not primary_phone:
             messages.error(request, 'Primary Phone must be exactly 10 digits (numbers only).')
-            return render(request, 'website/do_not_email.html')
+            return render(request, 'website/do_not_email.html', context)
         secondary_phone_raw = (request.POST.get('secondary_phone') or '').strip()
         secondary_phone = None
         if secondary_phone_raw:
             secondary_phone = _normalize_phone(secondary_phone_raw)
             if not secondary_phone:
                 messages.error(request, 'Secondary Phone must be exactly 10 digits (numbers only).')
-                return render(request, 'website/do_not_email.html')
+                return render(request, 'website/do_not_email.html', context)
         ack = (request.POST.get('acknowledge') or '').strip().lower() in ('true','on','1','yes')
         if not ack:
             messages.error(request, 'You must agree to the Terms of Service and Privacy Policy.')
-            return render(request, 'website/do_not_email.html')
+            return render(request, 'website/do_not_email.html', context)
         if missing:
             for m in missing:
                 messages.error(request, f"{m} is required.")
-            return render(request, 'website/do_not_email.html')
+            return render(request, 'website/do_not_email.html', context)
 
         # Persist after validation (assumed payment)
         obj = DoNotEmailRequest.objects.create(
@@ -325,7 +349,7 @@ def submit_do_not_email(request):
 
         messages.success(request, 'Your Stop My Spam request has been received.')
         return render(request, 'website/checkout_success.html')
-    return render(request, 'website/do_not_email.html')
+    return render(request, 'website/do_not_email.html', context)
 
 
 def do_not_contact_faq_page(request):

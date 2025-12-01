@@ -1,13 +1,10 @@
-// Redirect to Stripe Checkout for DNE/DNC.
+// Redirect to Stripe Checkout for DNE.
 // Cache form values locally before redirect; after Stripe returns, a bridge page posts them.
 (() => {
   const stripeLinks = {
     // Set your Payment Link to redirect back to /stop-my-spam/submit/?paid=1
-    // dne: 'https://buy.stripe.com/4gM14ofqafII3Xw7xDcEw02', # live
-    dne: "https://buy.stripe.com/test_eVqfZi1zkeEE79I5pvcEw01",
-    // Set your Payment Link to redirect back to /do-not-call-me/submit/?paid=1
-    // dnc: 'https://buy.stripe.com/eVqfZi1zkeEE79I5pvcEw01', # live
-    dnc: "https://buy.stripe.com/test_4gM14ofqafII3Xw7xDcEw02"
+    // The template sets window.__STRIPE_LINKS.dne based on environment.
+    dne: (window.__STRIPE_LINKS && window.__STRIPE_LINKS.dne) || "https://buy.stripe.com/test_eVqfZi1zkeEE79I5pvcEw01",
   };
 
   function val(id){ const el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -51,27 +48,4 @@
     });
   }
 
-  const dncBtn = document.getElementById('dncCheckout');
-  if (dncBtn){
-    dncBtn.addEventListener('click', () => {
-      const form = dncBtn.closest('form');
-      if (form && !form.checkValidity()) { form.reportValidity(); return; }
-      const normalize = (val) => (val || '').replace(/\D/g, '');
-      const phone = normalize(val('phone'));
-      if (phone.length !== 10) {
-        alert('Phone must be 10 digits (numbers only).');
-        return;
-      }
-      const payload = {
-        full_name: val('full_name'),
-        phone,
-        notes: val('notes'),
-        acknowledge: (document.getElementById('dnc_ack')?.checked ? 'true' : 'false'),
-        weekly_status_opt_in: (document.getElementById('dnc_weekly_opt_in')?.checked ? 'true' : 'false'),
-        t: Date.now(),
-      };
-      localStorage.setItem('dncForm', JSON.stringify(payload));
-      window.location.href = stripeLinks.dnc;
-    });
-  }
 })();
