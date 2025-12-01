@@ -5,7 +5,17 @@ from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
 
-from .models import DoNotEmailRequest, DoNotCallRequest, DataBrokers2025, BrokerCompliance, Consumer, BrokerContactLog, EmailDripState, ConsumerBrokerStatus
+from .models import (
+    DoNotEmailRequest,
+    DoNotCallRequest,
+    DataBrokers2025,
+    BrokerCompliance,
+    Consumer,
+    BrokerContactLog,
+    EmailDripState,
+    ConsumerBrokerStatus,
+    NewsletterSubscriber,
+)
 # Register your models here.
 
 class DoNotEmailRequestAdmin(admin.ModelAdmin):
@@ -57,6 +67,7 @@ class ConsumerAdmin(admin.ModelAdmin):
 
 admin.site.register(BrokerContactLog)
 admin.site.register(EmailDripState)
+admin.site.register(NewsletterSubscriber)
 
 
 @admin.register(ConsumerBrokerStatus)

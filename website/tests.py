@@ -7,6 +7,7 @@ from website.models import (
     ConsumerBrokerStatus,
     DataBrokers2025,
     BrokerCompliance,
+    NewsletterSubscriber,
 )
 
 
@@ -120,3 +121,33 @@ class BrokerComplianceViewTests(TestCase):
         self.assertContains(resp, "has been recorded")
         self.status.refresh_from_db()
         self.assertEqual(self.status.status, ConsumerBrokerStatus.Status.PROCESSING)
+
+
+class NewsletterSubscribeTests(TestCase):
+    def test_subscribe_creates_record_and_redirects(self):
+        resp = self.client.post(
+            reverse("website:newsletter-subscribe"),
+            {"email": "Test@Example.com", "next": "/"},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(NewsletterSubscriber.objects.filter(email="test@example.com").exists())
+
+    def test_invalid_email_shows_error(self):
+        resp = self.client.post(
+            reverse("website:newsletter-subscribe"),
+            {"email": "not-an-email", "next": "/"},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(NewsletterSubscriber.objects.exists())
+
+    def test_duplicate_subscribe_does_not_duplicate(self):
+        NewsletterSubscriber.objects.create(email="hello@example.com")
+        resp = self.client.post(
+            reverse("website:newsletter-subscribe"),
+            {"email": "hello@example.com", "next": "/"},
+            follow=True,
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(NewsletterSubscriber.objects.filter(email="hello@example.com").count(), 1)

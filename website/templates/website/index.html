@@ -195,5 +195,33 @@
   </div>
 </section>
 
+<!-- =============================
+     NEWSLETTER
+     ============================= -->
+<section class="section newsletter" id="newsletter">
+  <div class="container newsletter-grid">
+    <div class="stack" style="--stack-gap:1rem">
+      <span class="badge">Stay in the loop</span>
+      <h2>Privacy, product, and engineering in your inbox.</h2>
+      <p class="lead">A weekly email featuring the most recent insights we publish — privacy compliance, web performance, and iOS development.</p>
+      <ul class="newsletter-points">
+        <li><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Freshest insights every week</li>
+        <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Unsubscribe anytime</li>
+      </ul>
+    </div>
+    <div class="newsletter-card">
+      <form class="newsletter-form" action="{% url 'website:newsletter-subscribe' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}#newsletter">
+        <label for="newsletter-email">Email address</label>
+        <div class="newsletter-input">
+          <input id="newsletter-email" name="email" type="email" placeholder="you@example.com" required>
+          <button type="submit" class="btn">Subscribe</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
 </div>
 {% endblock %}

@@ -3,10 +3,12 @@
 <!-- Header / Navigation -->
 <header class="site-header">
   <div class="container nav-wrap">
-    <a class="brand" href="{% url 'website:index' %}">
-      <span aria-hidden="true" class="brand-mark"></span>
-      <span class="brand-name">SwanTech</span>
-      <span class="pill" style="margin-left:.4rem">Agency</span>
+    <a  href="{% url 'website:index' %}" class="navbar-logo">
+      <!-- <span aria-hidden="true" class="brand-mark"></span> -->
+      <!-- <img src="{% static 'images/logo.svg' %}" alt="SwanTech logo" class="logo-icon" /> -->
+      <img src="{% static 'images/logo-text.png' %}" alt="SwanTech Agency Logo">
+      <!-- <span class="brand-name">SwanTech</span>
+      <span class="pill" style="margin-left:.4rem">Agency</span> -->
     </a>
 
     <nav class="nav" aria-label="Primary">

@@ -434,6 +434,19 @@ class BrokerContactLog(models.Model):
         ordering = ("-sent_at",)
 
 
+class NewsletterSubscriber(models.Model):
+    """Newsletter opt-in records."""
+
+    email = models.EmailField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self) -> str:
+        return self.email
+
+
 @receiver(post_save, sender=Consumer)
 def auto_initialize_brokers(sender, instance: Consumer, created: bool, **kwargs):
     if created:

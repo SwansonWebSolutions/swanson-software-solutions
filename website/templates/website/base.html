@@ -21,6 +21,13 @@
     {% include 'includes/navbar.html' %}
 
     <main>
+        {% if messages %}
+        <div class="container flash-container">
+            {% for message in messages %}
+            <div class="flash flash-{{ message.tags|default:'info' }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}
         <!-- Page-specific content will be injected here -->
         {% endblock %}

@@ -1,43 +1,55 @@
-
+{% load static %}
 
 <footer>
-        <div class="container foot">
-          <div class="stack">
-            <div class="cluster" style="align-items:center">
-              <span class="brand-mark" aria-hidden="true"></span>
-              <strong style="font-size:1.05rem">SwanTech</strong>
-            </div>
-            <p class="muted">Precision‑built websites and apps. Shopify, WordPress, Django, and mobile.</p>
-          </div>
-          <div class="footer-stack">
-            <h4>Company</h4>
-            <a href="{% url 'website:company' %}">Company</a>
-            <a href="{% url 'website:clients' %}">Clients</a>
-            <a href="{% url 'website:insights' %}">Insights</a>
-          </div>
-          <div class="footer-stack">
-            <h4>Services</h4>
-            <a href="{% url 'website:index' %}#shopify">Shopify</a>
-            <a href="{% url 'website:index' %}#wordpress">WordPress</a>
-            <a href="{% url 'website:index' %}#saas">Custom Web</a>
-            <a href="{% url 'website:index' %}#ios-apps">iOS Apps</a>
-          </div>
-          <div class="footer-stack">
-            <h4>Contact</h4>
-            <a href="mailto:contact@swantech.org">contact@swantech.org</a>
-            <a href="tel:(805) 850-3031">+1 (805) 850-3031</a>
-            <a href="{% url 'website:contact' %}">Project brief</a>
-          </div>
+  <div class="container foot">
+    <div class="stack">
+      <div class="cluster" style="align-items:start">
+        <img src="{% static 'images/logo-text.png' %}" alt="">
+      </div>
+      <p class="muted">Precision-built websites and apps. Shopify, WordPress, Django, and mobile.</p>
+    </div>
+    <div class="footer-stack footer-newsletter" id="footer-newsletter">
+      <h4>Newsletter</h4>
+      <form action="{% url 'website:newsletter-subscribe' %}" method="post" class="footer-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}#footer-newsletter">
+        <label class="sr-only" for="footer-newsletter-email">Email address</label>
+        <div class="footer-input">
+          <input id="footer-newsletter-email" name="email" type="email" placeholder="you@example.com" required>
+          <button type="submit" class="btn secondary">Subscribe</button>
         </div>
-        <div class="container foot" style="margin-top: 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px">
-          <small class="muted">&copy; {% now 'Y' %} SwanTech. All rights reserved.</small>
-          <div class="cluster">
-            <a class="muted" href="{% url 'website:privacy' %}">Privacy</a>
-            <span aria-hidden="true">&bull;</span>
-            <a class="muted" href="{% url 'website:terms' %}">Terms</a>
-          </div>
-        </div>
-      </footer>
+        <small class="muted">Weekly email with our newest insights. Unsubscribe anytime.</small>
+      </form>
+    </div>
+    <div class="footer-stack">
+      <h4>Company</h4>
+      <a href="{% url 'website:company' %}">Company</a>
+      <a href="{% url 'website:clients' %}">Clients</a>
+      <a href="{% url 'website:insights' %}">Insights</a>
+    </div>
+    <div class="footer-stack">
+      <h4>Services</h4>
+      <a href="{% url 'website:index' %}#shopify">Shopify</a>
+      <a href="{% url 'website:index' %}#wordpress">WordPress</a>
+      <a href="{% url 'website:index' %}#saas">Custom Web</a>
+      <a href="{% url 'website:index' %}#ios-apps">iOS Apps</a>
+    </div>
+    <div class="footer-stack">
+      <h4>Contact</h4>
+      <a href="mailto:contact@swantech.org">contact@swantech.org</a>
+      <a href="tel:(805) 850-3031">+1 (805) 850-3031</a>
+      <a href="{% url 'website:contact' %}">Project brief</a>
+    </div>
+  </div>
+  <div class="container foot" style="margin-top: 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px">
+    <small class="muted">&copy; {% now 'Y' %} SwanTech. All rights reserved.</small>
+    <div class="cluster">
+      <a class="muted" href="{% url 'website:privacy' %}">Privacy</a>
+      <span aria-hidden="true">&bull;</span>
+      <a class="muted" href="{% url 'website:terms' %}">Terms</a>
+    </div>
+  </div>
+</footer>
 {% comment %} Global fix to prevent horizontal scroll on any page {% endcomment %}
 <style>
   html, body {
@@ -47,9 +59,3 @@
   html { scrollbar-gutter: stable both-edges; }
   img, svg, video, canvas, iframe { max-width: 100%; height: auto; }
 </style>
-
-
-
-
-
-

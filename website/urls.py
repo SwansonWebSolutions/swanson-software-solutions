@@ -9,6 +9,7 @@ urlpatterns = [
     path('clients/', views.clients_page, name='clients'),
     path('contact/', views.contact_sales_page, name='contact'),
     path('insights/', views.insights_page, name='insights'),
+    path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter-subscribe'),
     # New Stop My Spam routes (preserve existing URL names for compatibility)
     path('stop-my-spam/', views.do_not_email, name='do-not-email'),
     path('stop-my-spam/submit/', views.submit_do_not_email, name='submit-do-not-email'),

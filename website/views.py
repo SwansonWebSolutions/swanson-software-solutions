@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -13,7 +13,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance
+from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance, NewsletterSubscriber
 from insights.models import Insight
 from django.http import HttpResponseBadRequest
 from django.utils import timezone
@@ -66,6 +66,34 @@ def _ensure_consumer(email: str, first: str, last: str, phone: str, weekly_opt_i
 def index(request):
     """Landing page view"""
     return render(request, 'website/index.html')
+
+
+def newsletter_subscribe(request):
+    """Capture newsletter opt-ins by email only."""
+    if request.method != "POST":
+        return redirect("website:index")
+
+    email_raw = (request.POST.get("email") or "").strip()
+    redirect_to = request.POST.get("next") or request.META.get("HTTP_REFERER") or reverse("website:index")
+
+    if not email_raw:
+        messages.error(request, "Please enter an email address to subscribe.")
+        return redirect(redirect_to)
+
+    email = email_raw.lower()
+    try:
+        validate_email(email)
+    except ValidationError:
+        messages.error(request, "That email address looks invalid. Please try again.")
+        return redirect(redirect_to)
+
+    subscriber, created = NewsletterSubscriber.objects.get_or_create(email=email)
+    if created:
+        messages.success(request, "You're subscribed! Thanks for joining our newsletter.")
+    else:
+        messages.info(request, "You're already subscribed to our newsletter.")
+
+    return redirect(redirect_to)
 
 def company_page(request):
     """Company page view"""

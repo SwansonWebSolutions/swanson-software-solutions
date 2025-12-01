@@ -1,0 +1,47 @@
+<svg
+  width="42"
+  height="42"
+  viewBox="0 0 42 42"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="SwanTech globe logo"
+>
+  <defs>
+    <!-- Blue water gradient -->
+    <radialGradient id="waterGrad" cx="60%" cy="60%" r="65%">
+      <stop offset="0%" stop-color="#4CC8FF" />
+      <stop offset="100%" stop-color="#2A8CFF" />
+    </radialGradient>
+
+    <!-- Green land gradient -->
+    <radialGradient id="landGrad" cx="30%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="#4FE28E" />
+      <stop offset="60%" stop-color="#4FE28E" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#4FE28E" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Soft blur -->
+    <filter id="landBlur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" />
+    </filter>
+
+    <!-- Clip to keep land strictly inside the globe -->
+    <clipPath id="globeClip">
+      <circle cx="21" cy="21" r="19" />
+    </clipPath>
+  </defs>
+
+  <!-- Blue globe -->
+  <circle cx="21" cy="21" r="19" fill="url(#waterGrad)" />
+
+  <!-- Larger blurred landmass, clipped inside globe -->
+  <g clip-path="url(#globeClip)">
+    <circle
+      cx="15.5"
+      cy="14.5"
+      r="15"
+      fill="url(#landGrad)"
+      filter="url(#landBlur)"
+    />
+  </g>
+</svg>
