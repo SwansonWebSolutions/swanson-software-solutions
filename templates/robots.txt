@@ -1,0 +1,6 @@
+# Robots.txt for Swanson Software Solutions
+# Allow full site crawl; keep admin area out of search results.
+User-agent: *
+Allow: /
+Disallow: /admin/
+
