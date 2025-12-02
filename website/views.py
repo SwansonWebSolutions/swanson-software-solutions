@@ -132,6 +132,19 @@ def newsletter_subscribe(request):
         )
         welcome_email.attach_alternative(html_content, "text/html")
         welcome_email.send()
+        # Notify admin of a new subscriber (fun inbox check)
+        admin_email = getattr(settings, "ADMIN_NOTIFICATION_EMAIL", "admin@swantech.org")
+        total = NewsletterSubscriber.objects.count()
+        send_mail(
+            "Newsletter: New Subscriber!",
+            (
+                f"A new user subscribed to the newsletter.\n"
+                f"Email: {email}\n"
+                f"Total subscribers: {total}\n"
+            ),
+            from_email,
+            [admin_email],
+        )
         messages.success(request, "You're subscribed! Thanks for joining our weekly 3-insight newsletter.")
     else:
         messages.info(request, "You're already subscribed to our newsletter.")
@@ -373,6 +386,20 @@ def submit_do_not_email(request):
             )
             confirmation_email.attach_alternative(html_content, "text/html")
             confirmation_email.send()
+        # Notify admin of new Stop My Spam registration (paid)
+        admin_email = getattr(settings, "ADMIN_NOTIFICATION_EMAIL", "admin@swantech.org")
+        total_requests = DoNotEmailRequest.objects.count()
+        send_mail(
+            "Stop My Spam: New Registration!",
+            (
+                "A new Stop My Spam request has been paid and recorded.\n"
+                f"Name: {obj.first_name} {obj.last_name}\n"
+                f"Email: {obj.primary_email}\n"
+                f"Total Stop My Spam registrants: {total_requests}\n"
+            ),
+            getattr(settings, "DEFAULT_FROM_EMAIL", "no-reply@swantech.org"),
+            [admin_email],
+        )
 
         messages.success(request, 'Your Stop My Spam request has been received.')
         return render(request, 'website/checkout_success.html')
