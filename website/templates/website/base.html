@@ -5,12 +5,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=7">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% firstof seo_title "Swanson Software Solutions | Privacy-first web, mobile, and compliance" as meta_title %}
+    {% firstof seo_description "Privacy-first software development for Shopify, WordPress, iOS, and compliance systems." as meta_description %}
+    {% firstof seo_keywords "software development, privacy-first software, Shopify development, WordPress development, iOS app development, data privacy" as meta_keywords %}
+    {% firstof canonical_url request.build_absolute_uri as meta_canonical %}
+    {% firstof og_type "website" as meta_og_type %}
+    {% firstof og_title meta_title as meta_og_title %}
+    {% firstof og_description meta_description as meta_og_description %}
+    {% firstof og_url meta_canonical as meta_og_url %}
+    {% firstof twitter_title meta_title as meta_twitter_title %}
+    {% firstof twitter_description meta_description as meta_twitter_description %}
+    {% firstof og_image None as meta_og_image %}
+    {% firstof twitter_image meta_og_image as meta_twitter_image %}
+    <title>{{ meta_title }}</title>
+    <meta name="description" content="{{ meta_description }}">
+    <meta name="keywords" content="{{ meta_keywords }}">
+    <link rel="canonical" href="{{ meta_canonical }}">
+    <meta property="og:site_name" content="Swanson Software Solutions">
+    <meta property="og:type" content="{{ meta_og_type }}">
+    <meta property="og:title" content="{{ meta_og_title }}">
+    <meta property="og:description" content="{{ meta_og_description }}">
+    <meta property="og:url" content="{{ meta_og_url }}">
+    <meta property="og:image" content="{% if meta_og_image %}{{ meta_og_image }}{% else %}{{ request.scheme|default:'https' }}://{{ request.get_host }}{% static 'images/logo-text.png' %}{% endif %}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ meta_twitter_title }}">
+    <meta name="twitter:description" content="{{ meta_twitter_description }}">
+    <meta name="twitter:image" content="{% if meta_twitter_image %}{{ meta_twitter_image }}{% elif meta_og_image %}{{ meta_og_image }}{% else %}{{ request.scheme|default:'https' }}://{{ request.get_host }}{% static 'images/logo-text.png' %}{% endif %}">
+    {% if seo_noindex %}<meta name="robots" content="noindex, nofollow">{% endif %}
     {% block head_extra %}
     {% endblock %}
     <link rel="stylesheet" href="{% static 'css/core.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}?v={% now 'U' %}">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" sizes="32x32" href="{% static 'images/favicon.ico' %}?v={% now 'U' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}?v={% now 'U' %}">
+    <link rel="apple-touch-icon" href="{% static 'images/favicon.ico' %}?v={% now 'U' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Load Inter with 800 so brand weight stays consistent site-wide -->

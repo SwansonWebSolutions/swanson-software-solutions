@@ -3,6 +3,48 @@
 
 {% block head_extra %}
   <link rel="stylesheet" href="{% static 'css/index.css' %}?v={% now 'U' %}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ request.scheme|default:'https' }}://{{ request.get_host }}/#organization",
+        "name": "Swanson Software Solutions",
+        "url": "{{ request.scheme|default:'https' }}://{{ request.get_host }}/",
+        "logo": "{{ request.scheme|default:'https' }}://{{ request.get_host }}{% static 'images/logo-text.png' %}",
+        "description": "Privacy-first software studio building Shopify stores, WordPress sites, iOS apps, and compliance systems.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "sales",
+          "url": "{{ request.scheme|default:'https' }}://{{ request.get_host }}{% url 'website:contact' %}"
+        }
+      },
+      {
+        "@type": "ProfessionalService",
+        "serviceType": [
+          "Shopify development",
+          "WordPress development",
+          "iOS app development",
+          "Data privacy and compliance systems"
+        ],
+        "provider": { "@id": "{{ request.scheme|default:'https' }}://{{ request.get_host }}/#organization" },
+        "areaServed": "Global",
+        "url": "{{ canonical_url|default:request.build_absolute_uri }}",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Core services",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom SaaS and web platforms" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Shopify storefront builds" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "WordPress publishing systems" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "iOS application design and build" } }
+          ]
+        }
+      }
+    ]
+  }
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -13,12 +55,12 @@
 <section class="hero">
   <div class="container hero-inner">
     <div class="stack" style="--stack-gap:1rem">
-      <span class="badge">Shopify • WordPress • Custom Web • iOS</span>
-      <h1>Technology. Data Privacy. Innovation.</h1>
-      <p>We build privacy-driven technology: websites, apps, and compliance systems that safeguard users, empower businesses, and stand the test of time.</p>
+      <span class="badge">Shopify | WordPress | Custom Web | iOS</span>
+      <h1>Privacy-first Shopify, WordPress, iOS, and custom web development.</h1>
+      <p>SwanTech builds secure websites, apps, and data privacy systems that load fast, convert better, and keep customer trust intact.</p>
       <div class="cluster" style="--cluster-gap:.5rem">
-        <a class="btn" href="{% url 'website:contact' %}?inquiry=web">Need something Built?</a>
-        <a class="btn secondary" href="{% url 'website:index' %}#stop-my-spam">Protect your privacy</a>
+        <a class="btn" href="{% url 'website:contact' %}?inquiry=web">Plan your build</a>
+        <a class="btn secondary" href="{% url 'website:index' %}#stop-my-spam">Protect your inbox</a>
       </div>
     </div>
 
@@ -101,7 +143,7 @@
 <section class="section" >
   <div class="container stack" style="--stack-gap:1.25rem">
     <h2>What we build</h2>
-    <p class="lead">From SaaS platforms to pixel‑perfect mobile apps and high‑performance storefronts.</p>
+    <p class="lead">From SaaS platforms to pixel-perfect mobile apps and high-performance storefronts.</p>
 
     <div class="grid build-grid" >
       <!-- Custom Web / SaaS -->
@@ -114,10 +156,10 @@
               <span class="chip"><i class="fa-solid fa-diagram-project"></i></span>
             </div>
             <h3 class="svc__title">SaaS Web Development</h3>
-            <p class="svc__desc">Develop SaaS products or bespoke web solutions with secure auth, role‑based access, and dashboards.</p>
+            <p class="svc__desc">Develop SaaS products or bespoke web solutions with secure auth, role-based access, and dashboards.</p>
             <ul class="svc__features">
               <li>Secure auth & RBAC</li>
-              <li>Real‑time analytics</li>
+              <li>Real-time analytics</li>
               <li>API design & integrations</li>
               <li>CI/CD & cloud deploys</li>
             </ul>
@@ -161,7 +203,7 @@
             <span class="chip"><i class="fa-solid fa-cart-shopping"></i></span>
           </div>
           <h3 class="svc__title">Shopify Development</h3>
-          <p class="svc__desc">We will build a Shopify eCommerce store focused on speed, conversion, and maintainability.</p>
+          <p class="svc__desc">We build Shopify eCommerce stores focused on speed, conversion, and maintainability.</p>
           <ul class="svc__badges">
             <li>Theme builds</li>
             <li>Checkout UX</li>
@@ -181,7 +223,7 @@
             <span class="chip"><i class="fa-solid fa-pen-ruler"></i></span>
           </div>
           <h3 class="svc__title">WordPress Development</h3>
-          <p class="svc__desc">We will build a WordPress blog or any application‑tangible site with robust blocks and performance.</p>
+          <p class="svc__desc">We build WordPress blogs or application-grade sites with robust blocks and performance.</p>
           <ul class="svc__checklist">
             <li>Custom block patterns</li>
             <li>Headless or classic theme</li>
@@ -203,7 +245,7 @@
     <div class="stack" style="--stack-gap:1rem">
       <span class="badge">Stay in the loop</span>
       <h2>Privacy, product, and engineering in your inbox.</h2>
-      <p class="lead">A weekly email featuring the most recent insights we publish — privacy compliance, web performance, and iOS development.</p>
+      <p class="lead">A weekly email featuring the latest insights we publish - privacy compliance, web performance, and iOS development.</p>
       <ul class="newsletter-points">
         <li><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Freshest insights every week</li>
         <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Unsubscribe anytime</li>

@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
+from django.templatetags.static import static
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.urls import reverse
@@ -75,7 +76,22 @@ def _ensure_consumer(email: str, first: str, last: str, phone: str, weekly_opt_i
 
 def index(request):
     """Landing page view"""
-    return render(request, 'website/index.html')
+    seo_image = request.build_absolute_uri(static("images/logo-text.png"))
+    context = {
+        "seo_title": "Privacy-first Shopify, WordPress, and iOS development | Swanson Software Solutions",
+        "seo_description": (
+            "Swanson Software Solutions builds privacy-first Shopify stores, WordPress sites, iOS apps, "
+            "and compliance systems for teams that value data protection, performance, and conversion."
+        ),
+        "seo_keywords": (
+            "Shopify development, WordPress development, iOS app development, privacy-first software, "
+            "data privacy compliance, software studio, web performance"
+        ),
+        "canonical_url": request.build_absolute_uri(),
+        "og_image": seo_image,
+        "twitter_image": seo_image,
+    }
+    return render(request, 'website/index.html', context)
 
 
 def newsletter_subscribe(request):
