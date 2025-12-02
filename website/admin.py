@@ -16,6 +16,7 @@ from .models import (
     ConsumerBrokerStatus,
     NewsletterSubscriber,
 )
+from .utils import manage_preferences_url
 # Register your models here.
 
 class DoNotEmailRequestAdmin(admin.ModelAdmin):
@@ -47,6 +48,8 @@ class ConsumerAdmin(admin.ModelAdmin):
                 "total_brokers": total,
                 "lookback_start": timezone.now() - timedelta(days=7),
                 "generated_at": timezone.now(),
+                "manage_url": manage_preferences_url(),
+                "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", getattr(settings, "DEFAULT_FROM_EMAIL", "")),
             }
             subject = "Weekly Status Update from Stop My Spam"
             text_body = render_to_string("emails/consumer_weekly_status.txt", context)

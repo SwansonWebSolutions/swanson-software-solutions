@@ -1,0 +1,27 @@
+{% extends "website/base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:700px;">
+    <div class="stack" style="--stack-gap:1.25rem">
+      <div class="stack">
+        <h1>Manage your preferences</h1>
+        <p class="muted">Unsubscribe from our newsletter or opt out of weekly status updates. Questions? Email <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+      </div>
+      <div class="card">
+        <form method="post" class="stack" style="--stack-gap:1rem">
+          {% csrf_token %}
+          <div class="field">
+            <label for="pref-email">Email address</label>
+            <input id="pref-email" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="stack" style="--stack-gap:.75rem">
+            <label><input type="checkbox" name="unsubscribe_newsletter"> Unsubscribe from newsletter</label>
+            <label><input type="checkbox" name="opt_out_weekly"> Opt out of weekly status updates</label>
+          </div>
+          <button type="submit" class="btn">Update preferences</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

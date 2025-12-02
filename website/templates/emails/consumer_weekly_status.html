@@ -56,7 +56,9 @@
       </div>
     </div>
 
-    <p>We continue to follow up with every broker until your request is confirmed. If you have questions, contact us at <a href="mailto:support@swantech.org">support@swantech.org</a>.</p>
+    <p>We continue to follow up with every broker until your request is confirmed. If you have questions, contact us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+
+    <p class="muted" style="margin-top:10px;">Manage preferences: <a href="{{ manage_url }}">{{ manage_url }}</a></p>
 
     <div class="footer">
       <p>&copy; {% now 'Y' %} Stop My Spam. All rights reserved.</p>

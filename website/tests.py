@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
+from django.core import mail
+from django.core.management import call_command
 
 from website.models import (
     Consumer,
@@ -9,7 +11,7 @@ from website.models import (
     BrokerCompliance,
     NewsletterSubscriber,
 )
-from django.core import mail
+from insights.models import Insight
 
 
 class BrokerComplianceViewTests(TestCase):
@@ -158,3 +160,28 @@ class NewsletterSubscribeTests(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(NewsletterSubscriber.objects.filter(email="hello@example.com").count(), 1)
         self.assertEqual(len(mail.outbox), 0)
+
+
+class NewsletterCommandTests(TestCase):
+    def setUp(self):
+        mail.outbox.clear()
+        # Create subscribers
+        NewsletterSubscriber.objects.create(email="alice@example.com")
+        NewsletterSubscriber.objects.create(email="bob@example.com")
+        # Four insights; only newest 3 (by created_at) should be included
+        Insight.objects.create(title="Old Insight", description="Old desc", topic=Insight.TOPIC_DATA_PRIVACY)
+        Insight.objects.create(title="Insight 1", description="Desc 1", topic=Insight.TOPIC_WEB_DEV)
+        Insight.objects.create(title="Insight 2", description="Desc 2", topic=Insight.TOPIC_IOS)
+        Insight.objects.create(title="Insight 3", description="Desc 3", topic=Insight.TOPIC_MARKETING)
+
+    def test_command_sends_to_all_subscribers_with_latest_three_insights(self):
+        call_command("send_newsletter")
+        self.assertEqual(len(mail.outbox), 1)
+        message = mail.outbox[0]
+        self.assertIn("weekly insights", message.subject.lower())
+        self.assertCountEqual(message.bcc, ["alice@example.com", "bob@example.com"])
+        body = message.body
+        self.assertIn("Insight 1", body)
+        self.assertIn("Insight 2", body)
+        self.assertIn("Insight 3", body)
+        self.assertNotIn("Old Insight", body)

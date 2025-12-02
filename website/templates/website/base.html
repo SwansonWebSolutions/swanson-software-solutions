@@ -16,6 +16,7 @@
     <!-- Load Inter with 800 so brand weight stays consistent site-wide -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="{% static 'js/newsletter_confirm.js' %}?v={% now 'U' %}" defer></script>
 </head>
 <body>
     {% include 'includes/navbar.html' %}

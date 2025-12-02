@@ -19,6 +19,7 @@ from django.http import HttpResponseBadRequest
 from django.utils import timezone
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from .utils import manage_preferences_url
 # Create your views here.
 
 
@@ -99,7 +100,11 @@ def newsletter_subscribe(request):
     subscriber, created = NewsletterSubscriber.objects.get_or_create(email=email)
     if created:
         # Send welcome email
-        context = {"email": email}
+        context = {
+            "email": email,
+            "manage_url": manage_preferences_url(),
+            "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
+        }
         text_content = render_to_string("emails/newsletter_welcome.txt", context)
         html_content = render_to_string("emails/newsletter_welcome.html", context)
         from_email = f"SwanTech Newsletter <{getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@swantech.org')}>"
@@ -254,7 +259,11 @@ def submit_do_not_email(request):
     """POST endpoint placeholder for Do Not Email submissions.
     Currently no processing; returns the same form page.
     """
-    context = {"stripe_dne_link": _stripe_dne_link()}
+    context = {
+        "stripe_dne_link": _stripe_dne_link(),
+        "manage_url": manage_preferences_url(),
+        "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
+    }
     if request.method == 'GET' and request.GET.get('paid') == '1':
         # Bridge page will collect cached values from localStorage and post them here
         return render(request, 'website/checkout_bridge.html', {
@@ -333,6 +342,8 @@ def submit_do_not_email(request):
                 "first_name": obj.first_name,
                 "last_name": obj.last_name,
                 "primary_email": obj.primary_email,
+                "manage_url": manage_preferences_url(),
+                "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
             }
 
             text_content = render_to_string('emails/do_not_email_confirmation.txt', context)
@@ -410,6 +421,8 @@ def contact_sales_page(request):
             "name": name,
             "company": company,
             "email": email,
+            "manage_url": manage_preferences_url(),
+            "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
         }
         text_content = render_to_string('emails/contact_confirmation.txt', context)
         html_content = render_to_string('emails/contact_confirmation.html', context)
@@ -426,6 +439,48 @@ def contact_sales_page(request):
         messages.success(request, "Your message has been sent! We'll get back to you soon.")
         return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
     return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
+
+
+def manage_preferences(request):
+    """Allow users to unsubscribe from newsletter or opt out of weekly status emails."""
+    if request.method == "POST":
+        email_raw = (request.POST.get("email") or "").strip()
+        unsub_news = (request.POST.get("unsubscribe_newsletter") or "").lower() in ("on", "true", "1", "yes")
+        opt_out_weekly = (request.POST.get("opt_out_weekly") or "").lower() in ("on", "true", "1", "yes")
+
+        if not email_raw:
+            messages.error(request, "Please enter your email address.")
+            return redirect("website:manage-preferences")
+        if not (unsub_news or opt_out_weekly):
+            messages.info(request, "Select at least one preference to update.")
+            return redirect("website:manage-preferences")
+
+        email = email_raw.lower()
+        news_deleted = 0
+        if unsub_news:
+            news_deleted, _ = NewsletterSubscriber.objects.filter(email=email).delete()
+        weekly_updated = 0
+        if opt_out_weekly:
+            weekly_updated = Consumer.objects.filter(primary_email=email, weekly_status_opt_in=True).update(
+                weekly_status_opt_in=False, updated_at=timezone.now()
+            )
+
+        if news_deleted:
+            messages.success(request, "You have been unsubscribed from the newsletter.")
+        if opt_out_weekly and weekly_updated:
+            messages.success(request, "You have opted out of weekly status updates.")
+        if (unsub_news and not news_deleted) or (opt_out_weekly and not weekly_updated):
+            messages.info(request, "Your preferences were already up to date.")
+
+        return redirect("website:manage-preferences")
+
+    return render(
+        request,
+        "website/manage_preferences.html",
+        {
+            "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
+        },
+    )
 
 
 def broker_compliance(request, tracking_token=None):

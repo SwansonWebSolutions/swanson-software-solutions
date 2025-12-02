@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from email_service.logger import get_script_logger
 from website.models import Consumer
+from website.utils import manage_preferences_url
 
 
 class Command(BaseCommand):
@@ -59,6 +60,8 @@ class Command(BaseCommand):
                 "total_brokers": total,
                 "lookback_start": lookback,
                 "generated_at": timezone.now(),
+                "manage_url": manage_preferences_url(),
+                "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", getattr(settings, "DEFAULT_FROM_EMAIL", "")),
             }
             text_body = render_to_string("emails/consumer_weekly_status.txt", context)
             html_body = render_to_string("emails/consumer_weekly_status.html", context)

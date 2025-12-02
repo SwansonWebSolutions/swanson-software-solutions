@@ -280,3 +280,13 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
   .newsletter-input { flex-direction: column; }
   .newsletter-input .btn { width: 100%; justify-content: center; }
 }
+.newsletter-card.confirm-anim {
+  animation: newsletter-pop 0.9s ease;
+  box-shadow: 0 16px 40px rgba(31, 191, 138, 0.25), var(--shadow);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+@keyframes newsletter-pop {
+  0% { transform: scale(0.98); }
+  40% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}

@@ -10,11 +10,13 @@ What happens next:
 - We will confirm your status and keep a record for your reference.
 - We will maintain your opt-out for 12 months to keep lists updated.
 
-Timeline: Most marketing emails stop within 7–14 days.
+Timeline: Most marketing emails stop within 7-14 days.
 
 Questions? Reply to this email or visit our FAQ at /faq
 
+Manage preferences: {{ manage_url }}
+Support: {{ support_email }}
+
 If you didn’t make this request, please reply and let us know.
 
-— Stop My Spam
-
+-- Stop My Spam

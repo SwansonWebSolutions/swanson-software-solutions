@@ -11,4 +11,7 @@ Here is your latest Stop My Spam update (generated {{ generated_at|date:"M j, Y"
 
 We continue to follow up with every broker until your request is confirmed. Reply to this email if you have any questions.
 
-— Stop My Spam Compliance
+Manage preferences: {{ manage_url }}
+Support: {{ support_email }}
+
+-- Stop My Spam Compliance

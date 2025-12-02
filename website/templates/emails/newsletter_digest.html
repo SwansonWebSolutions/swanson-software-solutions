@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial, sans-serif;color:#0f172a;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:20px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:14px;box-shadow:0 8px 24px rgba(15,23,42,0.08);overflow:hidden;">
+            <tr>
+              <td style="padding:24px 28px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td style="padding-bottom:8px;">
+                      <img src="{{ logo_url }}" alt="SwanTech" width="160" style="display:block;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:24px;font-weight:700;padding:6px 0 4px;">Your weekly SwanTech insights</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:15px;line-height:1.6;color:#374151;">
+                      Here's what's new this week. We pulled the three most recent insights from our team.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 6px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:12px;padding:16px 18px;background:#f9fafb;">
+                  {% for insight in insights %}
+                  <tr>
+                    <td style="padding:10px 0;">
+                      <div style="font-size:17px;font-weight:700;color:#0f172a;margin-bottom:4px;">{{ insight.title }}</div>
+                      {% if insight.topic %}
+                        <div style="font-size:13px;color:#0a2d6b;font-weight:700;margin-bottom:6px;">{{ insight.get_topic_display|default:insight.topic }}</div>
+                      {% endif %}
+                      <div style="font-size:14px;line-height:1.6;color:#374151;">
+                        {{ insight.description }}
+                      </div>
+                    </td>
+                  </tr>
+                  {% if not forloop.last %}
+                  <tr>
+                    <td style="border-bottom:1px solid #e5e7eb;height:1px;"></td>
+                  </tr>
+                  {% endif %}
+                  {% endfor %}
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:10px 28px 4px;">
+                <a href="{{ insights_url }}" style="display:inline-block;padding:10px 14px;background:#2f8dfb;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:14px;">See all insights</a>
+                <a href="{{ home_url }}" style="display:inline-block;padding:10px 14px;margin-left:8px;background:#1fbf8a;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:14px;">Visit homepage</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:6px 28px 20px;">
+                <div style="font-size:12px;color:#6b7280;line-height:1.6;">
+                  You're receiving this because you subscribed to the SwanTech newsletter.
+                  Manage preferences: <a href="{{ manage_url }}" style="color:#2f8dfb;">{{ manage_url }}</a><br>
+                  Support: <a href="mailto:{{ support_email }}" style="color:#2f8dfb;">{{ support_email }}</a>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div style="font-size:12px;color:#9ca3af;padding-top:10px;">© {{ generated_at|date:"Y" }} SwanTech. All rights reserved.</div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

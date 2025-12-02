@@ -1,0 +1,13 @@
+SwanTech Weekly Insights
+
+Here are our three newest insights:
+{% for insight in insights %}
+- {{ insight.title }}{% if insight.topic %} ({{ insight.get_topic_display|default:insight.topic }}){% endif %}
+  {{ insight.description|truncatechars:200 }}
+{% endfor %}
+
+Read more insights: {{ insights_url }}
+Visit our homepage: {{ home_url }}
+
+Manage preferences: {{ manage_url }}
+Support: {{ support_email }}
