@@ -1,0 +1,11 @@
+{% extends "website/base.html" %}
+{% block title %}Something went wrong{% endblock %}
+{% block content %}
+<section class="section" style="padding:60px 20px; text-align:center;">
+  <h1 style="font-size:32px; margin-bottom:12px;">Something went wrong</h1>
+  <p style="color:#4b5563; margin-bottom:24px;">
+    Our team has been notified. Please try again in a moment, or head back to the home page.
+  </p>
+  <a class="btn" href="{% url 'website:index' %}">Back to home</a>
+</section>
+{% endblock %}
