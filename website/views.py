@@ -78,14 +78,14 @@ def index(request):
     """Landing page view"""
     seo_image = request.build_absolute_uri(static("images/logo-text.png"))
     context = {
-        "seo_title": "Privacy-first Shopify, WordPress, and iOS development | Swanson Software Solutions",
+        "seo_title": "Software Development for Web, Shopify, WordPress, and iOS development | SwanTech",
         "seo_description": (
-            "Swanson Software Solutions builds privacy-first Shopify stores, WordPress sites, iOS apps, "
+            "SwanTech builds privacy-first Shopify stores, WordPress sites, iOS apps, "
             "and compliance systems for teams that value data protection, performance, and conversion."
         ),
         "seo_keywords": (
-            "Shopify development, WordPress development, iOS app development, privacy-first software, "
-            "data privacy compliance, software studio, web performance"
+            "Shopify development, WordPress development, iOS app development, privacy software, "
+            "data privacy compliance, software studio, web performance, custom software development, spam removal"
         ),
         "canonical_url": request.build_absolute_uri(),
         "og_image": seo_image,
