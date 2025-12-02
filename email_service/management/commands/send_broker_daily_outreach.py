@@ -1,3 +1,4 @@
+import random
 from datetime import datetime, time, timedelta
 from io import StringIO
 from zoneinfo import ZoneInfo
@@ -13,6 +14,7 @@ from django.utils import timezone
 
 from email_service.logger import get_script_logger
 from website.models import DataBrokers2025, BrokerCompliance, DoNotEmailRequest
+from website.models import ConsumerBrokerStatus
 
 
 def _split_recipients(raw: str | None) -> list[str]:
@@ -35,8 +37,8 @@ def build_compliance_link(base_url: str, token: str) -> str:
 
 class Command(BaseCommand):
     help = (
-        "Send one daily outreach email per broker with a CSV of paid Stop My Spam "
-        "signups from 8am prior day to 8am today (America/Los_Angeles)."
+        "Send one daily outreach email per broker with pending compliance links "
+        "and a windowed Stop My Spam CSV available on the compliance page."
     )
 
     def add_arguments(self, parser):
@@ -45,6 +47,14 @@ class Command(BaseCommand):
             type=int,
             default=3600,
             help="Drip duration across all emails (default: 3600 = 1 hour).",
+        )
+        parser.add_argument("--min", dest="min_count", type=int, default=1, help="Minimum emails to send this run.")
+        parser.add_argument("--max", dest="max_count", type=int, default=50, help="Maximum emails to send this run.")
+        parser.add_argument(
+            "--delay-minutes",
+            type=float,
+            default=3.0,
+            help="Delay between emails in minutes (default: 3).",
         )
         parser.add_argument("--limit", type=int, default=None, help="Limit number of brokers processed.")
         parser.add_argument("--offset", type=int, default=0, help="Skip the first N brokers before processing.")
@@ -62,9 +72,9 @@ class Command(BaseCommand):
             "--message",
             default=(
                 "Hello {broker},\n\n"
-                "This is a consumer privacy request submitted through Stop My Spam for the deletion of the following records in the attached CSV.\n\n"
+                "This is a consumer privacy request submitted through Stop My Spam for the deletion of the following records in your queue.\n\n"
                 "Requested action: Delete/Remove\n\n"
-                "Please confirm completion or provide the current status using the secure link below:\n"
+                "Please confirm completion or provide the current status using the secure link below (you will also see the CSV export on that page):\n"
                 "{compliance_link}\n\n"
                 "If you have questions you can reply to this email and our compliance team will follow up promptly.\n\n"
                 "Thank you for your cooperation,\n"
@@ -98,15 +108,37 @@ class Command(BaseCommand):
             return
 
         record_count = dne_qs.count()
-        csv_filename, csv_body = self._build_csv(dne_qs, la, start, end)
+        csv_filename = self._csv_filename(start, end, la)
 
-        qs = DataBrokers2025.objects.filter(is_active=True).order_by("id")
-        if opts["offset"]:
-            qs = qs[opts["offset"] :]
+        base_qs = DataBrokers2025.objects.filter(is_active=True).order_by("id")
+        test_mode = opts.get("test", False)
+        manual_offset = opts["offset"] or 0
+        # Determine starting index based on how many brokers have already been sent to.
+        if test_mode:
+            sent_so_far = 0
+        else:
+            sent_so_far = (
+                BrokerCompliance.objects.filter(
+                    broker__is_active=True,
+                    last_sent_at__isnull=False,
+                )
+                .values("broker_id")
+                .distinct()
+                .count()
+            )
+        start_index = sent_so_far + manual_offset
+        qs = base_qs[start_index:]
         if opts["limit"] is not None:
             qs = qs[: opts["limit"]]
-        if opts.get("test"):
+        if test_mode:
             qs = qs[:1]
+
+        total_available = qs.count()
+        min_count = max(1, opts.get("min_count") or 1)
+        max_count = max(min_count, opts.get("max_count") or min_count)
+        target = random.randint(min_count, max_count)
+        target = min(target, total_available)
+        qs = qs[:target]
 
         total = qs.count()
         if total == 0:
@@ -115,20 +147,23 @@ class Command(BaseCommand):
 
         duration = max(0, int(opts["duration_seconds"]))
         interval = duration / total if total else 0
+        delay_seconds = max(0, float(opts.get("delay_minutes", 0)) * 60.0)
 
         base_url = getattr(settings, "PUBLIC_BASE_URL", "http://127.0.0.1:8000")
         from_email = getattr(settings, "COMPLIANCE_EMAIL_HOST_USER", None) or getattr(settings, "EMAIL_HOST_USER", None)
         subject = opts["subject"]
         message_template = opts["message"]
-        test_mode = opts.get("test", False)
         test_recipients = list(getattr(settings, "TEST_BROKER_RECIPIENTS", []))
 
         if test_mode and not test_recipients:
             logger.warning("TEST_BROKER_RECIPIENTS is empty; test mode will send nothing.")
 
         logger.info(
-            "Starting daily broker outreach: total=%s interval=%.2fs window=%s->%s",
+            "Starting daily broker outreach: start_index=%s total=%s (target from %s-%s) interval=%.2fs window=%s->%s",
+            start_index,
             total,
+            min_count,
+            max_count,
             interval,
             start,
             end,
@@ -162,6 +197,33 @@ class Command(BaseCommand):
             )
             link = build_compliance_link(base_url, compliance.token)
 
+            pending_statuses = list(
+                ConsumerBrokerStatus.objects.filter(
+                    broker=broker,
+                    status__in=[
+                        ConsumerBrokerStatus.Status.QUEUED,
+                        ConsumerBrokerStatus.Status.CONTACTED,
+                        ConsumerBrokerStatus.Status.PROCESSING,
+                        ConsumerBrokerStatus.Status.REJECTED,
+                        ConsumerBrokerStatus.Status.NO_RESPONSE,
+                        ConsumerBrokerStatus.Status.BOUNCED,
+                    ],
+                )
+                .select_related("consumer")
+                .order_by("-created_at")
+            )
+            status_links = []
+            for status in pending_statuses:
+                status_link = build_compliance_link(base_url, status.tracking_token)
+                status_links.append(
+                    {
+                        "consumer_name": status.consumer.full_name,
+                        "consumer_email": status.consumer.primary_email,
+                        "request_type": status.get_request_type_display(),
+                        "link": status_link,
+                    }
+                )
+
             if test_mode:
                 recipients = test_recipients
             else:
@@ -171,6 +233,12 @@ class Command(BaseCommand):
                 continue
 
             body = message_template.format(compliance_link=link, broker=broker.name)
+            if status_links:
+                pending_lines = "\n".join(
+                    f"- {item['consumer_name']} ({item['consumer_email']}) — {item['request_type']}: {item['link']}"
+                    for item in status_links
+                )
+                body = f"{body}\n\nPending consumer requests:\n{pending_lines}"
 
             try:
                 email = EmailMultiAlternatives(subject, body, from_email, recipients)
@@ -179,10 +247,10 @@ class Command(BaseCommand):
                     {
                         "broker_name": broker.name,
                         "compliance_link": link,
+                        "pending_statuses": status_links,
                     },
                 )
                 email.attach_alternative(html_body, "text/html")
-                email.attach(csv_filename, csv_body, "text/csv")
                 email.send()
                 sent += 1
                 now_ts = timezone.now()
@@ -194,8 +262,10 @@ class Command(BaseCommand):
             except Exception as exc:  # pragma: no cover - defensive
                 logger.exception("[%d/%d] Failed to send to %s | broker=%s | %s", idx, total, recipients, broker.name, exc)
 
-            if idx < total and interval > 0:
-                time_module.sleep(max(0.01, interval))
+            if idx < total:
+                sleep_for = delay_seconds or interval
+                if sleep_for > 0:
+                    time_module.sleep(max(0.01, sleep_for))
 
         logger.info("Completed daily outreach. Sent=%s of total=%s", sent, total)
         self.stdout.write(self.style.SUCCESS(f"Completed daily outreach. Sent={sent} of total={total}"))
@@ -235,10 +305,14 @@ class Command(BaseCommand):
                     created_local,
                 ]
             )
+        filename = self._csv_filename(start, end, la)
+        return filename, buf.getvalue()
+
+    @staticmethod
+    def _csv_filename(start, end, la: ZoneInfo) -> str:
         start_label = start.astimezone(la).strftime("%Y%m%d_%H%M")
         end_label = end.astimezone(la).strftime("%Y%m%d_%H%M")
-        filename = f"dne_records_{start_label}_to_{end_label}.csv"
-        return filename, buf.getvalue()
+        return f"dne_records_{start_label}_to_{end_label}.csv"
 
     def _compute_window(self, opts, la: ZoneInfo):
         """Default window: 8am prior day -> 8am today (America/Los_Angeles)."""

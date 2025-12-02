@@ -26,12 +26,26 @@
     <h1>Stop My Spam CCPA Compliance</h1>
     <p>Hello {{ broker_name }},</p>
 
-    <p>This is a consumer privacy request submitted through Stop My Spam for the deletion of the following records in the attached CSV.</p>
+    <p>This is a consumer privacy request submitted through Stop My Spam for the deletion of the following records currently in your queue.</p>
 
     <p><strong>Requested action:</strong> Delete/Remove</p>
 
-    <p>Please confirm completion or provide the current status using the secure link below:</p>
+    <p>Please confirm completion or provide the current status using the secure link below (the CSV export is available on that page):</p>
     <p><a class="btn" href="{{ compliance_link }}">Review &amp; confirm</a></p>
+
+    {% if pending_statuses %}
+      <div style="margin:18px 0;">
+        <p><strong>Pending consumer requests (newest first):</strong></p>
+        <ul style="padding-left:18px; margin-top:8px;">
+          {% for item in pending_statuses %}
+            <li style="margin-bottom:8px;">
+              {{ item.consumer_name }} ({{ item.consumer_email }}) — {{ item.request_type }} —
+              <a href="{{ item.link }}">Open compliance link</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
 
     <p>If you have questions you can reply to this email and our compliance team will follow up promptly.</p>
 

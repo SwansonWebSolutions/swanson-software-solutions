@@ -1,6 +1,9 @@
-import re
+import csv
 import re
 import uuid
+from datetime import datetime, time, timedelta
+from io import StringIO
+from zoneinfo import ZoneInfo
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
@@ -8,10 +11,10 @@ from django.template.loader import render_to_string
 from django.templatetags.static import static
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 
 from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance, NewsletterSubscriber
@@ -529,6 +532,80 @@ def manage_preferences(request):
 def broker_compliance(request, tracking_token=None):
     """Display and accept broker confirmations tied to ConsumerBrokerStatus tokens."""
 
+    def build_token_url(token_value: str) -> str:
+        """Return absolute URL to this compliance page for a given token."""
+        try:
+            path = reverse("website:broker-compliance-token", args=[token_value])
+        except NoReverseMatch:
+            path = reverse("website:broker-compliance")
+            separator = "&" if "?" in path else "?"
+            path = f"{path}{separator}t={token_value}"
+        return request.build_absolute_uri(path)
+
+    def compute_csv_window(compliance_obj: BrokerCompliance | None) -> tuple[timezone.datetime, timezone.datetime, ZoneInfo]:
+        """Use stored window if present; otherwise default to prior-day 8am -> today 8am (LA)."""
+        la = ZoneInfo("America/Los_Angeles")
+        if compliance_obj and compliance_obj.last_window_start and compliance_obj.last_window_end:
+            return compliance_obj.last_window_start, compliance_obj.last_window_end, la
+        now_la = timezone.now().astimezone(la)
+        today = now_la.date()
+        end_default = timezone.make_aware(datetime.combine(today, time(8)), la)
+        if now_la < end_default:
+            end_default -= timedelta(days=1)
+        start_default = end_default - timedelta(days=1)
+        return start_default, end_default, la
+
+    def build_csv_response(start, end, la: ZoneInfo) -> HttpResponse | None:
+        qs = (
+            DoNotEmailRequest.objects.filter(
+                paid_confirmed=True,
+                created_at__gte=start,
+                created_at__lt=end,
+            ).order_by("created_at")
+        )
+        if not qs.exists():
+            return None
+        buf = StringIO()
+        writer = csv.writer(buf)
+        writer.writerow(
+            [
+                "first_name",
+                "last_name",
+                "email1",
+                "email2",
+                "address1",
+                "address2",
+                "city",
+                "state",
+                "postal",
+                "region",
+                "created_at",
+            ]
+        )
+        for r in qs:
+            created_local = r.created_at.astimezone(la).isoformat()
+            writer.writerow(
+                [
+                    r.first_name,
+                    r.last_name,
+                    r.primary_email,
+                    r.secondary_email or "",
+                    r.address1,
+                    r.address2 or "",
+                    r.city,
+                    r.region,
+                    r.postal,
+                    r.region,
+                    created_local,
+                ]
+            )
+        start_label = start.astimezone(la).strftime("%Y%m%d_%H%M")
+        end_label = end.astimezone(la).strftime("%Y%m%d_%H%M")
+        filename = f"dne_records_{start_label}_to_{end_label}.csv"
+        response = HttpResponse(buf.getvalue(), content_type="text/csv")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        return response
+
     if tracking_token:
         token = str(tracking_token)
     else:
@@ -568,12 +645,36 @@ def broker_compliance(request, tracking_token=None):
         if value in allowed_statuses
     ]
 
+    broker = status_record.broker if status_record else None
+    pending_statuses = []
+    csv_available = False
+    csv_window_label = ""
+    csv_count = 0
+
     if status_record is None:
         compliance = get_object_or_404(
             BrokerCompliance.objects.select_related("broker"),
             token=token,
         )
-        if request.method == 'POST':
+        broker = compliance.broker
+        csv_start, csv_end, la = compute_csv_window(compliance)
+        csv_window_label = (
+            f"{csv_start.astimezone(la).strftime('%Y-%m-%d %H:%M %Z')} "
+            f"to {csv_end.astimezone(la).strftime('%Y-%m-%d %H:%M %Z')}"
+        )
+        csv_count = DoNotEmailRequest.objects.filter(
+            paid_confirmed=True,
+            created_at__gte=csv_start,
+            created_at__lt=csv_end,
+        ).count()
+        csv_available = csv_count > 0
+        if request.method == 'POST' and request.POST.get('download_csv'):
+            csv_response = build_csv_response(csv_start, csv_end, la)
+            if csv_response:
+                return csv_response
+            messages.info(request, "No paid Stop My Spam records found for this window.")
+
+        if request.method == 'POST' and not request.POST.get('download_csv'):
             response_status = request.POST.get('response_status')
             if response_status not in allowed_statuses:
                 messages.error(request, 'Please choose a valid status response.')
@@ -593,17 +694,6 @@ def broker_compliance(request, tracking_token=None):
                         'compliance': compliance,
                     },
                 )
-        return render(
-            request,
-            'website/broker_compliance.html',
-            {
-                'status_record': None,
-                'compliance': compliance,
-                'status_choices': status_choices,
-                'token': token,
-                'preselected_status': "",
-            },
-        )
     else:
         if request.method == 'POST':
             response_status = request.POST.get('response_status')
@@ -625,14 +715,36 @@ def broker_compliance(request, tracking_token=None):
                     },
                 )
 
+    if broker:
+        pending_qs = (
+            ConsumerBrokerStatus.objects.filter(broker=broker)
+            .exclude(status=ConsumerBrokerStatus.Status.COMPLETED)
+            .select_related("consumer")
+            .order_by("-created_at")
+        )
+        for s in pending_qs:
+            pending_statuses.append(
+                {
+                    "id": s.id,
+                    "consumer_name": s.consumer.full_name,
+                    "consumer_email": s.consumer.primary_email,
+                    "request_type": s.get_request_type_display(),
+                    "link": build_token_url(s.tracking_token),
+                }
+            )
+
     return render(
         request,
         'website/broker_compliance.html',
         {
             'status_record': status_record,
-            'compliance': None,
+            'compliance': compliance,
             'status_choices': status_choices,
             'token': token,
             'preselected_status': preselected_status,
+            'pending_statuses': pending_statuses,
+            'csv_available': csv_available,
+            'csv_window_label': csv_window_label,
+            'csv_count': csv_count,
         },
     )

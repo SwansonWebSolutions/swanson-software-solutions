@@ -182,7 +182,7 @@ BROKER_DRIP_BATCH_SEQUENCE = [5, 10, 20, 30, 50, 75, 100]
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 

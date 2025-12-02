@@ -51,7 +51,7 @@
             Pending outreach
           {% endif %}
         </li>
-        <li><span>Records included:</span>
+      <li><span>Records included:</span>
           {% if compliance and compliance.last_request_count %}
             {{ compliance.last_request_count }} consumer{{ compliance.last_request_count|pluralize }}
             {% if compliance.last_export_filename %} ({{ compliance.last_export_filename }}){% endif %}
@@ -61,6 +61,40 @@
         </li>
       {% endif %}
     </ul>
+
+    {% if pending_statuses %}
+      <div class="card" style="margin-bottom: 16px;">
+        <h3>Outstanding consumer requests</h3>
+        <ul class="meta">
+          {% for item in pending_statuses %}
+            <li>
+              <span>{{ item.consumer_name }}</span> ({{ item.consumer_email }}) — {{ item.request_type }}
+              <br>
+              <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer">Open compliance link</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    {% if compliance %}
+      <div class="card" style="margin-bottom: 16px;">
+        <h3>Stop My Spam CSV export</h3>
+        <p style="margin: 0 0 8px 0;">
+          Window: {{ csv_window_label }} —
+          {{ csv_count }} record{{ csv_count|pluralize }}
+        </p>
+        <form method="post" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+          {% csrf_token %}
+          <input type="hidden" name="t" value="{{ token }}">
+          <input type="hidden" name="download_csv" value="1">
+          <button class="btn" type="submit" {% if not csv_available %}disabled{% endif %}>Download CSV</button>
+          {% if not csv_available %}
+            <span class="meta">No paid Stop My Spam records found in this window.</span>
+          {% endif %}
+        </form>
+      </div>
+    {% endif %}
 
     <form method="post">
       {% csrf_token %}
