@@ -22,4 +22,5 @@ urlpatterns = [
     path('terms/', views.terms_of_service_page, name='terms'),
     path('broker-compliance/<uuid:tracking_token>/', views.broker_compliance, name='broker-compliance-token'),
     path('broker-compliance/', views.broker_compliance, name='broker-compliance'),
+    path('sitemap.xml', views.sitemap_xml, name='sitemap'),
 ]

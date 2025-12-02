@@ -413,6 +413,46 @@ def do_not_contact_faq_page(request):
     """FAQ page for Do Not Call & Do Not Email services."""
     return render(request, 'website/do_not_contact_faq.html')
 
+def sitemap_xml(request):
+    """Return a simple XML sitemap covering public-facing pages."""
+    base_urls = [
+        ("website:index", {}),
+        ("website:company", {}),
+        ("website:clients", {}),
+        ("website:contact", {}),
+        ("website:insights", {}),
+        ("website:do-not-email", {}),
+        ("website:stop-my-spam", {}),
+        ("website:faq", {}),
+        ("website:privacy", {}),
+        ("website:terms", {}),
+    ]
+    url_entries = []
+    for name, kwargs in base_urls:
+        try:
+            url_entries.append(request.build_absolute_uri(reverse(name, kwargs=kwargs)))
+        except Exception:
+            continue
+
+    # Use latest Insight timestamp for lastmod if available.
+    latest_insight = Insight.objects.order_by("-created_at").first()
+    lastmod = latest_insight.created_at if latest_insight else timezone.now()
+
+    xml_parts = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for loc in url_entries:
+        xml_parts.append("  <url>")
+        xml_parts.append(f"    <loc>{loc}</loc>")
+        xml_parts.append(f"    <lastmod>{lastmod.strftime('%Y-%m-%d')}</lastmod>")
+        xml_parts.append("    <changefreq>weekly</changefreq>")
+        xml_parts.append("    <priority>0.8</priority>")
+        xml_parts.append("  </url>")
+    xml_parts.append("</urlset>")
+
+    return HttpResponse("\n".join(xml_parts), content_type="application/xml")
+
 
 def contact_sales_page(request):
     """Contact Sales page view with optional prefilled inquiry via ?inquiry= query.
