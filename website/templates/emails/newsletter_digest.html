@@ -33,7 +33,9 @@
                     <td style="padding:10px 0;">
                       <div style="font-size:17px;font-weight:700;color:#0f172a;margin-bottom:4px;">{{ insight.title }}</div>
                       {% if insight.topic %}
-                        <div style="font-size:13px;color:#0a2d6b;font-weight:700;margin-bottom:6px;">{{ insight.get_topic_display|default:insight.topic }}</div>
+                        <div style="font-size:13px;font-weight:700;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;color:{% if insight.topic == 'web-development' %}#0ea5e9{% elif insight.topic == 'marketing' %}#ec4899{% elif insight.topic == 'ios-development' %}#2563eb{% elif insight.topic == 'ecommerce' %}#16a34a{% elif insight.topic == 'data-privacy' %}#f59e0b{% else %}#0a2d6b{% endif %};">
+                          {{ insight.get_topic_display|default:insight.topic }}
+                        </div>
                       {% endif %}
                       <div style="font-size:14px;line-height:1.6;color:#374151;">
                         {{ insight.description }}
