@@ -1,7 +1,7 @@
 import datetime
 
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, get_connection
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.templatetags.static import static
@@ -53,9 +53,21 @@ class Command(BaseCommand):
 
         from_email = f"SwanTech Newsletter <{getattr(settings, 'DEFAULT_FROM_EMAIL', 'no-reply@swantech.org')}>"
 
-        msg = EmailMultiAlternatives(subject, text_body, from_email, bcc=subscribers)
-        msg.attach_alternative(html_body, "text/html")
-        msg.send()
+        connection = get_connection()
+        messages = []
+
+        for email in subscribers:
+            msg = EmailMultiAlternatives(
+                subject,
+                text_body,
+                from_email,
+                [email],
+                connection=connection,
+            )
+            msg.attach_alternative(html_body, "text/html")
+            messages.append(msg)
+
+        connection.send_messages(messages)
 
         self.stdout.write(
             self.style.SUCCESS(

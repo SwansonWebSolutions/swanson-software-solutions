@@ -95,7 +95,7 @@ class Command(BaseCommand):
         logger = get_script_logger("send_broker_daily_outreach")
         la = ZoneInfo("America/Los_Angeles")
         start, end = self._compute_window(opts, la)
-
+        
         dne_qs = (
             DoNotEmailRequest.objects.filter(
                 paid_confirmed=True,

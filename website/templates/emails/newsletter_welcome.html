@@ -1,9 +1,66 @@
 <!DOCTYPE html>
 <html>
-  <body style="font-family:Arial, sans-serif; color:#0f172a; line-height:1.5; padding:16px;">
-    <h2 style="margin-top:0;">Welcome to the SwanTech newsletter!</h2>
-    <p>Thanks for subscribing. Each week we'll send you our three newest insights across privacy compliance, performance, and product launches.</p>
-    <p style="margin:0;">Manage preferences: <a href="{{ manage_url }}">{{ manage_url }}</a></p>
-    <p style="margin:4px 0 0;">Support: <a href="mailto:{{ support_email }}">{{ support_email }}</a></p>
+  <body style="margin:0;padding:0;background:#f5f7fb;font-family:Arial, sans-serif;color:#0f172a;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:20px 0;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:14px;box-shadow:0 8px 24px rgba(15,23,42,0.08);overflow:hidden;">
+            <tr>
+              <td style="padding:24px 28px;">
+                <table role="presentation" width="100%">
+                  <tr>
+                    <td style="padding-bottom:8px;">
+                      <img src="{{ logo_url }}" alt="SwanTech" width="160" style="display:block;">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:24px;font-weight:700;padding:6px 0 4px;">Welcome to the SwanTech newsletter</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:15px;line-height:1.6;color:#374151;">
+                      Thanks for subscribing! Each week we'll send you our three newest insights across privacy compliance, performance, and product launches.
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 18px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:12px;padding:16px 18px;background:#f9fafb;">
+                  <tr>
+                    <td style="font-size:16px;font-weight:700;color:#0f172a;padding-bottom:6px;">What to expect</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:14px;line-height:1.6;color:#374151;">
+                      <ul style="padding-left:18px;margin:0;">
+                        <li style="margin:4px 0;">A weekly digest with three fresh insights.</li>
+                        <li style="margin:4px 0;">Topics covering privacy compliance, performance, and product launches.</li>
+                        <li style="margin:4px 0;">Direct links to dive deeper into each article.</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 28px 12px;">
+                <a href="{{ insights_url }}" style="display:inline-block;padding:10px 14px;background:#2f8dfb;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:14px;">See latest insights</a>
+                <a href="{{ manage_url }}" style="display:inline-block;padding:10px 14px;margin-left:8px;background:#1fbf8a;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:14px;">Manage preferences</a>
+                <a href="{{ home_url }}" style="display:inline-block;padding:10px 14px;margin-left:8px;background:#0f172a;color:#fff;text-decoration:none;border-radius:10px;font-weight:700;font-size:14px;">Visit homepage</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:6px 28px 20px;">
+                <div style="font-size:12px;color:#6b7280;line-height:1.6;">
+                  Need help? <a href="mailto:{{ support_email }}" style="color:#2f8dfb;">Email support</a><br>
+                  Manage preferences anytime: <a href="{{ manage_url }}" style="color:#2f8dfb;">Update settings</a>
+                </div>
+              </td>
+            </tr>
+          </table>
+          <div style="font-size:12px;color:#9ca3af;padding-top:10px;">SwanTech. All rights reserved.</div>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

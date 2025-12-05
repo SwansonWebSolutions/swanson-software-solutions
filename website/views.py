@@ -119,10 +119,22 @@ def newsletter_subscribe(request):
     subscriber, created = NewsletterSubscriber.objects.get_or_create(email=email)
     if created:
         # Send welcome email
+        base_url = getattr(settings, "PUBLIC_BASE_URL", "").rstrip("/")
+
+        def _absolute(path: str) -> str:
+            return f"{base_url}{path}" if base_url else request.build_absolute_uri(path)
+
+        insights_url = _absolute(reverse("website:insights"))
+        home_url = _absolute(reverse("website:index"))
+        logo_url = _absolute(static("images/logo-text.png"))
+
         context = {
             "email": email,
             "manage_url": manage_preferences_url(),
             "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
+            "insights_url": insights_url,
+            "home_url": home_url,
+            "logo_url": logo_url,
         }
         text_content = render_to_string("emails/newsletter_welcome.txt", context)
         html_content = render_to_string("emails/newsletter_welcome.html", context)
@@ -495,8 +507,8 @@ def contact_sales_page(request):
             f"Inquiry Type: {inquiry_type}\n"
             f"Message: {message_body}"
         )
-        from_email = "Swanson Technologies <daswanson22@gmail.com>"
-        recipient_list = ["daswanson22@gmail.com"]
+        from_email = "SwanTech Sales <contact@swantech.org>"
+        recipient_list = ["contact@swantech.org"]
 
         # Send notification email to your team
         send_mail(subject, message, from_email, recipient_list)
