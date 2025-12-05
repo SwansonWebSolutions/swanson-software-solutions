@@ -1,4 +1,5 @@
 import csv
+import json
 import re
 import uuid
 from datetime import datetime, time, timedelta
@@ -16,8 +17,9 @@ from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
+from django.views.decorators.cache import cache_page
 
-from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance, NewsletterSubscriber
+from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance, NewsletterSubscriber, ServiceMarket
 from insights.models import Insight
 from django.http import HttpResponseBadRequest
 from django.utils import timezone
@@ -431,6 +433,7 @@ def sitemap_xml(request):
         ("website:index", {}),
         ("website:company", {}),
         ("website:clients", {}),
+        ("website:services", {}),
         ("website:contact", {}),
         ("website:insights", {}),
         ("website:do-not-email", {}),
@@ -443,6 +446,27 @@ def sitemap_xml(request):
     for name, kwargs in base_urls:
         try:
             url_entries.append(request.build_absolute_uri(reverse(name, kwargs=kwargs)))
+        except Exception:
+            continue
+
+    # Location-specific service pages (limited to CA/AZ for now)
+    for market in ServiceMarket.objects.filter(state_id__in=["CA", "AZ"]):
+        try:
+            if market.service_type == ServiceMarket.ServiceType.WEB_DEVELOPMENT:
+                loc_url = request.build_absolute_uri(
+                    reverse(
+                        "website:location-web-development",
+                        kwargs={"state_slug": market.slug_state, "city_slug": market.slug_city},
+                    )
+                )
+            else:
+                loc_url = request.build_absolute_uri(
+                    reverse(
+                        "website:location-ios-app",
+                        kwargs={"state_slug": market.slug_state, "city_slug": market.slug_city},
+                    )
+                )
+            url_entries.append(loc_url)
         except Exception:
             continue
 
@@ -579,6 +603,60 @@ def manage_preferences(request):
             "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
         },
     )
+
+
+def _get_market_or_404(state_slug: str, city_slug: str, service_type: str) -> ServiceMarket:
+    return get_object_or_404(
+        ServiceMarket,
+        slug_state=state_slug,
+        slug_city=city_slug,
+        service_type=service_type,
+    )
+
+
+def _location_structured_data(request, market: ServiceMarket, service_label: str) -> str:
+    """Build LocalBusiness/Service JSON-LD for the location page."""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "SwanTech",
+        "url": request.build_absolute_uri(),
+        "telephone": "+1-805-850-3031",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "",
+            "addressLocality": "Ventura",
+            "addressRegion": "CA",
+            "addressCountry": "US",
+        },
+        "areaServed": {
+            "@type": "City",
+            "name": market.city,
+            "addressRegion": market.state_id,
+        },
+        "serviceType": service_label,
+    }
+    return json.dumps(data, separators=(",", ":"))
+
+
+@cache_page(60 * 60 * 6)
+def location_web_development(request, state_slug: str, city_slug: str):
+    market = _get_market_or_404(state_slug, city_slug, ServiceMarket.ServiceType.WEB_DEVELOPMENT)
+    context = {
+        "market": market,
+        "structured_data": _location_structured_data(request, market, "Web Development"),
+    }
+    return render(request, "website/location_web_development.html", context)
+
+
+@cache_page(60 * 60 * 6)
+def location_ios_app(request, state_slug: str, city_slug: str):
+    market = _get_market_or_404(state_slug, city_slug, ServiceMarket.ServiceType.IOS_APP)
+    context = {
+        "market": market,
+        "structured_data": _location_structured_data(request, market, "iOS App Development"),
+    }
+    return render(request, "website/location_ios_app.html", context)
 
 
 def broker_compliance(request, tracking_token=None):

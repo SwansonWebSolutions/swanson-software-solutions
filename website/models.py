@@ -451,3 +451,37 @@ class NewsletterSubscriber(models.Model):
 def auto_initialize_brokers(sender, instance: Consumer, created: bool, **kwargs):
     if created:
         instance.initialize_broker_statuses()
+
+
+class ServiceMarket(models.Model):
+    """City/state markets for location-specific landing pages."""
+
+    class ServiceType(models.TextChoices):
+        WEB_DEVELOPMENT = "web-development", "Web Development"
+        IOS_APP = "ios-app-development", "iOS App Development"
+
+    city = models.CharField(max_length=120)
+    state_id = models.CharField(max_length=2)
+    state_name = models.CharField(max_length=100)
+    zip_code = models.CharField(max_length=10, blank=True)
+    slug_city = models.SlugField(max_length=140, db_index=True)
+    slug_state = models.SlugField(max_length=140, db_index=True)
+    service_type = models.CharField(
+        max_length=32,
+        choices=ServiceType.choices,
+        default=ServiceType.WEB_DEVELOPMENT,
+    )
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("slug_state", "slug_city", "service_type")
+        indexes = [
+            models.Index(fields=("slug_state", "slug_city", "service_type")),
+            models.Index(fields=("state_id", "service_type")),
+        ]
+        ordering = ("state_name", "city")
+
+    def __str__(self) -> str:
+        return f"{self.city}, {self.state_id} — {self.get_service_type_display()}"

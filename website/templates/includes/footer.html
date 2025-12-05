@@ -8,19 +8,6 @@
       </div>
       <p class="muted">Precision-built websites and apps. Shopify, WordPress, Django, and mobile.</p>
     </div>
-    <div class="footer-stack footer-newsletter" id="footer-newsletter">
-      <h4>Newsletter</h4>
-      <form action="{% url 'website:newsletter-subscribe' %}" method="post" class="footer-form">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.get_full_path }}#footer-newsletter">
-        <label class="sr-only" for="footer-newsletter-email">Email address</label>
-        <div class="footer-input">
-          <input id="footer-newsletter-email" name="email" type="email" placeholder="you@example.com" required>
-          <button type="submit" class="btn secondary">Subscribe</button>
-        </div>
-        <small class="muted">Weekly email with our newest insights. Unsubscribe anytime.</small>
-      </form>
-    </div>
     <div class="footer-stack">
       <h4>Company</h4>
       <a href="{% url 'website:company' %}">Company</a>
@@ -38,6 +25,19 @@
       <a href="mailto:contact@swantech.org">contact@swantech.org</a>
       <a href="tel:(805) 850-3031">+1 (805) 850-3031</a>
       <a href="{% url 'website:contact' %}">Project brief</a>
+    </div>
+    <div class="footer-stack footer-newsletter" id="footer-newsletter">
+      <h4>Newsletter</h4>
+      <form action="{% url 'website:newsletter-subscribe' %}" method="post" class="footer-form">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}#footer-newsletter">
+        <label class="sr-only" for="footer-newsletter-email">Email address</label>
+        <div class="footer-input">
+          <input id="footer-newsletter-email" name="email" type="email" placeholder="you@example.com" required>
+          <button type="submit" class="btn secondary">Subscribe</button>
+        </div>
+        <small class="muted">Weekly email with our newest insights. Unsubscribe anytime.</small>
+      </form>
     </div>
   </div>
   <div class="container foot" style="margin-top: 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px">

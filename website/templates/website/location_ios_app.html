@@ -1,0 +1,112 @@
+{% extends "website/base.html" %}
+
+{% block title %}iOS App Development in {{ market.city }}, {{ market.state_id }} | SwanTech{% endblock %}
+
+{% block head_extra %}
+  <meta name="description" content="iOS app design, development, and launch support for teams in {{ market.city }}, {{ market.state_id }}.">
+  {% if structured_data %}
+    <script type="application/ld+json">
+      {{ structured_data|safe }}
+    </script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div style="padding:24px 0 32px; background:#ffffff;">
+  <section class="section">
+    <div class="container" style="border:1px solid rgba(15,23,42,0.1); border-radius:0; box-shadow:0 8px 24px rgba(15,23,42,0.05); padding:22px 22px 16px;">
+      <p class="insight-topic" style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#1f4b99;margin:0; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i> iOS App Development • {{ market.city }}, {{ market.state_id }}
+      </p>
+      <h1 style="font-size:32px;line-height:1.2;margin:12px 0 8px;color:#0f172a;">
+        Design and build iOS apps for {{ market.city }}, {{ market.state_name }}
+      </h1>
+      <p class="lead" style="margin:0;max-width:820px;color:#1f2937;line-height:1.65;">
+        Product strategy, Swift/SwiftUI builds, and App Store launch support tailored to your market in {{ market.city }}.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:16px;">
+    <div class="container stack" style="--stack-gap:0">
+      <div class="svc svc--ios" style="border-radius:0; padding:20px; background:#fff; border:1px solid rgba(15,23,42,0.1); box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span style="font-size:18px; color:#2563eb;"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></span>
+          <h2 style="margin:0;font-size:20px;color:#0f172a;">Product & UX</h2>
+        </div>
+        <p style="margin:0 0 10px;color:#374151;">We help you shape the roadmap, flows, and success metrics for your iOS app.</p>
+        <ul style="margin:0;padding-left:18px;color:#1f2937;line-height:1.6;">
+          <li>Product discovery and MVP scoping for {{ market.city }}</li>
+          <li>UX/UI for SwiftUI, HIG-aligned patterns, and accessibility</li>
+          <li>Analytics, events, and retention loops defined up front</li>
+        </ul>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:12px; background:rgba(47,141,251,0.12); color:#0f172a; font-weight:600; font-size:13px;"><i class="fa-solid fa-compass"></i> Strategy</span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:12px; background:rgba(47,141,251,0.12); color:#0f172a; font-weight:600; font-size:13px;"><i class="fa-solid fa-paintbrush"></i> UX</span>
+        </div>
+        <div style="margin-top:14px;">
+          <a class="btn secondary" href="{% url 'website:contact' %}?inquiry=app">Plan my iOS app</a>
+        </div>
+      </div>
+
+      <div style="height:1px; background:rgba(15,23,42,0.12); margin:18px 0;"></div>
+
+      <div class="svc svc--ios" style="border-radius:0; padding:20px; background:#fff; border:1px solid rgba(15,23,42,0.1); box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span style="font-size:18px; color:#16a34a;"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>
+          <h2 style="margin:0;font-size:20px;color:#0f172a;">Build & Integrations</h2>
+        </div>
+        <p style="margin:0 0 10px;color:#374151;">Swift/SwiftUI engineering with stable CI/CD and observability.</p>
+        <ul style="margin:0;padding-left:18px;color:#1f2937;line-height:1.6;">
+          <li>API integrations, auth, payments, and notifications</li>
+          <li>Performance, offline states, and crash monitoring</li>
+          <li>Privacy-first data handling and secure storage</li>
+        </ul>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:12px; background:rgba(22,163,74,0.12); color:#0f172a; font-weight:600; font-size:13px;"><i class="fa-solid fa-gears"></i> CI/CD</span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:12px; background:rgba(22,163,74,0.12); color:#0f172a; font-weight:600; font-size:13px;"><i class="fa-solid fa-lock"></i> Secure</span>
+        </div>
+        <div style="margin-top:14px;">
+          <a class="btn secondary" href="{% url 'website:contact' %}?inquiry=app">Discuss build & integrations</a>
+        </div>
+      </div>
+
+      <div style="height:1px; background:rgba(15,23,42,0.12); margin:18px 0;"></div>
+
+      <div class="svc svc--ios" style="border-radius:0; padding:20px; background:#fff; border:1px solid rgba(15,23,42,0.1); box-shadow:0 8px 24px rgba(15,23,42,0.05);">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span style="font-size:18px; color:#7c3aed;"><i class="fa-solid fa-rocket" aria-hidden="true"></i></span>
+          <h2 style="margin:0;font-size:20px;color:#0f172a;">Launch & Iterate</h2>
+        </div>
+        <p style="margin:0 0 10px;color:#374151;">App Store prep for {{ market.city }}, plus iteration after launch.</p>
+        <ul style="margin:0;padding-left:18px;color:#1f2937;line-height:1.6;">
+          <li>TestFlight distribution, review prep, and release plans</li>
+          <li>Feature flags and experiments to learn quickly</li>
+          <li>Support, maintenance, and roadmap partnership</li>
+        </ul>
+        <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:6px;">
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:12px; background:rgba(124,58,237,0.12); color:#0f172a; font-weight:600; font-size:13px;"><i class="fa-solid fa-flask"></i> Experiments</span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:12px; background:rgba(124,58,237,0.12); color:#0f172a; font-weight:600; font-size:13px;"><i class="fa-solid fa-chart-column"></i> Observability</span>
+        </div>
+        <div style="margin-top:14px;">
+          <a class="btn secondary" href="{% url 'website:contact' %}?inquiry=app">Launch & iterate with us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:16px;">
+    <div class="container" style="background:#ffffff; border:1px solid rgba(15,23,42,0.1); border-radius:0; box-shadow:0 8px 24px rgba(15,23,42,0.05); padding:18px 20px;">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+        <span style="font-size:16px; color:#f59e0b;"><i class="fa-solid fa-star" aria-hidden="true"></i></span>
+        <h3 style="margin:0;font-size:18px;color:#0f172a;">Built for {{ market.city }}</h3>
+      </div>
+      <ul style="margin:0;padding-left:18px;color:#1f2937;line-height:1.6;">
+        <li>Local market positioning and messaging for {{ market.city }}, {{ market.state_name }}</li>
+        <li>Compliance-minded data handling and analytics</li>
+        <li>Hands-on communication and predictable delivery</li>
+      </ul>
+    </div>
+  </section>
+</div>
+{% endblock %}

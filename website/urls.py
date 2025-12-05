@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('company/', views.company_page, name='company'),
     path('clients/', views.clients_page, name='clients'),
+    path('services/', views.services_page, name='services'),
     path('contact/', views.contact_sales_page, name='contact'),
     path('insights/', views.insights_page, name='insights'),
     path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter-subscribe'),
@@ -22,5 +23,15 @@ urlpatterns = [
     path('terms/', views.terms_of_service_page, name='terms'),
     path('broker-compliance/<uuid:tracking_token>/', views.broker_compliance, name='broker-compliance-token'),
     path('broker-compliance/', views.broker_compliance, name='broker-compliance'),
+    path(
+        'locations/<slug:state_slug>/<slug:city_slug>/web-development/',
+        views.location_web_development,
+        name='location-web-development',
+    ),
+    path(
+        'locations/<slug:state_slug>/<slug:city_slug>/ios-app-development/',
+        views.location_ios_app,
+        name='location-ios-app',
+    ),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
 ]
