@@ -138,8 +138,10 @@ img, picture, video, canvas { max-width: 100%; height: auto; }
 }
 
 /* Clients logo strip */
-.logo-strip{ display:grid; grid-template-columns:repeat(5,1fr); gap:18px; opacity:.9; filter:grayscale(100%) }
-.logo-strip img{ width:100%; height:42px; object-fit:contain }
+.logo-strip{ display:grid; grid-template-columns:repeat(5,1fr); gap:18px; opacity:.9; filter:grayscale(100%); align-items:center; justify-items:center }
+.logo-strip img{ width:100%; height:42px; object-fit:contain; display:block }
+/* Slightly boost Worldwide Strategic Alliances logo for better parity with neighbors */
+.logo-strip img[alt*="Worldwide"]{ height:62px; transform:scale(1.08); transform-origin:center; }
 @media (max-width:720px){ .logo-strip{ grid-template-columns: repeat(3,1fr) } }
 
 
