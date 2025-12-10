@@ -10,6 +10,7 @@ from .models import (
     DoNotCallRequest,
     DataBrokers2025,
     BrokerCompliance,
+    BrokerAcknowledgement,
     Consumer,
     BrokerContactLog,
     EmailDripState,
@@ -99,3 +100,11 @@ class BrokerComplianceAdmin(admin.ModelAdmin):
     list_display = ("broker", "submitted", "submitted_at", "first_sent_at", "last_sent_at", "reminders_sent")
     search_fields = ("broker__name", "token")
     list_filter = ("submitted",)
+
+
+@admin.register(BrokerAcknowledgement)
+class BrokerAcknowledgementAdmin(admin.ModelAdmin):
+    list_display = ("broker", "acknowledged", "acknowledged_at", "last_sent_at", "send_count")
+    list_filter = ("acknowledged",)
+    search_fields = ("broker__name",)
+    readonly_fields = ("created_at", "updated_at")

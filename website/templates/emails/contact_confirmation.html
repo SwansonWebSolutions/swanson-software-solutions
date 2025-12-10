@@ -3,11 +3,47 @@
 <head>
     <meta charset="utf-8">
     <style>
-        body { font-family: Arial, sans-serif; background: #09141f; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 8px; padding: 24px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-        h2 { color: #1b3b6f; }
-        p { line-height: 1.6; }
-        .footer { font-size: 12px; color: #777; margin-top: 30px; text-align: center; }
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1c274c;
+            margin: 0;
+            padding: 28px 12px;
+        }
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 32px 40px;
+            box-shadow: 0 10px 30px rgba(16, 46, 100, 0.08);
+            text-align: left;
+            line-height: 1.6;
+        }
+        h2 {
+            color: #0f3a75;
+            margin: 0 0 12px 0;
+            font-size: 22px;
+            letter-spacing: -0.2px;
+        }
+        p {
+            margin: 0 0 12px 0;
+            color: #223557;
+            font-size: 15px;
+        }
+        .meta { color: #4a5674; font-size: 15px; }
+        .link-block {
+            font-size: 13px;
+            color: #30405f;
+            margin-top: 18px;
+        }
+        .footer {
+            font-size: 12px;
+            color: #7a849c;
+            margin-top: 28px;
+        }
+        a { color: #0b5cff; text-decoration: underline; }
+        strong { color: #0f3a75; }
     </style>
 </head>
 <body>
@@ -19,13 +55,13 @@
         <p><strong>Company:</strong> {{ company }}</p>
         {% endif %}
         <p>In the meantime, feel free to explore our site or reply to this email if you have more details to share.</p>
-        <p>— The Swanson Software Team</p>
-        <p style="font-size: 12px; color: #555; margin-top: 12px;">
-          Manage preferences: <a href="{{ manage_url }}">{{ manage_url }}</a><br>
-          Support: <a href="mailto:{{ support_email }}">{{ support_email }}</a>
+        <p>&mdash; The Swanson Software Team</p>
+        <p class="link-block">
+          Manage preferences: <a href="{{ manage_url }}">Manage preferences</a><br>
+          Support: <a href="mailto:{{ support_email }}">Email support</a>
         </p>
         <div class="footer">
-            <p>&copy; {{ now|date:"Y" }} Swanson Software Solutions. All rights reserved.</p>
+            <p>&copy; {{ now|date:"Y" }} SwanTech. All rights reserved.</p>
         </div>
     </div>
 </body>

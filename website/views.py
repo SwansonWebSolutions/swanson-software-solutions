@@ -19,7 +19,17 @@ from django.http import JsonResponse, HttpResponse
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page
 
-from .models import DoNotEmailRequest, DoNotCallRequest, ConsumerBrokerStatus, Consumer, BrokerCompliance, NewsletterSubscriber, ServiceMarket
+from .models import (
+    DoNotEmailRequest,
+    DoNotCallRequest,
+    ConsumerBrokerStatus,
+    Consumer,
+    BrokerCompliance,
+    BrokerAcknowledgement,
+    NewsletterSubscriber,
+    ServiceMarket,
+    DataBrokers2025,
+)
 from insights.models import Insight
 from django.http import HttpResponseBadRequest
 from django.utils import timezone
@@ -532,7 +542,7 @@ def contact_sales_page(request):
             f"Message: {message_body}"
         )
         from_email = "SwanTech Sales <contact@swantech.org>"
-        recipient_list = ["contact@swantech.org"]
+        recipient_list = ["admin@swantech.org"]
 
         # Send notification email to your team
         send_mail(subject, message, from_email, recipient_list)
@@ -657,6 +667,32 @@ def location_ios_app(request, state_slug: str, city_slug: str):
         "structured_data": _location_structured_data(request, market, "iOS App Development"),
     }
     return render(request, "website/location_ios_app.html", context)
+
+
+def broker_acknowledgement_confirmation(request):
+    """Record broker acknowledgement when they click the confirmation link."""
+
+    broker_id = request.GET.get("brokerid")
+    if not broker_id:
+        return HttpResponseBadRequest("Missing brokerid.")
+    try:
+        broker = DataBrokers2025.objects.get(pk=int(broker_id))
+    except (DataBrokers2025.DoesNotExist, ValueError, TypeError):
+        return HttpResponseBadRequest("Invalid broker.")
+
+    acknowledgement, _ = BrokerAcknowledgement.objects.get_or_create(broker=broker)
+    already_acknowledged = acknowledgement.acknowledged
+    if not acknowledgement.acknowledged:
+        acknowledgement.mark_acknowledged()
+
+    support_email = getattr(settings, "SUPPORT_EMAIL_HOST_USER", getattr(settings, "DEFAULT_FROM_EMAIL", "support@swantech.org"))
+    context = {
+        "broker": broker,
+        "acknowledgement": acknowledgement,
+        "already_acknowledged": already_acknowledged,
+        "support_email": support_email,
+    }
+    return render(request, "website/broker_acknowledgement_confirmation.html", context)
 
 
 def broker_compliance(request, tracking_token=None):

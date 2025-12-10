@@ -1,0 +1,48 @@
+{% extends 'website/base.html' %}
+{% block head_extra %}
+  <style>
+    body { background: linear-gradient(180deg, rgba(225,237,255,.5) 0%, rgba(255,255,255,1) 50%); }
+    .ack-wrapper {
+      min-height: calc(100vh - 220px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(40px, 6vw, 72px) 0;
+      text-align: center;
+    }
+    .ack-card {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      padding: clamp(28px, 5vw, 48px);
+      box-shadow: 0 12px 36px rgba(15, 58, 117, 0.12);
+    }
+    .ack-card h1 {
+      font-size: clamp(26px, 3vw, 32px);
+      margin-bottom: 12px;
+      color: #0f3a75;
+    }
+    .ack-card p {
+      margin: 0 0 12px 0;
+      font-size: 15px;
+      color: #223557;
+      line-height: 1.65;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<section class="section ack-wrapper">
+  <div class="container">
+    <article class="ack-card">
+      <h1>Thank you</h1>
+      {% if already_acknowledged %}
+        <p>We've already recorded that <strong>{{ broker.name }}</strong> acknowledges SwanTech as a service that protects consumer data.</p>
+      {% else %}
+        <p>Your acknowledgement for <strong>{{ broker.name }}</strong> has been recorded. We appreciate your partnership in protecting consumer data.</p>
+      {% endif %}
+      <p>If you have any questions, reach us at <a href="mailto:{{ support_email }}">{{ support_email }}</a>.</p>
+    </article>
+  </div>
+</section>
+{% endblock %}

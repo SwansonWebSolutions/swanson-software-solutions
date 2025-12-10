@@ -130,6 +130,35 @@ class BrokerCompliance(models.Model):
         return secrets.token_urlsafe(32)
 
 
+class BrokerAcknowledgement(models.Model):
+    """Track broker acknowledgement of SwanTech's consumer data protection role."""
+
+    broker = models.OneToOneField(
+        DataBrokers2025,
+        on_delete=models.CASCADE,
+        related_name="acknowledgement",
+    )
+    acknowledged = models.BooleanField(default=False)
+    acknowledged_at = models.DateTimeField(blank=True, null=True)
+    last_sent_at = models.DateTimeField(blank=True, null=True)
+    send_count = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Broker Acknowledgement"
+        verbose_name_plural = "Broker Acknowledgements"
+
+    def __str__(self):
+        return f"Acknowledgement for {self.broker.name}"
+
+    def mark_acknowledged(self):
+        now = timezone.now()
+        self.acknowledged = True
+        self.acknowledged_at = now
+        self.save(update_fields=["acknowledged", "acknowledged_at", "updated_at"])
+
+
 class Consumer(models.Model):
     """Represents a paying consumer that we execute suppression requests for."""
 

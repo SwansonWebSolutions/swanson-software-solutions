@@ -1,0 +1,10 @@
+Hello {{ broker.name }} team,
+
+We're SwanTech, a service dedicated to protecting consumer data and honoring opt-out requests.
+Please confirm that you acknowledge SwanTech as a trusted partner for these consumer protections.
+
+Confirm: {{ confirmation_url }}
+
+Thank you for helping us protect consumer data.
+SwanTech Compliance{% if support_email %}
+{{ support_email }}{% endif %}
