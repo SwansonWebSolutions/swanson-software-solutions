@@ -28,7 +28,7 @@
 <section class="compliance">
   <div class="card">
     <h1>Broker Confirmation</h1>
-    <p>Please confirm how you are handling this consumer suppression request.</p>
+    <p>Please confirm how you are handling this daily consumer suppression request.</p>
 
     <ul class="meta">
       <li><span>Broker:</span> {% if status_record %}{{ status_record.broker.name }}{% elif compliance %}{{ compliance.broker.name }}{% endif %}</li>
@@ -51,7 +51,7 @@
             Pending outreach
           {% endif %}
         </li>
-      <li><span>Records included:</span>
+        <li><span>Records included:</span>
           {% if compliance and compliance.last_request_count %}
             {{ compliance.last_request_count }} consumer{{ compliance.last_request_count|pluralize }}
             {% if compliance.last_export_filename %} ({{ compliance.last_export_filename }}){% endif %}
@@ -62,17 +62,16 @@
       {% endif %}
     </ul>
 
-    {% if pending_statuses %}
+    {% if window_consumers %}
       <div class="card" style="margin-bottom: 16px;">
-        <h3>Outstanding consumer requests</h3>
+        <h3>Consumers included in today’s request</h3>
         <ul class="meta">
-          {% for item in pending_statuses %}
-            <li>
-              <span>{{ item.consumer_name }}</span> ({{ item.consumer_email }}) — {{ item.request_type }}
-              <br>
-              <a href="{{ item.link }}" target="_blank" rel="noopener noreferrer">Open compliance link</a>
-            </li>
+          {% for consumer in window_consumers %}
+            <li><span>{{ consumer.first_name }} {{ consumer.last_name }}</span> ({{ consumer.primary_email }})</li>
           {% endfor %}
+          {% if remaining_consumers > 0 %}
+            <li>and {{ remaining_consumers }} more…</li>
+          {% endif %}
         </ul>
       </div>
     {% endif %}
@@ -81,7 +80,7 @@
       <div class="card" style="margin-bottom: 16px;">
         <h3>Stop My Spam CSV export</h3>
         <p style="margin: 0 0 8px 0;">
-          Window: {{ csv_window_label }} —
+          Window: {{ csv_window_label }}
           {{ csv_count }} record{{ csv_count|pluralize }}
         </p>
         <form method="post" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
@@ -127,4 +126,3 @@
   </div>
 </section>
 {% endblock %}
-

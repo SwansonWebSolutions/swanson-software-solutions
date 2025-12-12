@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
+from django.core.management import call_command, CommandError
 from django.core.management.base import BaseCommand
 from django.template.loader import render_to_string
 from django.templatetags.static import static
@@ -19,7 +20,42 @@ class Command(BaseCommand):
         "Schedule this for Wednesdays at 8:30 AM."
     )
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--send-weekday",
+            required=True,
+            help="Weekday the newsletter should send (e.g. Monday). Will skip if today does not match.",
+        )
+
     def handle(self, *args, **options):
+        weekday_map = {
+            "monday": 0,
+            "tuesday": 1,
+            "wednesday": 2,
+            "thursday": 3,
+            "friday": 4,
+            "saturday": 5,
+            "sunday": 6,
+        }
+
+        try:
+            send_weekday_raw = options["send_weekday"]
+            send_weekday_index = weekday_map[send_weekday_raw.strip().lower()]
+        except (TypeError, KeyError):
+            raise CommandError("`--send-weekday` must be one of: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.")
+
+        today = timezone.localdate()
+        if today.weekday() != send_weekday_index:
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Send weekday {send_weekday_raw} does not match today ({today.strftime('%A')}); skipping newsletter."
+                )
+            )
+            return
+
+        for _ in range(3):
+            call_command("generate_insights")
+
         subscribers = list(
             NewsletterSubscriber.objects.values_list("email", flat=True)
         )
@@ -47,7 +83,7 @@ class Command(BaseCommand):
             "support_email": getattr(settings, "SUPPORT_EMAIL_HOST_USER", "support@swantech.org"),
         }
 
-        subject = "SwanTech weekly insights — latest 3"
+        subject = "SwanTech weekly insights - latest 3"
         text_body = render_to_string("emails/newsletter_digest.txt", context)
         html_body = render_to_string("emails/newsletter_digest.html", context)
 

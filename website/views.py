@@ -812,10 +812,11 @@ def broker_compliance(request, tracking_token=None):
     ]
 
     broker = status_record.broker if status_record else None
-    pending_statuses = []
     csv_available = False
     csv_window_label = ""
     csv_count = 0
+    window_consumers: list[dict] = []
+    remaining_consumers = 0
 
     if status_record is None:
         compliance = get_object_or_404(
@@ -828,12 +829,18 @@ def broker_compliance(request, tracking_token=None):
             f"{csv_start.astimezone(la).strftime('%Y-%m-%d %H:%M %Z')} "
             f"to {csv_end.astimezone(la).strftime('%Y-%m-%d %H:%M %Z')}"
         )
-        csv_count = DoNotEmailRequest.objects.filter(
+        consumer_qs = DoNotEmailRequest.objects.filter(
             paid_confirmed=True,
             created_at__gte=csv_start,
             created_at__lt=csv_end,
-        ).count()
+        ).order_by("created_at")
+        csv_count = consumer_qs.count()
         csv_available = csv_count > 0
+        # Capture a snapshot of included consumers for display (no per-consumer links).
+        window_consumers = list(
+            consumer_qs.values("first_name", "last_name", "primary_email")[:50]
+        )
+        remaining_consumers = max(0, csv_count - len(window_consumers))
         if request.method == 'POST' and request.POST.get('download_csv'):
             csv_response = build_csv_response(csv_start, csv_end, la)
             if csv_response:
@@ -881,24 +888,6 @@ def broker_compliance(request, tracking_token=None):
                     },
                 )
 
-    if broker:
-        pending_qs = (
-            ConsumerBrokerStatus.objects.filter(broker=broker)
-            .exclude(status=ConsumerBrokerStatus.Status.COMPLETED)
-            .select_related("consumer")
-            .order_by("-created_at")
-        )
-        for s in pending_qs:
-            pending_statuses.append(
-                {
-                    "id": s.id,
-                    "consumer_name": s.consumer.full_name,
-                    "consumer_email": s.consumer.primary_email,
-                    "request_type": s.get_request_type_display(),
-                    "link": build_token_url(s.tracking_token),
-                }
-            )
-
     return render(
         request,
         'website/broker_compliance.html',
@@ -908,9 +897,10 @@ def broker_compliance(request, tracking_token=None):
             'status_choices': status_choices,
             'token': token,
             'preselected_status': preselected_status,
-            'pending_statuses': pending_statuses,
             'csv_available': csv_available,
             'csv_window_label': csv_window_label,
             'csv_count': csv_count,
+            'window_consumers': window_consumers,
+            'remaining_consumers': remaining_consumers,
         },
     )
