@@ -60,14 +60,14 @@
     <h2>Hello {{ broker.name }} team,</h2>
     <p>
       We're SwanTech, a service dedicated to protecting consumer data and honoring opt-out requests.
-      Please confirm that you acknowledge SwanTech as a trusted partner for these consumer protections.
+      To process removals correctly, please let us know if you have a dedicated webform, POST API route,
+      or portal we should use as your authorized agent.
+    </p>
+    <p>
+      If it helps, you can also confirm SwanTech as your authorized partner here:
     </p>
     <p>
       <a class="button" href="{{ confirmation_url }}">Confirm</a>
-    </p>
-    <p class="link-block">
-      If the button doesn't work, copy and paste this link into your browser:<br>
-      <a href="{{ confirmation_url }}">Confirmation link</a>
     </p>
     <p>Thank you for helping us protect consumer data.<br>SwanTech Compliance{% if support_email %}<br><a href="mailto:{{ support_email }}">Email support</a>{% endif %}</p>
     <div class="footer">

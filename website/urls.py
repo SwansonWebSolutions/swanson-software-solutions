@@ -22,8 +22,6 @@ urlpatterns = [
     path('privacy/', views.privacy_policy_page, name='privacy'),
     path('terms/', views.terms_of_service_page, name='terms'),
     path('broker/confirmation/', views.broker_acknowledgement_confirmation, name='broker-acknowledgement-confirmation'),
-    path('broker-compliance/<uuid:tracking_token>/', views.broker_compliance, name='broker-compliance-token'),
-    path('broker-compliance/', views.broker_compliance, name='broker-compliance'),
     path(
         'locations/<slug:state_slug>/<slug:city_slug>/web-development/',
         views.location_web_development,

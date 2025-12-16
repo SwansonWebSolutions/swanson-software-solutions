@@ -1,9 +1,9 @@
 Hello {{ broker.name }} team,
 
 We're SwanTech, a service dedicated to protecting consumer data and honoring opt-out requests.
-Please confirm that you acknowledge SwanTech as a trusted partner for these consumer protections.
-
-Confirm: {{ confirmation_url }}
+To process removals correctly, please let us know if you have a specific webform, POST API route,
+or portal we should use as your authorized agent. If you prefer, you can also confirm us as an
+authorized partner (there is a confirmation button in the HTML version of this email).
 
 Thank you for helping us protect consumer data.
 SwanTech Compliance{% if support_email %}
