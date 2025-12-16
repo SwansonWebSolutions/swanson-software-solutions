@@ -52,6 +52,12 @@ class Command(BaseCommand):
             default=120.0,
             help="Delay between emails in seconds (default: 120 = 2 minutes).",
         )
+        parser.add_argument(
+            "--start-index",
+            type=int,
+            default=1,
+            help="Start processing at this 1-based index within the filtered broker list (useful for resuming).",
+        )
 
     def handle(self, *args, **opts):
         base_url = getattr(settings, "PUBLIC_BASE_URL", "https://swantech.org").rstrip("/")
@@ -85,6 +91,16 @@ class Command(BaseCommand):
             qs = qs[:1]
 
         total_candidates = qs.count()
+        start_index = max(1, int(opts.get("start_index", 1)))
+        if start_index > total_candidates:
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Start index {start_index} is beyond the available brokers ({total_candidates}). Nothing to do."
+                )
+            )
+            return
+        sent_offset = start_index - 1
+
         if total_candidates == 0:
             self.stdout.write(self.style.WARNING("No data brokers available to process."))
             return
@@ -92,6 +108,8 @@ class Command(BaseCommand):
         sent = 0
         skipped = 0
         for idx, broker in enumerate(qs, start=1):
+            if idx < start_index:
+                continue
             try:
                 acknowledgement = broker.acknowledgement
             except BrokerAcknowledgement.DoesNotExist:
@@ -137,7 +155,7 @@ class Command(BaseCommand):
             sent += 1
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"[{sent}/{total_candidates}] Sent acknowledgement request to {broker.name} ({', '.join(recipients)})"
+                    f"[{sent_offset + sent}/{total_candidates}] Sent acknowledgement request to {broker.name} ({', '.join(recipients)})"
                 )
             )
 
