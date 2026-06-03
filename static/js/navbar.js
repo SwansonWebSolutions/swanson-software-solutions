@@ -55,14 +55,16 @@
   // Mobile services accordion
   if (mobileServicesBtn && mobileServices) {
     mobileServicesBtn.addEventListener('click', () => {
-      const isHidden = mobileServices.hasAttribute('hidden');
-      if (isHidden) {
-        mobileServices.removeAttribute('hidden');
-        mobileServicesBtn.setAttribute('aria-expanded', 'true');
-      } else {
-        mobileServices.setAttribute('hidden', '');
-        mobileServicesBtn.setAttribute('aria-expanded', 'false');
-      }
+      const isOpen = mobileServices.classList.toggle('open');
+      mobileServicesBtn.setAttribute('aria-expanded', String(isOpen));
     });
+  }
+
+  // ── Transparent → frosted-white scroll transition ──────────────
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 10);
+    onScroll(); // set correct state on initial load (e.g. page refreshed mid-scroll)
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 })();

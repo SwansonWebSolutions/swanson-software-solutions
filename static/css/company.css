@@ -1,0 +1,231 @@
+/*  SwanTech — Company page  */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.page-company {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  color: var(--ink-5);
+}
+
+.page-company .container {
+  width: min(100%, var(--container));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ── Hero ── */
+.co-hero {
+  background: linear-gradient(145deg, #080f1e 0%, #0a1628 55%, #0d2045 100%);
+  padding: clamp(80px, 12vw, 140px) 0 clamp(60px, 8vw, 100px);
+  position: relative;
+  overflow: hidden;
+}
+.co-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(31,191,138,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(47,141,251,.10) 0%, transparent 65%);
+  pointer-events: none;
+}
+.co-hero__inner {
+  position: relative;
+  display: grid;
+  gap: 2.5rem;
+  max-width: 760px;
+}
+.co-hero__eyebrow {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent);
+}
+.co-hero__eyebrow::before {
+  content: "";
+  display: block; width: 20px; height: 2px;
+  background: var(--accent); border-radius: 2px;
+}
+.co-hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 900; line-height: 1.1;
+  color: #fff; margin: 0;
+  letter-spacing: -.02em;
+}
+.co-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--accent), #47d791);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.co-hero__lead {
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: rgba(255,255,255,.72);
+  line-height: 1.7;
+  max-width: 580px;
+  margin: 0;
+}
+.co-hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ── Shared section wrapper ── */
+.co-section {
+  padding: clamp(56px, 8vw, 96px) 0;
+}
+.co-section--alt { background: var(--bg, #f7f9fc); }
+.co-section--dark {
+  background: linear-gradient(145deg, #080f1e 0%, #0b1628 100%);
+}
+
+.co-section__label {
+  font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: .6rem;
+}
+.co-section__title {
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
+  font-weight: 800; color: var(--ink-6); margin: 0 0 .5rem;
+  line-height: 1.2;
+}
+.co-section--dark .co-section__title { color: #fff; }
+.co-section__lead {
+  font-size: 1.05rem; color: var(--ink-4); line-height: 1.7;
+  max-width: 560px; margin: 0;
+}
+.co-section--dark .co-section__lead { color: rgba(255,255,255,.6); }
+
+/* ── Founder card ── */
+.co-founder {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+@media (min-width: 720px) {
+  .co-founder { grid-template-columns: 200px 1fr; }
+}
+.co-founder__avatar {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--accent) 100%);
+  display: grid; place-items: center;
+  font-size: 4rem; color: #fff;
+  box-shadow: 0 16px 48px rgba(31,191,138,.25);
+  flex-shrink: 0;
+  margin: 0 auto;
+}
+.co-founder__body { display: grid; gap: 1rem; }
+.co-founder__name {
+  font-size: 1.4rem; font-weight: 800; color: var(--ink-6); margin: 0;
+}
+.co-founder__role {
+  font-size: .85rem; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.co-founder__bio {
+  color: var(--ink-5); line-height: 1.75; margin: 0; font-size: 1.025rem;
+}
+
+/* ── Process steps ── */
+.co-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 640px) {
+  .co-steps { grid-template-columns: repeat(3, 1fr); }
+}
+.co-step {
+  background: #fff;
+  border: 1px solid var(--ink-2);
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: grid; gap: 1rem;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(15,23,42,.05);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.co-step:hover {
+  box-shadow: 0 8px 32px rgba(15,23,42,.1);
+  transform: translateY(-2px);
+}
+.co-step__num {
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex; align-items: center; gap: .5rem;
+}
+.co-step__num::after {
+  content: ""; flex: 1; height: 1px;
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.co-step h3 { font-size: 1.05rem; font-weight: 800; color: var(--ink-6); margin: 0; }
+.co-step p { font-size: .9375rem; color: var(--ink-4); line-height: 1.65; margin: 0; }
+
+/* ── Value props ── */
+.co-values {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 640px) {
+  .co-values { grid-template-columns: repeat(3, 1fr); }
+}
+.co-value {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: grid; gap: .85rem;
+}
+.co-value__icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--brand), var(--accent));
+  display: grid; place-items: center;
+  color: #fff; font-size: 1.1rem;
+}
+.co-value h3 { font-size: 1rem; font-weight: 800; color: #fff; margin: 0; }
+.co-value p { font-size: .9rem; color: rgba(255,255,255,.58); line-height: 1.65; margin: 0; }
+
+/* ── Stats strip ── */
+.co-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--ink-2);
+  border: 1px solid var(--ink-2);
+  border-radius: 16px;
+  overflow: hidden;
+}
+@media (min-width: 640px) {
+  .co-stats { grid-template-columns: repeat(4, 1fr); }
+}
+.co-stat {
+  background: #fff;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  display: grid; gap: .3rem;
+}
+.co-stat__num {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 900; color: var(--ink-6); line-height: 1;
+}
+.co-stat__num span { color: var(--accent); }
+.co-stat__label { font-size: .82rem; font-weight: 600; color: var(--ink-4); }
+
+/* ── CTA ── */
+.co-cta {
+  text-align: center;
+  display: grid; gap: 1.5rem;
+}
+.co-cta h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  font-weight: 900; color: #fff; margin: 0; line-height: 1.15;
+}
+.co-cta p {
+  font-size: 1.075rem; color: rgba(255,255,255,.65);
+  max-width: 480px; margin: 0 auto; line-height: 1.7;
+}
+.co-cta__actions {
+  display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center;
+}

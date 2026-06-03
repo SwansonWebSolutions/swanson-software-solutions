@@ -6,10 +6,71 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: saturate(150%) blur(8px);
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--ink-2) 35%, transparent);
   overflow: visible; /* ensure dropdown can overflow */
+  /* Transparent at top; transitions to frosted-white when .scrolled is added */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background .35s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+
+/* Frosted white once the user scrolls */
+.site-header.scrolled {
+  backdrop-filter: saturate(150%) blur(12px);
+  -webkit-backdrop-filter: saturate(150%) blur(12px);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--ink-2) 35%, transparent);
+  box-shadow: 0 2px 20px rgba(15,23,42,.07);
+}
+
+/* ── Logo text ── */
+.site-header .navbar-logo {
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  font-size: 1.4rem !important;
+  text-decoration: none !important;
+}
+
+/* ── Logo: always visible; no filter needed ── */
+.site-header .navbar-logo img {
+  transition: opacity .3s ease;
+}
+.site-header:not(.scrolled) .navbar-logo img {
+  opacity: 1; /* logo shows as-is over dark banner — white bg reads as a natural badge */
+}
+
+/* ── Nav links + dropdown toggle: white → dark ── */
+.site-header .nav .nav-link,
+.site-header .dropdown-toggle {
+  color: rgba(255,255,255,.88) !important;
+  transition: color .3s ease, background .2s ease;
+}
+.site-header.scrolled .nav .nav-link,
+.site-header.scrolled .dropdown-toggle {
+  color: var(--ink-5) !important;
+}
+.site-header.scrolled .dropdown-toggle { color: var(--ink-6) !important; }
+
+/* ── Burger icon: white → dark ── */
+.site-header .burger {
+  color: rgba(255,255,255,.88);
+  transition: color .3s ease;
+}
+.site-header.scrolled .burger { color: var(--ink-6); }
+
+/* ── CTA button: ghost-invert at top → solid green when scrolled ── */
+.site-header .nav-cta {
+  background: rgba(255,255,255,.12) !important;
+  border: 1px solid rgba(255,255,255,.35) !important;
+  color: #fff !important;
+  transition: background .3s ease, border-color .3s ease, color .3s ease;
+}
+.site-header.scrolled .nav-cta {
+  background: var(--accent) !important;
+  border-color: transparent !important;
+  color: #fff !important;
 }
 
 .nav-wrap {
@@ -53,31 +114,54 @@
 .site-header .dropdown-toggle[aria-expanded="true"] {
   background: color-mix(in srgb, var(--ink-2) 20%, transparent);
 }
+/* Chevron rotation */
+.site-header .dropdown-toggle .fa-chevron-down {
+  transition: transform .25s ease;
+}
+.site-header .dropdown-toggle[aria-expanded="true"] .fa-chevron-down {
+  transform: rotate(180deg);
+}
 .site-header .dropdown-panel {
   position: absolute;
   top: calc(100% + 10px);
   left: 0;
   min-width: 280px;
-  background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--ink-2) 55%, transparent);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
+  background: rgba(10, 16, 33, 0.96);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.45), 0 2px 8px rgba(0,0,0,.25);
   padding: 10px;
-  display: none;
+  display: grid;
   z-index: 60;
+  /* Animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.98);
+  transition: opacity .22s ease, transform .22s ease, visibility .22s ease;
+  pointer-events: none;
 }
-.site-header .dropdown-panel.open { display: grid; }
+.site-header .dropdown-panel.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
 .site-header .drop-item {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px; border-radius: 10px;
-  text-decoration: none; color: var(--ink-6); font-weight: 700;
+  text-decoration: none; color: rgba(255,255,255,.88); font-weight: 700;
+  transition: background .15s ease, color .15s ease;
 }
 .site-header .drop-item:hover {
-  background: color-mix(in srgb, var(--ink-2) 18%, transparent);
+  background: rgba(255,255,255,.08);
+  color: #fff;
 }
 .site-header .drop-item i {
   width: 28px; height: 28px; display: grid; place-items: center;
   border-radius: 8px; background: linear-gradient(135deg, var(--brand), var(--accent)); color: #fff;
+  flex-shrink: 0;
 }
 
 /* Desktop hover to open */
@@ -96,7 +180,15 @@
     content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 12px;
   }
   .site-header .has-dropdown:hover .dropdown-panel,
-  .site-header .has-dropdown:focus-within .dropdown-panel { display: grid; }
+  .site-header .has-dropdown:focus-within .dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .site-header .has-dropdown:hover .dropdown-toggle .fa-chevron-down {
+    transform: rotate(180deg);
+  }
 }
 
 /* CTA + Burger */
@@ -134,7 +226,21 @@
 .site-header .mobile-accordion {
   display: flex; align-items: center; justify-content: space-between; width: 100%;
 }
-.site-header .mobile-submenu { padding-left: 6px; }
+.site-header .mobile-accordion .fa-chevron-down {
+  transition: transform .25s ease;
+}
+.site-header .mobile-accordion[aria-expanded="true"] .fa-chevron-down {
+  transform: rotate(180deg);
+}
+.site-header .mobile-submenu {
+  padding-left: 6px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+.site-header .mobile-submenu.open {
+  max-height: 400px;
+}
 .site-header .mobile-submenu a {
   width: 100%; justify-content: flex-start; gap: .6rem;
 }

@@ -122,6 +122,7 @@ MYSQL_DEFAULT = {
     "OPTIONS": {"charset": os.getenv("MYSQL_CHARSET", "utf8mb4")},
 }
 
+
 SQLITE_DEFAULT = {
     "ENGINE": "django.db.backends.sqlite3",
     "NAME": BASE_DIR / "db.sqlite3",

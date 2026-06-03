@@ -2,66 +2,140 @@
 {% load static %}
 
 {% block head_extra %}
-  <link rel="stylesheet" href="{% static 'css/index.css' %}?v={% now 'U' %}">
+  <link rel="stylesheet" href="{% static 'css/company.css' %}?v={% now 'U' %}">
 {% endblock %}
 
 {% block content %}
+<div class="page-company">
 
-<!-- HERO: Personal introduction -->
-<section class="hero">
-  <div class="container hero-inner">
-    <div class="stack" style="--stack-gap:1rem">
-      <h1>Building technology with precision, privacy, and purpose.</h1>
-      <p class="lead">We’re a small, focused team that ships reliable software — fast. Our roots are in engineering and operations, not hype. Every project is treated like it’s mission‑critical.</p>
-      <div class="cluster" style="--cluster-gap:.5rem">
-        <a class="btn" href="{% url 'website:contact' %}">Start a Conversation</a>
-        <a class="btn secondary" href="{% url 'website:index' %}#clients">See Clients</a>
+<!-- ── HERO ── -->
+<section class="co-hero">
+  <div class="container co-hero__inner">
+    <span class="co-hero__eyebrow">About SwanTech</span>
+    <h1>Quality software.<br><em>Delivered on time.</em></h1>
+    <p class="co-hero__lead">SwanTech is a trusted software studio specializing in Shopify stores, custom web applications, and iOS apps. No bloated retainers, no agency overhead — just quality work delivered at a price that makes sense for your business.</p>
+    <div class="co-hero__actions">
+      <a class="btn" href="https://calendly.com/admin-swantech/30min" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-calendar-check" aria-hidden="true"></i> Book a Free Call
+      </a>
+      <a class="btn ghost invert" href="{% url 'website:contact' %}">Get a Quote</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS STRIP ── -->
+<section class="co-section co-section--alt">
+  <div class="container">
+    <div class="co-stats">
+      <div class="co-stat">
+        <div class="co-stat__num">$<span>500</span></div>
+        <div class="co-stat__label">Shopify stores from</div>
+      </div>
+      <div class="co-stat">
+        <div class="co-stat__num"><span>5–10</span></div>
+        <div class="co-stat__label">Day turnaround</div>
+      </div>
+      <div class="co-stat">
+        <div class="co-stat__num"><span>100</span>%</div>
+        <div class="co-stat__label">Client code ownership</div>
+      </div>
+      <div class="co-stat">
+        <div class="co-stat__num"><span>24</span>hr</div>
+        <div class="co-stat__label">Quote turnaround</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- OUR COMPANY: Story & principles -->
-<section class="section">
-  <div class="container grid build-grid">
-    <div class="card">
-      <h3>Our Story</h3>
-      <p>SwanTech started with a simple belief: great software should feel calm — predictable releases, clear communication, and no surprises. We build Shopify stores, WordPress sites, custom web platforms, and iOS apps with the same ethos you’d expect from critical infrastructure: secure, fast, and maintainable.</p>
-    </div>
-    <div class="card">
-      <h3>How We Work</h3>
-      <p>We scope precisely, design pragmatically, and iterate quickly. We sweat the details — from accessibility and privacy obligations to the tiny UI edges that make experiences feel polished.</p>
-    </div>
-  </div>
-</section>
-
-<!-- THE INDUSTRY: Where we operate -->
-<section class="section">
-  <div class="container stack" style="--stack-gap:.75rem">
-    <h2>The industry we serve</h2>
-    <p class="lead">We operate at the intersection of commerce and privacy. That means fast storefronts, editor‑friendly sites, and tools that respect user data.</p>
-    <div class="grid build-grid">
-      <div class="card"><h3>E‑commerce & Content</h3><p>Performance, SEO, and UX that convert — without sacrificing maintainability.</p></div>
-      <div class="card"><h3>Privacy‑Tech</h3><p>Practical automation for CCPA/CPRA and Do Not Contact flows for both businesses and consumers.</p></div>
-      <div class="card"><h3>Internal Tools</h3><p>Dashboards and data workflows that make operations measurable and repeatable.</p></div>
+<!-- ── MISSION ── -->
+<section class="co-section">
+  <div class="container">
+    <div class="co-founder">
+      <div class="co-founder__avatar" aria-hidden="true">
+        <i class="fa-solid fa-rocket"></i>
+      </div>
+      <div class="co-founder__body">
+        <div>
+          <p class="co-section__label">Our mission</p>
+          <h2 class="co-founder__name">Quality software, delivered fast.</h2>
+          <p class="co-founder__role">SwanTech — Software Studio</p>
+        </div>
+        <p class="co-founder__bio">SwanTech exists to close the gap between what great software should cost and what agencies charge for it. We build Shopify stores, custom web applications, and iOS apps with the same standard of quality you'd expect from a large firm — at a price and timeline that actually works for growing businesses.</p>
+        <p class="co-founder__bio">Every project is scoped clearly, built to last, and delivered on schedule. No cutting corners to hit a deadline, no inflating scope to pad a bill. Just well-crafted software that solves real problems and ships when it's supposed to.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- GOALS: Near‑term focus -->
-<section class="section">
-  <div class="container stack" style="--stack-gap:1rem">
-    <h2>Where we’re headed</h2>
-    <div class="grid build-grid">
-      <div class="card"><h3>Ship measurable outcomes</h3><p>Tie launches to load‑time, conversion, and reliability metrics — not just feature lists.</p></div>
-      <div class="card"><h3>Privacy by default</h3><p>Expand consumer privacy tools and make compliance effortless for our clients.</p></div>
-      <div class="card"><h3>Craft for longevity</h3><p>Fewer dependencies, clean architecture, and docs that make hand‑offs painless.</p></div>
+<!-- ── HOW IT WORKS ── -->
+<section class="co-section co-section--alt">
+  <div class="container" style="display:grid;gap:2.5rem">
+    <div>
+      <p class="co-section__label">The process</p>
+      <h2 class="co-section__title">Simple. Fast. No surprises.</h2>
+      <p class="co-section__lead">Three steps from first message to live product.</p>
     </div>
-    <div class="cluster" style="justify-content:center">
-      <a class="btn" href="{% url 'website:contact' %}">Get a Free Scope Review</a>
-      <a class="btn secondary" href="{% url 'website:faq' %}">Read our FAQ</a>
+    <div class="co-steps">
+      <div class="co-step">
+        <div class="co-step__num">Step 01</div>
+        <h3>We Talk</h3>
+        <p>Book a free 15-minute call or send a message. Tell us what you're building, what's blocking you, and when you need it. No forms, no sales pitch.</p>
+      </div>
+      <div class="co-step">
+        <div class="co-step__num">Step 02</div>
+        <h3>You Get a Clear Scope</h3>
+        <p>Within 24 hours you'll have a written quote, timeline, and deliverable list. Fixed price. No hourly billing surprises. You approve before anything starts.</p>
+      </div>
+      <div class="co-step">
+        <div class="co-step__num">Step 03</div>
+        <h3>We Build &amp; Launch</h3>
+        <p>The team moves fast, shares progress along the way, and hands over a live, fully-tested product. You get the code, the keys, and full ownership. Done.</p>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ── VALUES (dark) ── -->
+<section class="co-section co-section--dark">
+  <div class="container" style="display:grid;gap:2.5rem">
+    <div>
+      <p class="co-section__label">Why SwanTech</p>
+      <h2 class="co-section__title">What you get that agencies don't offer.</h2>
+      <p class="co-section__lead">Three things that matter more than a nice pitch deck.</p>
+    </div>
+    <div class="co-values">
+      <div class="co-value">
+        <div class="co-value__icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></div>
+        <h3>Flat, upfront pricing</h3>
+        <p>A Shopify store from $500. Custom apps quoted before work starts. No retainers, no hourly billing, no scope creep surprises.</p>
+      </div>
+      <div class="co-value">
+        <div class="co-value__icon"><i class="fa-solid fa-headset" aria-hidden="true"></i></div>
+        <h3>Dedicated point of contact</h3>
+        <p>Every project gets a direct line to the team working on it. No account manager relay, no ticket queue — real answers in hours, not days.</p>
+      </div>
+      <div class="co-value">
+        <div class="co-value__icon"><i class="fa-solid fa-key" aria-hidden="true"></i></div>
+        <h3>You own everything</h3>
+        <p>Code, store, domain, data. Always. Zero lock-in. If you ever want to move on, everything is yours to take.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA (dark) ── -->
+<section class="co-section co-section--dark" style="border-top:1px solid rgba(255,255,255,.06)">
+  <div class="container co-cta">
+    <h2>Ready to get started?</h2>
+    <p>Book a free 15-minute call and leave with a clear scope, timeline, and price for your project.</p>
+    <div class="co-cta__actions">
+      <a class="btn secondary" href="https://calendly.com/admin-swantech/30min" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-calendar-check" aria-hidden="true"></i> Book a 15-min Call
+      </a>
+      <a class="btn ghost invert" href="{% url 'website:contact' %}">Send a Message</a>
+    </div>
+  </div>
+</section>
+
+</div>
 {% endblock %}

@@ -53,15 +53,15 @@ class Command(BaseCommand):
             )
             return
 
-        for _ in range(3):
-            call_command("generate_insights")
-
         subscribers = list(
             NewsletterSubscriber.objects.values_list("email", flat=True)
         )
-        if not subscribers:
-            self.stdout.write(self.style.WARNING("No newsletter subscribers found; nothing sent."))
+        if len(subscribers) <= 1:
+            self.stdout.write(self.style.WARNING(f"Only {len(subscribers)} subscriber(s) found; skipping insight generation and send."))
             return
+
+        for _ in range(3):
+            call_command("generate_insights")
 
         insights = list(Insight.objects.order_by("-created_at")[:3])
         if not insights:

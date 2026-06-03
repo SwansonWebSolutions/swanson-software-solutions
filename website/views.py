@@ -109,6 +109,33 @@ def index(request):
     return render(request, 'website/index.html', context)
 
 
+CALENDLY_URL = "https://calendly.com/admin-swantech/30min"
+
+def book_consultation(request):
+    if request.method != "POST":
+        return redirect("website:index")
+
+    name = (request.POST.get("name") or "").strip() or "No name provided"
+    email = (request.POST.get("email") or "").strip() or "No email provided"
+    inquiry = (request.POST.get("inquiry") or "").strip() or "Not specified"
+
+    send_mail(
+        subject="Hero Form: Book 15-minute Consultation",
+        message=(
+            f"A visitor clicked 'Book 15-minute Consultation' on the homepage.\n\n"
+            f"Name:    {name}\n"
+            f"Email:   {email}\n"
+            f"Inquiry: {inquiry}\n\n"
+            f"They are being redirected to Calendly now."
+        ),
+        from_email="SwanTech Site <contact@swantech.org>",
+        recipient_list=[getattr(settings, "ADMIN_NOTIFICATION_EMAIL", "admin@swantech.org")],
+        fail_silently=True,
+    )
+
+    return redirect(CALENDLY_URL)
+
+
 def newsletter_subscribe(request):
     """Capture newsletter opt-ins by email only."""
     if request.method != "POST":
