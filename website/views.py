@@ -36,6 +36,7 @@ from django.utils import timezone
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from .utils import manage_preferences_url
+from .city_profiles import CITY_PROFILES
 # Create your views here.
 
 
@@ -782,6 +783,7 @@ def location_web_development(request, state_slug: str, city_slug: str):
     market = _get_market_or_404(state_slug, city_slug, ServiceMarket.ServiceType.WEB_DEVELOPMENT)
     context = {
         "market": market,
+        "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "Web Development"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
     }
@@ -793,6 +795,7 @@ def location_ios_app(request, state_slug: str, city_slug: str):
     market = _get_market_or_404(state_slug, city_slug, ServiceMarket.ServiceType.IOS_APP)
     context = {
         "market": market,
+        "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "iOS App Development"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
     }
@@ -804,6 +807,7 @@ def location_shopify(request, state_slug: str, city_slug: str):
     market = _get_market_or_404(state_slug, city_slug, ServiceMarket.ServiceType.SHOPIFY)
     context = {
         "market": market,
+        "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "Shopify Store Development"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
     }

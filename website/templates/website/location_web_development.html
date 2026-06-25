@@ -73,6 +73,38 @@
   </div>
 </section>
 
+<!-- ─── LOCAL CONTEXT ─── -->
+{% if city_profile %}
+<section class="loc-local">
+  <div class="container">
+    <div class="loc-local__inner">
+
+      <div class="loc-local__text">
+        <p class="loc-local__eyebrow">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          SwanTech in {{ market.city }}
+        </p>
+        {% for para in city_profile.intro %}
+        <p>{{ para }}</p>
+        {% endfor %}
+      </div>
+
+      {% if city_profile.fit %}
+      <aside class="loc-local__fit">
+        <p class="loc-local__fit-label">Who we work with</p>
+        <ul class="loc-local__fit-list">
+          {% for item in city_profile.fit %}
+          <li><i class="fa-solid fa-check" aria-hidden="true"></i>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </aside>
+      {% endif %}
+
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- ─── SERVICES ─── -->
 <section class="loc-section loc-section--alt" id="services">
   <div class="container">
