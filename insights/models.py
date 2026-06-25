@@ -26,7 +26,7 @@ class Insight(models.Model):
 
     # Core content
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=280, unique=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     description = models.TextField(
         help_text="Short excerpt shown on the listing page and used as the default meta description."
     )
