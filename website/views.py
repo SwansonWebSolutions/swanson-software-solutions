@@ -546,7 +546,7 @@ def sitemap_xml(request):
         except Exception:
             continue
 
-    # Location-specific service pages (CA and AZ only)
+    # Priority location pages only — non-priority pages are noindexed in the view.
     ST = ServiceMarket.ServiceType
     _loc_url_name = {
         ST.WEB_DEVELOPMENT: "website:location-web-development",
@@ -554,7 +554,10 @@ def sitemap_xml(request):
         ST.SHOPIFY: "website:location-shopify",
     }
     location_entries = []
-    for market in ServiceMarket.objects.filter(state_id__in=["CA", "AZ"]).order_by("state_id", "city"):
+    priority_markets = ServiceMarket.objects.filter(
+        slug_city__in=_PRIORITY_CITY_SLUGS
+    ).order_by("state_id", "city")
+    for market in priority_markets:
         url_name = _loc_url_name.get(market.service_type)
         if not url_name:
             continue
@@ -566,10 +569,18 @@ def sitemap_xml(request):
         except Exception:
             continue
 
-    # Use latest Insight timestamp for lastmod if available.
-    latest_insight = Insight.objects.order_by("-created_at").first()
-    lastmod = latest_insight.created_at if latest_insight else timezone.now()
-    lastmod_str = lastmod.strftime("%Y-%m-%d")
+    # Published blog posts.
+    insight_entries = []
+    for insight in Insight.objects.filter(status=Insight.STATUS_PUBLISHED).order_by("-published_at", "-created_at"):
+        try:
+            insight_entries.append((
+                request.build_absolute_uri(insight.get_absolute_url()),
+                (insight.updated_at or insight.published_at or insight.created_at).strftime("%Y-%m-%d"),
+            ))
+        except Exception:
+            continue
+
+    lastmod_str = timezone.now().strftime("%Y-%m-%d")
 
     xml_parts = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -581,6 +592,13 @@ def sitemap_xml(request):
         xml_parts.append(f"    <lastmod>{lastmod_str}</lastmod>")
         xml_parts.append("    <changefreq>weekly</changefreq>")
         xml_parts.append("    <priority>0.8</priority>")
+        xml_parts.append("  </url>")
+    for loc, lastmod in insight_entries:
+        xml_parts.append("  <url>")
+        xml_parts.append(f"    <loc>{loc}</loc>")
+        xml_parts.append(f"    <lastmod>{lastmod}</lastmod>")
+        xml_parts.append("    <changefreq>monthly</changefreq>")
+        xml_parts.append("    <priority>0.7</priority>")
         xml_parts.append("  </url>")
     for loc in location_entries:
         xml_parts.append("  <url>")
@@ -709,6 +727,22 @@ def manage_preferences(request):
     )
 
 
+_PRIORITY_CITY_SLUGS = frozenset([
+    "ventura",
+    "oxnard",
+    "camarillo",
+    "thousand-oaks",
+    "santa-barbara",
+    "los-angeles",
+    "agoura-hills",
+    "calabasas",
+    "simi-valley",
+    "moorpark",
+    "westlake-village",
+    "paso-robles",
+])
+
+
 def _get_market_or_404(state_slug: str, city_slug: str, service_type: str) -> ServiceMarket:
     return get_object_or_404(
         ServiceMarket,
@@ -749,6 +783,7 @@ def location_web_development(request, state_slug: str, city_slug: str):
     context = {
         "market": market,
         "structured_data": _location_structured_data(request, market, "Web Development"),
+        "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
     }
     return render(request, "website/location_web_development.html", context)
 
@@ -759,6 +794,7 @@ def location_ios_app(request, state_slug: str, city_slug: str):
     context = {
         "market": market,
         "structured_data": _location_structured_data(request, market, "iOS App Development"),
+        "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
     }
     return render(request, "website/location_ios_app.html", context)
 
@@ -769,6 +805,7 @@ def location_shopify(request, state_slug: str, city_slug: str):
     context = {
         "market": market,
         "structured_data": _location_structured_data(request, market, "Shopify Store Development"),
+        "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
     }
     return render(request, "website/location_shopify.html", context)
 
