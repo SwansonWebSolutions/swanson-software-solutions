@@ -488,6 +488,7 @@ class ServiceMarket(models.Model):
     class ServiceType(models.TextChoices):
         WEB_DEVELOPMENT = "web-development", "Web Development"
         IOS_APP = "ios-app-development", "iOS App Development"
+        SHOPIFY = "shopify", "Shopify Store"
 
     city = models.CharField(max_length=120)
     state_id = models.CharField(max_length=2)

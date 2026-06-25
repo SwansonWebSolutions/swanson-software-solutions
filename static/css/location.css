@@ -1,0 +1,258 @@
+/*
+  SwanTech — location landing pages (city/state local SEO)
+  Depends on core.css for --brand, --ink-*, --radius*, --shadow, --container, --gutter, .btn
+*/
+
+*, *::before, *::after { box-sizing: border-box; }
+
+.loc-page .container {
+  width: min(100%, var(--container));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ═══════════════════════════════════════
+   IMAGE HERO
+   PNG fills section; dark-left overlay keeps white text readable
+═══════════════════════════════════════ */
+.loc-hero {
+  position: relative;
+  min-height: clamp(420px, 58vh, 600px);
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  /* Pull up under the sticky 64px navbar so its transparent bg sees dark, not white */
+  margin-top: -64px;
+  padding-top: calc(64px + clamp(48px, 8vw, 80px));
+  padding-bottom: clamp(48px, 7vw, 72px);
+}
+
+/* Full-bleed background image */
+.loc-hero__bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center right;
+  display: block; pointer-events: none; user-select: none;
+}
+
+/* Gradient: dark on the left (text), transparent on the right (image shows) */
+.loc-hero__overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(
+      to right,
+      rgba(10,18,36,.92) 0%,
+      rgba(10,18,36,.82) 38%,
+      rgba(10,18,36,.52) 62%,
+      rgba(10,18,36,.18) 82%,
+      transparent 100%
+    );
+}
+
+/* Text column — stays left, readable on the dark gradient */
+.loc-hero__content {
+  position: relative; z-index: 2;
+  max-width: clamp(320px, 55%, 560px);
+}
+
+/* Breadcrumb */
+.loc-breadcrumb {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: .35rem; list-style: none; padding: 0; margin: 0 0 1.25rem;
+  font-size: .78rem; font-weight: 500; color: rgba(255,255,255,.45);
+}
+.loc-breadcrumb a { color: rgba(255,255,255,.5); text-decoration: none; transition: color .15s; }
+.loc-breadcrumb a:hover { color: #fff; }
+.loc-breadcrumb__sep { color: rgba(255,255,255,.25); }
+
+/* Kicker */
+.loc-kicker {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.55); margin-bottom: .85rem;
+}
+.loc-kicker i { color: #10b981; }
+
+/* Heading */
+.loc-hero__title {
+  font-size: clamp(1.875rem, 4.5vw, 3rem);
+  font-weight: 800; line-height: 1.1; letter-spacing: -.03em;
+  color: #fff; margin: 0 0 .9rem;
+}
+.loc-hero__title em { font-style: normal; color: #10b981; }
+
+.loc-hero__desc {
+  font-size: clamp(.9375rem, 1.35vw, 1.0625rem);
+  color: rgba(255,255,255,.72); line-height: 1.65;
+  margin: 0 0 1.4rem;
+}
+
+/* Badge strip */
+.loc-hero__badges {
+  display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.65rem;
+}
+.loc-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .32rem .7rem;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  font-size: .77rem; font-weight: 600; color: rgba(255,255,255,.75);
+}
+.loc-badge i { font-size: .7rem; color: #10b981; }
+
+/* Action buttons */
+.loc-hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+/* ── Button variants for dark backgrounds ── */
+.btn-green {
+  background: #10b981; color: #fff;
+  border-color: color-mix(in srgb, #10b981 20%, transparent);
+}
+.btn-green:link, .btn-green:visited { color: #fff; text-decoration: none; }
+.btn-green:hover { background: #059669; transform: translateY(-1px); }
+
+.btn-outline-light {
+  background: transparent; color: #fff;
+  border: 1.5px solid rgba(255,255,255,.38); box-shadow: none;
+}
+.btn-outline-light:link, .btn-outline-light:visited { color: #fff; text-decoration: none; }
+.btn-outline-light:hover { background: rgba(255,255,255,.08); transform: translateY(-1px); }
+
+.btn-lg { padding: .85rem 1.5rem; font-size: 1.0625rem; }
+
+/* ═══════════════════════════════════════
+   SECTION BASE
+═══════════════════════════════════════ */
+.loc-section { padding-block: clamp(52px, 7vw, 88px); }
+.loc-section--alt { background: #f7f9fc; }
+
+.loc-section__header {
+  text-align: center; max-width: 600px;
+  margin-inline: auto; margin-bottom: clamp(36px, 5vw, 56px);
+}
+.loc-section__header h2 {
+  font-size: clamp(1.625rem, 3vw, 2.25rem);
+  font-weight: 800; letter-spacing: -.02em; color: var(--ink-6); margin: 0 0 .65rem;
+}
+.loc-section__header p { font-size: 1.0625rem; color: var(--ink-4); line-height: 1.65; margin: 0; }
+
+/* ═══════════════════════════════════════
+   SERVICE CARDS
+═══════════════════════════════════════ */
+.loc-services-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+}
+@media (max-width: 860px) { .loc-services-grid { grid-template-columns: 1fr; } }
+@media (min-width: 560px) and (max-width: 860px) {
+  .loc-services-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.loc-svc-card {
+  background: #fff; border: 1px solid var(--ink-1);
+  border-top: 3px solid var(--brand);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 1.75rem 1.5rem; display: flex; flex-direction: column; gap: .625rem;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.loc-svc-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+
+.loc-svc-card--shopify { border-top-color: #10b981; }
+.loc-svc-card--web     { border-top-color: #2f8dfb; }
+.loc-svc-card--wix     { border-top-color: #f59e0b; }
+.loc-svc-card--ios     { border-top-color: #8b5cf6; }
+.loc-svc-card--launch  { border-top-color: #10b981; }
+
+.loc-svc-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: grid; place-items: center; font-size: 1.125rem; color: #fff;
+  flex-shrink: 0; margin-bottom: .25rem;
+}
+.loc-svc-card--shopify .loc-svc-icon { background: #10b981; }
+.loc-svc-card--web     .loc-svc-icon { background: #2f8dfb; }
+.loc-svc-card--wix     .loc-svc-icon { background: #f59e0b; }
+.loc-svc-card--ios     .loc-svc-icon { background: #8b5cf6; }
+.loc-svc-card--launch  .loc-svc-icon { background: #10b981; }
+
+.loc-svc-card h2 { font-size: 1.0625rem; font-weight: 700; color: var(--ink-6); margin: 0; }
+.loc-svc-price   { font-size: .8125rem; font-weight: 600; color: var(--ink-3); margin: 0; }
+.loc-svc-card > p { font-size: .9rem; color: var(--ink-4); line-height: 1.6; margin: 0; }
+
+.loc-svc-list {
+  list-style: none; padding: 0; margin: .25rem 0 0;
+  display: flex; flex-direction: column; gap: .4rem;
+}
+.loc-svc-list li {
+  display: flex; align-items: flex-start; gap: .6rem;
+  font-size: .875rem; color: var(--ink-4); line-height: 1.5;
+}
+.loc-svc-list li i { flex-shrink: 0; margin-top: .15rem; font-size: .75rem; }
+.loc-svc-card--shopify .loc-svc-list li i { color: #10b981; }
+.loc-svc-card--web     .loc-svc-list li i { color: #2f8dfb; }
+.loc-svc-card--wix     .loc-svc-list li i { color: #f59e0b; }
+.loc-svc-card--ios     .loc-svc-list li i { color: #8b5cf6; }
+.loc-svc-card--launch  .loc-svc-list li i { color: #10b981; }
+.loc-svc-card .btn { align-self: center; width: auto; margin-top: auto; padding-top: .25rem; }
+
+/* ═══════════════════════════════════════
+   WHY SECTION
+═══════════════════════════════════════ */
+.loc-why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+.loc-why-card {
+  background: #fff; border: 1px solid var(--ink-1); border-radius: var(--radius);
+  padding: 1.75rem; box-shadow: 0 1px 6px rgba(15,23,42,.04);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.loc-why-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.loc-why-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: linear-gradient(135deg, #2f8dfb, #1fbf8a);
+  display: grid; place-items: center; color: #fff; font-size: 1.0625rem; margin-bottom: 1rem;
+}
+.loc-why-card h3 { font-size: 1rem; font-weight: 700; color: var(--ink-6); margin: 0 0 .4rem; }
+.loc-why-card p  { font-size: .9375rem; color: var(--ink-4); line-height: 1.6; margin: 0; }
+
+/* ═══════════════════════════════════════
+   FINAL CTA
+═══════════════════════════════════════ */
+.loc-cta {
+  background: linear-gradient(135deg, #0f172a 0%, #1a3158 50%, #0f172a 100%);
+  position: relative; overflow: clip;
+  padding-block: clamp(52px, 7vw, 88px);
+}
+.loc-cta::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 600px 400px at 25% 50%, rgba(16,185,129,.12), transparent),
+    radial-gradient(ellipse 600px 400px at 75% 50%, rgba(47,141,251,.12), transparent);
+}
+.loc-cta > .container { position: relative; text-align: center; }
+.loc-cta h2 {
+  font-size: clamp(1.625rem, 3.5vw, 2.5rem);
+  font-weight: 800; letter-spacing: -.02em; color: #fff; margin: 0 0 .9rem;
+}
+.loc-cta > .container > p {
+  color: rgba(255,255,255,.7); max-width: 480px;
+  margin: 0 auto 2rem; font-size: 1.0625rem; line-height: 1.65;
+}
+.loc-cta-actions { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; }
+
+/* ═══════════════════════════════════════
+   MOBILE
+═══════════════════════════════════════ */
+@media (max-width: 700px) {
+  /* On small screens let text span full width — image stays as a tinted bg */
+  .loc-hero__content { max-width: 100%; }
+  .loc-hero__overlay {
+    background: rgba(10,18,36,.82); /* flat dark tint so text stays readable */
+  }
+}
+@media (max-width: 480px) {
+  .loc-hero__badges { flex-direction: column; align-items: flex-start; }
+  .loc-hero__actions { flex-direction: column; }
+  .loc-hero__actions .btn { width: 100%; justify-content: center; }
+}

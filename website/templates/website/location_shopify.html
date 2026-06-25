@@ -1,0 +1,184 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Shopify Store Setup in {{ market.city }}, {{ market.state_id }} | SwanTech{% endblock %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/location.css' %}?v={% now 'U' %}">
+  <meta name="description" content="Professional Shopify store setup for businesses in {{ market.city }}, {{ market.state_id }}. From $500, delivered in 5–10 days. Theme, products, payments, SEO, and full launch support included.">
+  {% if structured_data %}
+    <script type="application/ld+json">{{ structured_data|safe }}</script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="loc-page">
+
+<!-- ─── HERO ─── -->
+<section class="loc-hero">
+  <img
+    class="loc-hero__bg"
+    src="{% static 'images/LocalHeroShopify.png' %}"
+    alt=""
+    aria-hidden="true"
+  >
+  <div class="loc-hero__overlay" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="loc-hero__content">
+
+      <ol class="loc-breadcrumb" aria-label="Breadcrumb">
+        <li><a href="{% url 'website:index' %}">Home</a></li>
+        <li class="loc-breadcrumb__sep" aria-hidden="true">/</li>
+        <li><a href="{% url 'website:index' %}#shopify">Shopify Stores</a></li>
+        <li class="loc-breadcrumb__sep" aria-hidden="true">/</li>
+        <li><span>{{ market.state_name }}</span></li>
+        <li class="loc-breadcrumb__sep" aria-hidden="true">/</li>
+        <li><span aria-current="page">{{ market.city }}</span></li>
+      </ol>
+
+      <p class="loc-kicker">
+        <i class="fa-brands fa-shopify" aria-hidden="true"></i>
+        Shopify Store Development &middot; {{ market.state_name }}
+      </p>
+
+      <h1 class="loc-hero__title">
+        Shopify Stores for<br>
+        <em>{{ market.city }}, {{ market.state_id }}</em>
+      </h1>
+
+      <p class="loc-hero__desc">
+        Professional Shopify stores for businesses in {{ market.city }} — theme, products, payments, SEO, and full launch support.
+        Starting at $500, delivered in 5–10 days, with 100% ownership transferred to you.
+      </p>
+
+      <div class="loc-hero__badges">
+        {% if market.zip_code %}<span class="loc-badge"><i class="fa-solid fa-map-pin"></i> ZIP {{ market.zip_code }}</span>{% endif %}
+        <span class="loc-badge"><i class="fa-solid fa-tag"></i> Starting at $500</span>
+        <span class="loc-badge"><i class="fa-solid fa-bolt"></i> 7–10 Day Delivery</span>
+        <span class="loc-badge"><i class="fa-solid fa-store"></i> 100% Store Ownership</span>
+      </div>
+
+      <div class="loc-hero__actions">
+        <a class="btn btn-green btn-lg" href="{% url 'website:contact' %}?inquiry=Shopify">
+          <i class="fa-brands fa-shopify" aria-hidden="true"></i>
+          Start My Shopify Store
+        </a>
+        <a class="btn btn-outline-light" href="#whats-included">
+          What's Included <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHAT'S INCLUDED ─── -->
+<section class="loc-section loc-section--alt" id="whats-included">
+  <div class="container">
+    <div class="loc-section__header">
+      <h2>Your $500 Shopify Store in {{ market.city }}</h2>
+      <p>Everything you need to launch a professional online store — no extras required to get started.</p>
+    </div>
+    <div class="loc-services-grid">
+
+      <article class="loc-svc-card loc-svc-card--shopify">
+        <div class="loc-svc-icon"><i class="fa-solid fa-palette" aria-hidden="true"></i></div>
+        <h2>Design &amp; Setup</h2>
+        <p class="loc-svc-price">Included at $500</p>
+        <p>A polished, mobile-responsive Shopify store that reflects your brand and converts visitors in {{ market.city }}.</p>
+        <ul class="loc-svc-list">
+          <li><i class="fa-solid fa-check"></i> Professional theme setup &amp; customization</li>
+          <li><i class="fa-solid fa-check"></i> Home, About, Shop &amp; Contact pages</li>
+          <li><i class="fa-solid fa-check"></i> Mobile-responsive on all devices</li>
+        </ul>
+        <a class="btn secondary" href="{% url 'website:contact' %}?inquiry=Shopify">
+          Get Started <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <article class="loc-svc-card loc-svc-card--web">
+        <div class="loc-svc-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></div>
+        <h2>Products &amp; Payments</h2>
+        <p class="loc-svc-price">Included at $500</p>
+        <p>Your products listed and your store ready to take real payments from customers in {{ market.city }} and beyond.</p>
+        <ul class="loc-svc-list">
+          <li><i class="fa-solid fa-check"></i> Up to 10 products uploaded &amp; organized</li>
+          <li><i class="fa-solid fa-check"></i> Payment gateway configuration</li>
+          <li><i class="fa-solid fa-check"></i> Basic shipping setup &amp; policy pages</li>
+        </ul>
+        <a class="btn" href="{% url 'website:contact' %}?inquiry=Shopify">
+          See What's Included <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <article class="loc-svc-card loc-svc-card--launch">
+        <div class="loc-svc-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div>
+        <h2>SEO &amp; Launch</h2>
+        <p class="loc-svc-price">Included at $500</p>
+        <p>Your {{ market.city }} store launched with SEO, social links, and email capture in place from day one.</p>
+        <ul class="loc-svc-list">
+          <li><i class="fa-solid fa-check"></i> Basic SEO setup for {{ market.city }}, {{ market.state_id }}</li>
+          <li><i class="fa-solid fa-check"></i> Newsletter signup &amp; social media links</li>
+          <li><i class="fa-solid fa-check"></i> Full launch support — 100% ownership transferred</li>
+        </ul>
+        <a class="btn secondary" href="{% url 'website:contact' %}?inquiry=Shopify">
+          Launch My Store <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── WHY SWANTECH ─── -->
+<section class="loc-section" id="why-us">
+  <div class="container">
+    <div class="loc-section__header">
+      <h2>Why SwanTech for {{ market.city }}?</h2>
+      <p>A professional Shopify store without the five-figure agency bill.</p>
+    </div>
+    <div class="loc-why-grid">
+      <div class="loc-why-card">
+        <div class="loc-why-icon"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div>
+        <h3>Fast Launch</h3>
+        <p>Most Shopify stores are delivered in 5–10 business days. You start selling sooner.</p>
+      </div>
+      <div class="loc-why-card">
+        <div class="loc-why-icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></div>
+        <h3>Starting at $500</h3>
+        <p>Clear, upfront pricing. A complete professional store — no hidden fees or ongoing agency retainers.</p>
+      </div>
+      <div class="loc-why-card">
+        <div class="loc-why-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
+        <h3>Direct Developer</h3>
+        <p>Work directly with the developer building your store. Real communication, no handoffs.</p>
+      </div>
+      <div class="loc-why-card">
+        <div class="loc-why-icon"><i class="fa-solid fa-store" aria-hidden="true"></i></div>
+        <h3>100% Your Store</h3>
+        <p>Full ownership transferred at handoff. Your store, your data, your customers — always.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FINAL CTA ─── -->
+<section class="loc-cta">
+  <div class="container">
+    <h2>Ready to open your Shopify store in {{ market.city }}?</h2>
+    <p>Book a free 15-minute consultation — we'll scope your store and get you a timeline the same day.</p>
+    <div class="loc-cta-actions">
+      <a class="btn btn-green btn-lg" href="{% url 'website:contact' %}?inquiry=Shopify">
+        <i class="fa-brands fa-shopify" aria-hidden="true"></i>
+        Start My $500 Store
+      </a>
+      <a class="btn btn-outline-light" href="{% url 'website:index' %}#whats-included">
+        See Full Checklist
+      </a>
+    </div>
+  </div>
+</section>
+
+</div>
+{% endblock %}

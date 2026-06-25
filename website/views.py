@@ -696,6 +696,48 @@ def location_ios_app(request, state_slug: str, city_slug: str):
     return render(request, "website/location_ios_app.html", context)
 
 
+@cache_page(60 * 60 * 6)
+def location_shopify(request, state_slug: str, city_slug: str):
+    market = _get_market_or_404(state_slug, city_slug, ServiceMarket.ServiceType.SHOPIFY)
+    context = {
+        "market": market,
+        "structured_data": _location_structured_data(request, market, "Shopify Store Development"),
+    }
+    return render(request, "website/location_shopify.html", context)
+
+
+def location_directory(request):
+    """Hidden directory listing all location SEO URLs, grouped by service type and state."""
+    ST = ServiceMarket.ServiceType
+    markets = ServiceMarket.objects.all().order_by("state_name", "city")
+
+    groups = {
+        ST.WEB_DEVELOPMENT: {},
+        ST.IOS_APP: {},
+        ST.SHOPIFY: {},
+    }
+    for m in markets:
+        bucket = groups.get(m.service_type)
+        if bucket is None:
+            continue
+        bucket.setdefault(m.state_name, []).append(m)
+
+    context = {
+        "groups": [
+            {
+                "label": ST(key).label,
+                "service_type": key,
+                "states": [
+                    {"name": state, "markets": mlist}
+                    for state, mlist in sorted(states.items())
+                ],
+            }
+            for key, states in groups.items()
+        ],
+    }
+    return render(request, "website/location_directory.html", context)
+
+
 def broker_acknowledgement_confirmation(request):
     """Record broker acknowledgement when they click the confirmation link."""
 

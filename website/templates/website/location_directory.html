@@ -1,0 +1,192 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Location Directory | SwanTech{% endblock %}
+
+{% block head_extra %}
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    .dir-page {
+      padding-block: clamp(64px, 8vw, 100px);
+      background: #f7f9fc;
+      min-height: 100vh;
+    }
+    .dir-page .container {
+      width: min(100%, var(--container));
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+    .dir-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dir-header h1 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--ink-6);
+      margin: 0 0 .4rem;
+    }
+    .dir-header p {
+      font-size: .9375rem;
+      color: var(--ink-4);
+      margin: 0;
+    }
+    .dir-notice {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: .4rem .85rem;
+      font-size: .78rem;
+      font-weight: 600;
+      color: #92400e;
+      margin-bottom: 2rem;
+    }
+    .dir-group { margin-bottom: 3rem; }
+    .dir-group__title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--ink-6);
+      margin: 0 0 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+    .dir-group__title .dir-badge {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: .2rem .55rem;
+      border-radius: 999px;
+    }
+    .dir-badge--web      { background: #dbeafe; color: #1d4ed8; }
+    .dir-badge--ios      { background: #ede9fe; color: #6d28d9; }
+    .dir-badge--shopify  { background: #d1fae5; color: #065f46; }
+    .dir-state { margin-bottom: 1.5rem; }
+    .dir-state__name {
+      font-size: .8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--ink-4);
+      margin: 0 0 .6rem;
+      padding-bottom: .35rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .dir-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem .75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .dir-links li a {
+      font-size: .875rem;
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .dir-links li a:hover { text-decoration: underline; }
+    .dir-stats {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .dir-stat {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: .75rem 1.25rem;
+      font-size: .875rem;
+      color: var(--ink-4);
+    }
+    .dir-stat strong { color: var(--ink-6); font-size: 1.125rem; display: block; }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="dir-page">
+  <div class="container">
+
+    <div class="dir-header">
+      <h1>Location Page Directory</h1>
+      <p>All active local SEO pages grouped by service type and state.</p>
+    </div>
+
+    <div class="dir-notice">
+      <i class="fa-solid fa-eye-slash" aria-hidden="true"></i>
+      noindex, nofollow — not linked from the public site
+    </div>
+
+    <div class="dir-stats">
+      {% for group in groups %}
+        {% with count=0 %}
+          {% for state in group.states %}
+            {% for m in state.markets %}{% endfor %}
+          {% endfor %}
+        {% endwith %}
+      {% endfor %}
+      {% for group in groups %}
+        <div class="dir-stat">
+          <strong>
+            {% for state in group.states %}{{ state.markets|length }}{% if not forloop.last %} + {% endif %}{% endfor %}
+          </strong>
+          {{ group.label }} pages
+        </div>
+      {% endfor %}
+    </div>
+
+    {% for group in groups %}
+    <div class="dir-group">
+      <h2 class="dir-group__title">
+        {% if group.service_type == "web-development" %}
+          <i class="fa-solid fa-code" aria-hidden="true"></i>
+          <span class="dir-badge dir-badge--web">Web Dev</span>
+        {% elif group.service_type == "ios-app-development" %}
+          <i class="fa-brands fa-apple" aria-hidden="true"></i>
+          <span class="dir-badge dir-badge--ios">iOS App</span>
+        {% elif group.service_type == "shopify" %}
+          <i class="fa-brands fa-shopify" aria-hidden="true"></i>
+          <span class="dir-badge dir-badge--shopify">Shopify</span>
+        {% endif %}
+        {{ group.label }}
+      </h2>
+
+      {% for state in group.states %}
+      <div class="dir-state">
+        <p class="dir-state__name">{{ state.name }} ({{ state.markets|length }})</p>
+        <ul class="dir-links">
+          {% for market in state.markets %}
+          <li>
+            {% if group.service_type == "web-development" %}
+              <a href="{% url 'website:location-web-development' state_slug=market.slug_state city_slug=market.slug_city %}">
+                {{ market.city }}{% if market.zip_code %} <span style="color:var(--ink-3);font-weight:400;font-size:.8em">{{ market.zip_code }}</span>{% endif %}
+              </a>
+            {% elif group.service_type == "ios-app-development" %}
+              <a href="{% url 'website:location-ios-app' state_slug=market.slug_state city_slug=market.slug_city %}">
+                {{ market.city }}{% if market.zip_code %} <span style="color:var(--ink-3);font-weight:400;font-size:.8em">{{ market.zip_code }}</span>{% endif %}
+              </a>
+            {% elif group.service_type == "shopify" %}
+              <a href="{% url 'website:location-shopify' state_slug=market.slug_state city_slug=market.slug_city %}">
+                {{ market.city }}{% if market.zip_code %} <span style="color:var(--ink-3);font-weight:400;font-size:.8em">{{ market.zip_code }}</span>{% endif %}
+              </a>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% empty %}
+      <p style="color:var(--ink-3);font-size:.9rem;">No markets added yet for this service type.</p>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

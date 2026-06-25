@@ -17,9 +17,20 @@ urlpatterns = [
     path('privacy/', views.privacy_policy_page, name='privacy'),
     path('terms/', views.terms_of_service_page, name='terms'),
     path(
+        'locations/<slug:state_slug>/<slug:city_slug>/',
+        views.location_web_development,
+        name='location-web-development',
+    ),
+    path(
         'locations/<slug:state_slug>/<slug:city_slug>/ios-app-development/',
         views.location_ios_app,
         name='location-ios-app',
     ),
+    path(
+        'locations/<slug:state_slug>/<slug:city_slug>/shopify/',
+        views.location_shopify,
+        name='location-shopify',
+    ),
+    path('locations/', views.location_directory, name='location-directory'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
 ]
