@@ -486,30 +486,30 @@ def sitemap_xml(request):
         except Exception:
             continue
 
-    # Location-specific service pages (limited to CA/AZ for now)
-    for market in ServiceMarket.objects.filter(state_id__in=["CA", "AZ"]):
+    # Location-specific service pages (CA and AZ only)
+    ST = ServiceMarket.ServiceType
+    _loc_url_name = {
+        ST.WEB_DEVELOPMENT: "website:location-web-development",
+        ST.IOS_APP: "website:location-ios-app",
+        ST.SHOPIFY: "website:location-shopify",
+    }
+    location_entries = []
+    for market in ServiceMarket.objects.filter(state_id__in=["CA", "AZ"]).order_by("state_id", "city"):
+        url_name = _loc_url_name.get(market.service_type)
+        if not url_name:
+            continue
         try:
-            if market.service_type == ServiceMarket.ServiceType.WEB_DEVELOPMENT:
-                loc_url = request.build_absolute_uri(
-                    reverse(
-                        "website:location-web-development",
-                        kwargs={"state_slug": market.slug_state, "city_slug": market.slug_city},
-                    )
-                )
-            else:
-                loc_url = request.build_absolute_uri(
-                    reverse(
-                        "website:location-ios-app",
-                        kwargs={"state_slug": market.slug_state, "city_slug": market.slug_city},
-                    )
-                )
-            url_entries.append(loc_url)
+            loc_url = request.build_absolute_uri(
+                reverse(url_name, kwargs={"state_slug": market.slug_state, "city_slug": market.slug_city})
+            )
+            location_entries.append(loc_url)
         except Exception:
             continue
 
     # Use latest Insight timestamp for lastmod if available.
     latest_insight = Insight.objects.order_by("-created_at").first()
     lastmod = latest_insight.created_at if latest_insight else timezone.now()
+    lastmod_str = lastmod.strftime("%Y-%m-%d")
 
     xml_parts = [
         '<?xml version="1.0" encoding="UTF-8"?>',
@@ -518,9 +518,16 @@ def sitemap_xml(request):
     for loc in url_entries:
         xml_parts.append("  <url>")
         xml_parts.append(f"    <loc>{loc}</loc>")
-        xml_parts.append(f"    <lastmod>{lastmod.strftime('%Y-%m-%d')}</lastmod>")
+        xml_parts.append(f"    <lastmod>{lastmod_str}</lastmod>")
         xml_parts.append("    <changefreq>weekly</changefreq>")
         xml_parts.append("    <priority>0.8</priority>")
+        xml_parts.append("  </url>")
+    for loc in location_entries:
+        xml_parts.append("  <url>")
+        xml_parts.append(f"    <loc>{loc}</loc>")
+        xml_parts.append(f"    <lastmod>{lastmod_str}</lastmod>")
+        xml_parts.append("    <changefreq>monthly</changefreq>")
+        xml_parts.append("    <priority>0.6</priority>")
         xml_parts.append("  </url>")
     xml_parts.append("</urlset>")
 
