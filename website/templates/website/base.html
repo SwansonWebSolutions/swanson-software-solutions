@@ -18,6 +18,14 @@
     {% firstof og_image None as meta_og_image %}
     {% firstof twitter_image meta_og_image as meta_twitter_image %}
     <title>{{ meta_title }}</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YTNK8EE50D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-YTNK8EE50D');
+    </script>
     <meta name="description" content="{{ meta_description }}">
     <meta name="keywords" content="{{ meta_keywords }}">
     <link rel="canonical" href="{{ meta_canonical }}">
