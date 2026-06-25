@@ -225,12 +225,72 @@ def terms_of_service_page(request):
     """Terms of Service page view"""
     return render(request, 'website/terms_of_service.html')
 
+def insight_detail(request, slug):
+    insight = get_object_or_404(Insight, slug=slug)
+    if insight.status != Insight.STATUS_PUBLISHED and not request.user.is_staff:
+        from django.http import Http404
+        raise Http404
+
+    sections = insight.sections.all()
+
+    published_iso = None
+    if insight.published_at:
+        published_iso = insight.published_at.isoformat()
+    elif insight.created_at:
+        published_iso = insight.created_at.isoformat()
+
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": insight.get_effective_seo_title(),
+        "description": insight.get_effective_seo_description(),
+        "author": {"@type": "Organization", "name": insight.author or "SwanTech"},
+        "publisher": {
+            "@type": "Organization",
+            "name": "Swanson Software Solutions",
+            "logo": {"@type": "ImageObject", "url": request.build_absolute_uri(static("images/logo-text.png"))},
+        },
+        "datePublished": published_iso,
+        "dateModified": insight.updated_at.isoformat() if insight.updated_at else published_iso,
+        "url": request.build_absolute_uri(insight.get_absolute_url()),
+    }
+    _raw_og = insight.get_effective_og_image()
+    og_image_abs = request.build_absolute_uri(_raw_og) if _raw_og else None
+
+    if og_image_abs:
+        schema["image"] = og_image_abs
+    if insight.json_ld_extra and isinstance(insight.json_ld_extra, dict):
+        schema.update(insight.json_ld_extra)
+
+    context = {
+        "insight": insight,
+        "sections": sections,
+        "reading_time": insight.get_effective_reading_time(),
+        "json_ld": json.dumps(schema, ensure_ascii=False),
+        # SEO context consumed by base.html
+        "seo_title": insight.get_effective_seo_title(),
+        "seo_description": insight.get_effective_seo_description(),
+        "seo_keywords": insight.seo_keywords or "",
+        "canonical_url": insight.canonical_url or request.build_absolute_uri(),
+        "og_type": "article",
+        "og_title": insight.og_title or insight.get_effective_seo_title(),
+        "og_description": insight.og_description or insight.get_effective_seo_description(),
+        "og_url": request.build_absolute_uri(),
+        "og_image": og_image_abs,
+        "twitter_title": insight.twitter_title or insight.og_title or insight.get_effective_seo_title(),
+        "twitter_description": insight.twitter_description or insight.og_description or insight.get_effective_seo_description(),
+        "twitter_image": og_image_abs,
+        "seo_noindex": insight.noindex,
+    }
+    return render(request, "website/insight_detail.html", context)
+
+
 def insights_page(request):
     """Insights page view"""
     topic = request.GET.get("topic") or ""
     sort = request.GET.get("sort") or "newest"
 
-    insights_qs = Insight.objects.all()
+    insights_qs = Insight.objects.filter(status=Insight.STATUS_PUBLISHED)
     valid_topics = [choice[0] for choice in Insight.TOPIC_CHOICES]
 
     if topic in valid_topics:

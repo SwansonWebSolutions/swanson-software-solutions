@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
@@ -25,4 +27,4 @@ urlpatterns = [
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     # Ensure favicon is served at the root path for browsers that request /favicon.ico
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'), permanent=True)),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

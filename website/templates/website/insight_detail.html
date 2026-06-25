@@ -1,0 +1,159 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+<script type="application/ld+json">{{ json_ld }}</script>
+<style>
+    .post-header { padding: 48px 24px 32px; max-width: 760px; margin: 0 auto; }
+    .post-breadcrumb { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
+    .post-breadcrumb a { color: #2563eb; text-decoration: none; }
+    .post-breadcrumb a:hover { text-decoration: underline; }
+    .post-topic { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .topic-web-development .post-topic { color: #0ea5e9; }
+    .topic-marketing .post-topic { color: #ec4899; }
+    .topic-ios-development .post-topic { color: #2563eb; }
+    .topic-ecommerce .post-topic { color: #16a34a; }
+    .topic-data-privacy .post-topic { color: #f59e0b; }
+    .post-title { font-size: clamp(28px, 5vw, 42px); font-weight: 800; color: #0f172a; line-height: 1.2; margin: 0 0 16px; }
+    .post-meta { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #6b7280; margin-bottom: 24px; }
+    .post-meta span { display: flex; align-items: center; gap: 5px; }
+    .post-excerpt { font-size: 18px; color: #374151; line-height: 1.6; border-left: 4px solid #2563eb; padding-left: 16px; margin: 0; }
+    .post-featured-image { max-width: 760px; margin: 0 auto 0; padding: 0 24px; }
+    .post-featured-image img { width: 100%; border-radius: 10px; display: block; max-height: 460px; object-fit: cover; }
+    .post-featured-image figcaption { font-size: 12px; color: #9ca3af; text-align: center; margin-top: 8px; }
+    .post-body { max-width: 760px; margin: 0 auto; padding: 40px 24px 64px; }
+    .post-section { margin-bottom: 40px; }
+    .post-section:last-child { margin-bottom: 0; }
+    .post-section-heading { font-weight: 700; color: #0f172a; line-height: 1.3; margin: 0 0 14px; }
+    .post-section-heading.h2 { font-size: 26px; }
+    .post-section-heading.h3 { font-size: 21px; }
+    .post-section-heading.h4 { font-size: 18px; }
+    .post-section-content { color: #1f2937; line-height: 1.75; font-size: 16px; }
+    .post-section-content p { margin: 0 0 16px; }
+    .post-section-content p:last-child { margin-bottom: 0; }
+    .post-section-image { margin: 20px 0; }
+    .post-section-image img { width: 100%; border-radius: 8px; display: block; }
+    .post-section-image figcaption { font-size: 12px; color: #9ca3af; margin-top: 6px; }
+    .post-section-cta { margin-top: 20px; }
+    .post-section-cta a { display: inline-flex; align-items: center; gap: 6px; background: #2563eb; color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.15s; }
+    .post-section-cta a:hover { background: #1d4ed8; }
+    .post-divider { border: none; border-top: 1px solid #e5e7eb; margin: 0 0 40px; }
+    .post-footer { max-width: 760px; margin: 0 auto; padding: 0 24px 64px; border-top: 1px solid #e5e7eb; padding-top: 32px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+    .post-footer-meta { font-size: 13px; color: #6b7280; }
+    .post-back { font-size: 14px; font-weight: 600; color: #2563eb; text-decoration: none; }
+    .post-back:hover { text-decoration: underline; }
+    @media (max-width: 640px) {
+        .post-header, .post-featured-image, .post-body, .post-footer { padding-left: 16px; padding-right: 16px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<article class="topic-{{ insight.topic }}">
+
+    <header class="post-header">
+        <nav class="post-breadcrumb" aria-label="Breadcrumb">
+            <a href="{% url 'website:index' %}">Home</a>
+            &rsaquo;
+            <a href="{% url 'website:insights' %}">Insights</a>
+            &rsaquo;
+            {{ insight.get_topic_display }}
+        </nav>
+
+        <p class="post-topic">{{ insight.get_topic_display }}</p>
+        <h1 class="post-title">{{ insight.title }}</h1>
+
+        <div class="post-meta">
+            <span>
+                <i class="fa-regular fa-calendar"></i>
+                {% if insight.published_at %}
+                    {{ insight.published_at|date:"F j, Y" }}
+                {% else %}
+                    {{ insight.created_at|date:"F j, Y" }}
+                {% endif %}
+            </span>
+            {% if insight.author %}
+            <span>
+                <i class="fa-regular fa-user"></i>
+                {{ insight.author }}
+            </span>
+            {% endif %}
+            <span>
+                <i class="fa-regular fa-clock"></i>
+                {{ reading_time }} min read
+            </span>
+        </div>
+
+        <p class="post-excerpt">{{ insight.description }}</p>
+    </header>
+
+    {% if insight.featured_image %}
+    <figure class="post-featured-image">
+        <img
+            src="{{ insight.featured_image.url }}"
+            alt="{{ insight.featured_image_alt|default:insight.title }}"
+            loading="eager"
+        >
+        {% if insight.featured_image_alt %}
+        <figcaption>{{ insight.featured_image_alt }}</figcaption>
+        {% endif %}
+    </figure>
+    {% endif %}
+
+    <div class="post-body">
+        {% for section in sections %}
+        <section class="post-section">
+
+            {% if section.heading %}
+            <{% if section.heading_level %}{{ section.heading_level }}{% else %}h2{% endif %} class="post-section-heading {{ section.heading_level|default:'h2' }}">
+                {{ section.heading }}
+            </{% if section.heading_level %}{{ section.heading_level }}{% else %}h2{% endif %}>
+            {% endif %}
+
+            {% if section.image %}
+            <figure class="post-section-image">
+                <img
+                    src="{{ section.image.url }}"
+                    alt="{{ section.image_alt|default:section.heading }}"
+                    loading="lazy"
+                >
+                {% if section.image_caption %}
+                <figcaption>{{ section.image_caption }}</figcaption>
+                {% endif %}
+            </figure>
+            {% endif %}
+
+            {% if section.content %}
+            <div class="post-section-content">{{ section.content|safe }}</div>
+            {% endif %}
+
+            {% if section.link_url and section.link_text %}
+            <div class="post-section-cta">
+                <a
+                    href="{{ section.link_url }}"
+                    {% if section.link_open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                >
+                    {{ section.link_text }}
+                    {% if section.link_open_new_tab %}<i class="fa-solid fa-arrow-up-right-from-square" style="font-size:11px;"></i>{% endif %}
+                </a>
+            </div>
+            {% endif %}
+
+        </section>
+        {% if not forloop.last %}<hr class="post-divider">{% endif %}
+        {% empty %}
+        <p style="color:#6b7280;">No content sections yet.</p>
+        {% endfor %}
+    </div>
+
+    <footer class="post-footer">
+        <a class="post-back" href="{% url 'website:insights' %}">
+            &larr; Back to Insights
+        </a>
+        <p class="post-footer-meta">
+            Last updated {{ insight.updated_at|date:"F j, Y" }}
+        </p>
+    </footer>
+
+</article>
+{% endblock %}

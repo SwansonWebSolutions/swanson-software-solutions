@@ -4,8 +4,9 @@ from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.shortcuts import redirect, render
 from django.urls import path
+from django.utils.html import format_html
 
-from .models import Insight
+from .models import Insight, InsightSection
 
 
 class InsightGenerationForm(forms.Form):
@@ -21,12 +22,89 @@ class InsightGenerationForm(forms.Form):
     count = forms.IntegerField(min_value=1, initial=1, help_text="How many insights to generate")
 
 
+class InsightSectionInline(admin.StackedInline):
+    model = InsightSection
+    extra = 1
+    fields = (
+        ("order", "heading", "heading_level"),
+        "content",
+        ("image", "image_alt"),
+        "image_caption",
+        ("link_text", "link_url", "link_open_new_tab"),
+    )
+
+
 @admin.register(Insight)
 class InsightAdmin(admin.ModelAdmin):
-    list_display = ("title", "topic", "created_at")
-    list_filter = ("topic",)
+    list_display = ("title", "topic", "status", "published_at", "created_at", "view_link")
+    list_filter = ("topic", "status")
     search_fields = ("title", "description")
+    prepopulated_fields = {"slug": ("title",)}
+    readonly_fields = ("created_at", "updated_at")
+    inlines = [InsightSectionInline]
     change_list_template = "admin/insights/insight_change_list.html"
+
+    fieldsets = (
+        ("Content", {
+            "fields": (
+                "title",
+                "slug",
+                "topic",
+                "status",
+                "published_at",
+                "description",
+                "author",
+                "featured_image",
+                "featured_image_alt",
+                "reading_time_minutes",
+            ),
+        }),
+        ("SEO — Basic", {
+            "classes": ("collapse",),
+            "description": (
+                "Control how this page appears in search engine results. "
+                "All fields fall back to the post title/description if left blank."
+            ),
+            "fields": (
+                "seo_title",
+                "seo_description",
+                "seo_keywords",
+                "canonical_url",
+                "noindex",
+            ),
+        }),
+        ("SEO — Open Graph & Twitter", {
+            "classes": ("collapse",),
+            "description": "Controls how this post looks when shared on social media.",
+            "fields": (
+                "og_title",
+                "og_description",
+                "og_image_url",
+                "twitter_title",
+                "twitter_description",
+            ),
+        }),
+        ("SEO — Advanced Schema (JSON-LD)", {
+            "classes": ("collapse",),
+            "description": (
+                "Optional extra properties merged into the Article JSON-LD schema block. "
+                "Must be a valid JSON object. Leave blank unless you know what you are doing."
+            ),
+            "fields": ("json_ld_extra",),
+        }),
+        ("Timestamps", {
+            "classes": ("collapse",),
+            "fields": ("created_at", "updated_at"),
+        }),
+    )
+
+    def view_link(self, obj):
+        if obj.pk and obj.slug:
+            url = obj.get_absolute_url()
+            label = "View" if obj.status == Insight.STATUS_PUBLISHED else "Preview"
+            return format_html('<a href="{}" target="_blank">{}</a>', url, label)
+        return "-"
+    view_link.short_description = "View"
 
     def get_urls(self):
         urls = super().get_urls()
