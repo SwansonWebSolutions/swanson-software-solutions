@@ -4,6 +4,24 @@
 {% block head_extra %}
 <script type="application/ld+json">{{ json_ld }}</script>
 <style>
+    /* No dark hero on this page — lock navbar into its scrolled (light bg) state */
+    .site-header {
+        backdrop-filter: saturate(150%) blur(12px);
+        -webkit-backdrop-filter: saturate(150%) blur(12px);
+        background: color-mix(in srgb, var(--surface) 92%, transparent) !important;
+        border-bottom-color: color-mix(in srgb, var(--ink-2) 35%, transparent) !important;
+        box-shadow: 0 2px 20px rgba(15,23,42,.07) !important;
+    }
+    .site-header .navbar-logo { color: var(--ink-6) !important; }
+    .site-header .nav .nav-link,
+    .site-header .dropdown-toggle { color: var(--ink-5) !important; }
+    .site-header .dropdown-toggle { color: var(--ink-6) !important; }
+    .site-header .burger { color: var(--ink-6) !important; }
+    .site-header .nav-cta {
+        background: var(--accent) !important;
+        border-color: transparent !important;
+        color: #fff !important;
+    }
     .post-header { padding: 48px 24px 32px; max-width: 760px; margin: 0 auto; }
     .post-breadcrumb { font-size: 13px; color: #6b7280; margin-bottom: 20px; }
     .post-breadcrumb a { color: #2563eb; text-decoration: none; }

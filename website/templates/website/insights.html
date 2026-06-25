@@ -1,6 +1,24 @@
 {% extends "website/base.html" %}
 {% block head_extra %}
 <style>
+    /* No dark hero on this page — lock navbar into its scrolled (light bg) state */
+    .site-header {
+        backdrop-filter: saturate(150%) blur(12px);
+        -webkit-backdrop-filter: saturate(150%) blur(12px);
+        background: color-mix(in srgb, var(--surface) 92%, transparent) !important;
+        border-bottom-color: color-mix(in srgb, var(--ink-2) 35%, transparent) !important;
+        box-shadow: 0 2px 20px rgba(15,23,42,.07) !important;
+    }
+    .site-header .navbar-logo { color: var(--ink-6) !important; }
+    .site-header .nav .nav-link,
+    .site-header .dropdown-toggle { color: var(--ink-5) !important; }
+    .site-header .dropdown-toggle { color: var(--ink-6) !important; }
+    .site-header .burger { color: var(--ink-6) !important; }
+    .site-header .nav-cta {
+        background: var(--accent) !important;
+        border-color: transparent !important;
+        color: #fff !important;
+    }
     .insights-hero { padding: 48px 24px 24px; text-align: center; max-width: 860px; margin: 0 auto; }
     .insights-list { display: flex; flex-direction: column; gap: 24px; padding: 0 24px 48px; max-width: 860px; margin: 0 auto; }
     .insight-card { padding: 0 0 24px; border-bottom: 1px solid #e5e7eb; display: flex; flex-direction: column; gap: 10px; background: none; border-radius: 0; box-shadow: none; }
