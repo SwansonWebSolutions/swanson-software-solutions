@@ -13,7 +13,7 @@
         "name": "Swanson Software Solutions",
         "url": "{{ request.scheme|default:'https' }}://{{ request.get_host }}/",
         "logo": "{{ request.scheme|default:'https' }}://{{ request.get_host }}{% static 'images/logo-text.png' %}",
-        "description": "SwanTech builds professional Shopify stores starting from $500, custom web applications, and iOS apps for small businesses and creators.",
+        "description": "SwanTech builds professional Shopify stores starting from $1,000, custom web applications, and iOS apps for small businesses and creators.",
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "sales",
@@ -35,7 +35,7 @@
           "@type": "OfferCatalog",
           "name": "Core services",
           "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Shopify eCommerce Store" }, "price": "500", "priceCurrency": "USD" },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Shopify eCommerce Store" }, "price": "1000", "priceCurrency": "USD" },
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom web applications and SaaS platforms" } },
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "iOS application design and build" } },
             { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wix website development" } }
@@ -66,10 +66,10 @@
         Shopify · Web Apps · iOS
       </span>
       <h1 class="hero-title">Your Store,<br>Live in Days.</h1>
-      <p class="hero-desc">Professional Shopify stores from $500. Custom web applications and iOS apps for when your business needs more. Built directly by a developer — no agency, no overhead.</p>
+      <p class="hero-desc">Professional Shopify stores from $1,000. Custom web applications and iOS apps for when your business needs more. Built directly by a developer — no agency, no overhead.</p>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">$500</div>
+          <div class="stat-num">$1,000</div>
           <div class="stat-label">Shopify store</div>
         </div>
         <div class="stat-divider" aria-hidden="true"></div>
@@ -105,7 +105,7 @@
           <div class="form-field">
             <label for="hf-service">What do you need?</label>
             <select id="hf-service" name="inquiry">
-              <option value="Shopify">$500 Shopify Store</option>
+              <option value="Shopify">$1,000 Shopify Store</option>
               <option value="web">Custom Web Application</option>
               <option value="app">iOS App Development</option>
               <option value="wix">Wix Website</option>
@@ -162,9 +162,9 @@
       <article class="svc-card svc-card--shopify" id="shopify">
         <div class="svc-card__icon"><i class="fa-brands fa-shopify" aria-hidden="true"></i></div>
         <h3>Shopify Stores</h3>
-        <p class="svc-card__price">From $500</p>
+        <p class="svc-card__price">From $1,000</p>
         <p>Professional eCommerce stores — theme setup, product uploads, payments, SEO, and full launch support included.</p>
-        <a class="svc-card__link" href="{% url 'website:contact' %}?inquiry=Shopify">
+        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='shopify' %}">
           Start Your Store <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
@@ -174,7 +174,7 @@
         <h3>Custom Web Apps</h3>
         <p class="svc-card__price">Custom quote</p>
         <p>Dashboards, booking systems, SaaS platforms, and internal tools — built around your exact workflow.</p>
-        <a class="svc-card__link" href="{% url 'website:contact' %}?inquiry=web">
+        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='custom-web-apps' %}">
           Plan a Build <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
@@ -184,7 +184,7 @@
         <h3>iOS Apps</h3>
         <p class="svc-card__price">Custom quote</p>
         <p>Polished iPhone apps for businesses, creators, and startups — clean design and real-world usability.</p>
-        <a class="svc-card__link" href="{% url 'website:contact' %}?inquiry=app">
+        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='ios-apps' %}">
           Discuss Your App <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
@@ -194,7 +194,7 @@
         <h3>Wix Websites</h3>
         <p class="svc-card__price">Affordable pricing</p>
         <p>Simple, professional websites for service businesses and creators — easy to manage and quick to launch.</p>
-        <a class="svc-card__link" href="{% url 'website:contact' %}?inquiry=web">
+        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='wix-websites' %}">
           Get a Quote <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
@@ -203,7 +203,7 @@
   </div>
 </section>
 
-<!-- ─── SHOPIFY OFFER: $500 ─── -->
+<!-- ─── SHOPIFY OFFER: $1,000 ─── -->
 <section class="section section-offer" id="whats-included">
   <div class="container">
     <div class="offer-card">
@@ -212,11 +212,11 @@
           <span class="eyebrow shopify-eyebrow">
             <i class="fa-brands fa-shopify" aria-hidden="true"></i> Featured Offer
           </span>
-          <h2>What's Included in Your $500 Shopify Store</h2>
+          <h2>What's Included in Your $1,000 Shopify Store</h2>
           <p>A complete, professional Shopify setup — theme, pages, products, payments, SEO, and launch support. Additional features are available at extra cost.</p>
         </div>
-        <div class="offer-price-badge" aria-label="Starting from $500">
-          <div class="price-num">$500</div>
+        <div class="offer-price-badge" aria-label="Starting from $1,000">
+          <div class="price-num">$1,000</div>
           <div class="price-label">starting price</div>
         </div>
       </div>
@@ -261,7 +261,7 @@
       </div>
       <div class="why-card">
         <div class="why-icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></div>
-        <h3>Starting at $500</h3>
+        <h3>Starting at $1,000</h3>
         <p>Clear, upfront pricing. A professional Shopify store without the five-figure agency bill. Additional features available as needed.</p>
       </div>
       <div class="why-card">

@@ -5,7 +5,7 @@
 
 {% block head_extra %}
   <link rel="stylesheet" href="{% static 'css/location.css' %}?v={% now 'U' %}">
-  <meta name="description" content="Custom web development, Shopify stores from $500, and Wix websites for businesses in {{ market.city }}, {{ market.state_id }}. Fast delivery, direct developer, no agency overhead.">
+  <meta name="description" content="Custom web development, Shopify stores from $1,000, and Wix websites for businesses in {{ market.city }}, {{ market.state_id }}. Fast delivery, direct developer, no agency overhead.">
   {% if structured_data %}
     <script type="application/ld+json">{{ structured_data|safe }}</script>
   {% endif %}
@@ -55,7 +55,7 @@
       <div class="loc-hero__badges">
         {% if market.zip_code %}<span class="loc-badge"><i class="fa-solid fa-map-pin"></i> ZIP {{ market.zip_code }}</span>{% endif %}
         <span class="loc-badge"><i class="fa-solid fa-bolt"></i> 5–10 Day Delivery</span>
-        <span class="loc-badge"><i class="fa-brands fa-shopify"></i> Shopify from $500</span>
+        <span class="loc-badge"><i class="fa-brands fa-shopify"></i> Shopify from $1,000</span>
         <span class="loc-badge"><i class="fa-solid fa-user"></i> Direct Developer Access</span>
       </div>
 
@@ -117,7 +117,7 @@
       <article class="loc-svc-card loc-svc-card--shopify">
         <div class="loc-svc-icon"><i class="fa-brands fa-shopify" aria-hidden="true"></i></div>
         <h2>Shopify Stores</h2>
-        <p class="loc-svc-price">From $500</p>
+        <p class="loc-svc-price">From $1,000</p>
         <p>Professional eCommerce stores for {{ market.city }} businesses — ready to sell in days.</p>
         <ul class="loc-svc-list">
           <li><i class="fa-solid fa-check"></i> Theme setup, products &amp; payment configuration</li>
@@ -189,7 +189,7 @@
       <div class="loc-why-card">
         <div class="loc-why-icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></div>
         <h3>Transparent Pricing</h3>
-        <p>Clear upfront pricing. Shopify stores from $500. No hidden fees or inflated agency rates.</p>
+        <p>Clear upfront pricing. Shopify stores from $1,000. No hidden fees or inflated agency rates.</p>
       </div>
     </div>
   </div>

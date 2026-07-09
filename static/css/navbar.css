@@ -7,22 +7,16 @@
   top: 0;
   z-index: 100;
   overflow: visible; /* ensure dropdown can overflow */
-  /* Transparent at top; transitions to frosted-white when .scrolled is added */
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  transition:
-    background .35s ease,
-    border-color .3s ease,
-    box-shadow .3s ease;
+  /* Solid dark blue on every page, at all scroll positions */
+  background: var(--deep);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 20px rgba(15,23,42,.18);
+  transition: box-shadow .3s ease;
 }
 
-/* Frosted white once the user scrolls */
+/* Slightly deeper shadow once the user scrolls, for a subtle lifted feel */
 .site-header.scrolled {
-  backdrop-filter: saturate(150%) blur(12px);
-  -webkit-backdrop-filter: saturate(150%) blur(12px);
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  border-bottom-color: color-mix(in srgb, var(--ink-2) 35%, transparent);
-  box-shadow: 0 2px 20px rgba(15,23,42,.07);
+  box-shadow: 0 2px 24px rgba(15,23,42,.3);
 }
 
 /* ── Logo text ── */
@@ -33,44 +27,24 @@
   text-decoration: none !important;
 }
 
-/* ── Logo: always visible; no filter needed ── */
-.site-header .navbar-logo img {
-  transition: opacity .3s ease;
-}
-.site-header:not(.scrolled) .navbar-logo img {
-  opacity: 1; /* logo shows as-is over dark banner — white bg reads as a natural badge */
-}
-
-/* ── Nav links + dropdown toggle: white → dark ── */
+/* ── Nav links + dropdown toggle: always light on the dark bar ── */
 .site-header .nav .nav-link,
 .site-header .dropdown-toggle {
   color: rgba(255,255,255,.88) !important;
-  transition: color .3s ease, background .2s ease;
+  transition: color .2s ease, background .2s ease;
 }
-.site-header.scrolled .nav .nav-link,
-.site-header.scrolled .dropdown-toggle {
-  color: var(--ink-5) !important;
-}
-.site-header.scrolled .dropdown-toggle { color: var(--ink-6) !important; }
 
-/* ── Burger icon: white → dark ── */
+/* ── Burger icon ── */
 .site-header .burger {
   color: rgba(255,255,255,.88);
-  transition: color .3s ease;
 }
-.site-header.scrolled .burger { color: var(--ink-6); }
 
-/* ── CTA button: ghost-invert at top → solid green when scrolled ── */
+/* ── CTA button: solid accent, always visible on the dark bar ── */
 .site-header .nav-cta {
-  background: rgba(255,255,255,.12) !important;
-  border: 1px solid rgba(255,255,255,.35) !important;
-  color: #fff !important;
-  transition: background .3s ease, border-color .3s ease, color .3s ease;
-}
-.site-header.scrolled .nav-cta {
   background: var(--accent) !important;
-  border-color: transparent !important;
+  border: 1px solid transparent !important;
   color: #fff !important;
+  transition: background .2s ease;
 }
 
 .nav-wrap {
@@ -245,12 +219,6 @@
   width: 100%; justify-content: flex-start; gap: .6rem;
 }
 .site-header .mobile-submenu a i { margin-right: 4px; }
-
-/* Make sure header links inherit your palette */
-.site-header a.nav-link { color: var(--ink-5) !important; text-decoration: none !important; }
-.site-header a.nav-link:hover {
-  background: color-mix(in srgb, var(--ink-2) 20%, transparent) !important;
-}
 
 /* utilities */
 .muted{ color: var(--ink-4) }

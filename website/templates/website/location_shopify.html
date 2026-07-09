@@ -5,7 +5,7 @@
 
 {% block head_extra %}
   <link rel="stylesheet" href="{% static 'css/location.css' %}?v={% now 'U' %}">
-  <meta name="description" content="Professional Shopify store setup for businesses in {{ market.city }}, {{ market.state_id }}. From $500, delivered in 5–10 days. Theme, products, payments, SEO, and full launch support included.">
+  <meta name="description" content="Professional Shopify store setup for businesses in {{ market.city }}, {{ market.state_id }}. From $1,000, delivered in 5–10 days. Theme, products, payments, SEO, and full launch support included.">
   {% if structured_data %}
     <script type="application/ld+json">{{ structured_data|safe }}</script>
   {% endif %}
@@ -49,12 +49,12 @@
 
       <p class="loc-hero__desc">
         Professional Shopify stores for businesses in {{ market.city }} — theme, products, payments, SEO, and full launch support.
-        Starting at $500, delivered in 5–10 days, with 100% ownership transferred to you.
+        Starting at $1,000, delivered in 5–10 days, with 100% ownership transferred to you.
       </p>
 
       <div class="loc-hero__badges">
         {% if market.zip_code %}<span class="loc-badge"><i class="fa-solid fa-map-pin"></i> ZIP {{ market.zip_code }}</span>{% endif %}
-        <span class="loc-badge"><i class="fa-solid fa-tag"></i> Starting at $500</span>
+        <span class="loc-badge"><i class="fa-solid fa-tag"></i> Starting at $1,000</span>
         <span class="loc-badge"><i class="fa-solid fa-bolt"></i> 7–10 Day Delivery</span>
         <span class="loc-badge"><i class="fa-solid fa-store"></i> 100% Store Ownership</span>
       </div>
@@ -77,7 +77,7 @@
 <section class="loc-section loc-section--alt" id="whats-included">
   <div class="container">
     <div class="loc-section__header">
-      <h2>Your $500 Shopify Store in {{ market.city }}</h2>
+      <h2>Your $1,000 Shopify Store in {{ market.city }}</h2>
       <p>Everything you need to launch a professional online store — no extras required to get started.</p>
     </div>
     <div class="loc-services-grid">
@@ -85,7 +85,7 @@
       <article class="loc-svc-card loc-svc-card--shopify">
         <div class="loc-svc-icon"><i class="fa-solid fa-palette" aria-hidden="true"></i></div>
         <h2>Design &amp; Setup</h2>
-        <p class="loc-svc-price">Included at $500</p>
+        <p class="loc-svc-price">Included at $1,000</p>
         <p>A polished, mobile-responsive Shopify store that reflects your brand and converts visitors in {{ market.city }}.</p>
         <ul class="loc-svc-list">
           <li><i class="fa-solid fa-check"></i> Professional theme setup &amp; customization</li>
@@ -100,7 +100,7 @@
       <article class="loc-svc-card loc-svc-card--web">
         <div class="loc-svc-icon"><i class="fa-solid fa-box-open" aria-hidden="true"></i></div>
         <h2>Products &amp; Payments</h2>
-        <p class="loc-svc-price">Included at $500</p>
+        <p class="loc-svc-price">Included at $1,000</p>
         <p>Your products listed and your store ready to take real payments from customers in {{ market.city }} and beyond.</p>
         <ul class="loc-svc-list">
           <li><i class="fa-solid fa-check"></i> Up to 10 products uploaded &amp; organized</li>
@@ -115,7 +115,7 @@
       <article class="loc-svc-card loc-svc-card--launch">
         <div class="loc-svc-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div>
         <h2>SEO &amp; Launch</h2>
-        <p class="loc-svc-price">Included at $500</p>
+        <p class="loc-svc-price">Included at $1,000</p>
         <p>Your {{ market.city }} store launched with SEO, social links, and email capture in place from day one.</p>
         <ul class="loc-svc-list">
           <li><i class="fa-solid fa-check"></i> Basic SEO setup for {{ market.city }}, {{ market.state_id }}</li>
@@ -146,7 +146,7 @@
       </div>
       <div class="loc-why-card">
         <div class="loc-why-icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></div>
-        <h3>Starting at $500</h3>
+        <h3>Starting at $1,000</h3>
         <p>Clear, upfront pricing. A complete professional store — no hidden fees or ongoing agency retainers.</p>
       </div>
       <div class="loc-why-card">
@@ -171,7 +171,7 @@
     <div class="loc-cta-actions">
       <a class="btn btn-green btn-lg" href="{% url 'website:contact' %}?inquiry=Shopify">
         <i class="fa-brands fa-shopify" aria-hidden="true"></i>
-        Start My $500 Store
+        Start My $1,000 Store
       </a>
       <a class="btn btn-outline-light" href="{% url 'website:index' %}#whats-included">
         See Full Checklist

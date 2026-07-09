@@ -137,6 +137,61 @@ def book_consultation(request):
     return redirect(CALENDLY_URL)
 
 
+def submit_estimate(request):
+    """Handle the 'Get an exact quote' submit from the embedded pricing calculator.
+    Emails the built estimate to the admin, then sends the visitor to Calendly.
+    """
+    if request.method != "POST":
+        return redirect("website:services")
+
+    service_label = (request.POST.get("service_label") or "").strip() or "Not specified"
+
+    lines = []
+    one_time_total = None
+    recurring_total = None
+    notes = []
+    try:
+        payload = json.loads(request.POST.get("estimate_payload") or "{}")
+        lines = payload.get("lines") or []
+        one_time_total = payload.get("oneTime")
+        recurring_total = payload.get("recurring")
+        if payload.get("hasStartingAt"):
+            notes.append("Includes one or more \"starting at\" items — final pricing may vary.")
+        if payload.get("hasCustomQuote"):
+            notes.append("Visitor also expressed interest in a custom-quote feature (e.g. AI/automation).")
+    except (ValueError, TypeError):
+        pass
+
+    line_text = "\n".join(
+        f"  - {line.get('label', 'Item')}: ${line.get('amount', 0):,}"
+        + ("/mo" if line.get("recurring") else "")
+        for line in lines
+        if isinstance(line, dict)
+    ) or "  (no line items received)"
+
+    totals_text = f"One-time total: ${one_time_total:,}" if isinstance(one_time_total, (int, float)) else "One-time total: unknown"
+    if isinstance(recurring_total, (int, float)) and recurring_total > 0:
+        totals_text += f"\nRecurring total: ${recurring_total:,}/month"
+
+    notes_text = ("\n\nNotes:\n" + "\n".join(f"  - {n}" for n in notes)) if notes else ""
+
+    send_mail(
+        subject=f"Pricing Calculator: {service_label} estimate requested",
+        message=(
+            f"A visitor built an estimate for \"{service_label}\" and clicked 'Get an exact quote'.\n\n"
+            f"Selections:\n{line_text}\n\n"
+            f"{totals_text}"
+            f"{notes_text}\n\n"
+            f"They are being redirected to Calendly to book a call now."
+        ),
+        from_email="SwanTech Site <contact@swantech.org>",
+        recipient_list=[getattr(settings, "ADMIN_NOTIFICATION_EMAIL", "admin@swantech.org")],
+        fail_silently=True,
+    )
+
+    return redirect(CALENDLY_URL)
+
+
 def newsletter_subscribe(request):
     """Capture newsletter opt-ins by email only."""
     if request.method != "POST":
@@ -211,8 +266,24 @@ def company_page(request):
     return render(request, 'website/company.html')
 
 def services_page(request):
-    """Services page view"""
-    return render(request, 'website/services.html')
+    """Services hub — links out to each individual service page."""
+    from .services_data import SERVICES, SERVICE_ORDER
+
+    context = {
+        "services": [SERVICES[slug] for slug in SERVICE_ORDER],
+        "seo_title": "Ecommerce, Software & iOS App Development | SwanTech",
+        "seo_description": (
+            "Ecommerce store development, custom software development, and iOS app development "
+            "from an experienced software studio. Fixed pricing and fast delivery."
+        ),
+        "seo_keywords": (
+            "ecommerce development, ecommerce website development, custom software development, "
+            "software development company, iOS app development, iPhone app development, Shopify "
+            "development, web application development"
+        ),
+        "canonical_url": request.build_absolute_uri(),
+    }
+    return render(request, 'website/services.html', context)
 
 def clients_page(request):
     """Clients page view"""
@@ -331,17 +402,23 @@ def insights_page(request):
     }
     return render(request, 'website/insights.html', context)
 
-def shopify_page(request):
-    """Shopify Development page view"""
-    return render(request, 'website/shopify.html')
+def service_detail(request, service_slug):
+    """Individual service landing page (Shopify, Custom Web Apps, iOS Apps, Wix)."""
+    from django.http import Http404
+    from .services_data import SERVICES
 
-def custom_web_dev_page(request):
-    """Custom Website Development page view"""
-    return render(request, 'website/custom_web_dev.html')
+    service = SERVICES.get(service_slug)
+    if not service:
+        raise Http404
 
-def mobile_app_dev_page(request):
-    """Mobile App Development page view"""
-    return render(request, 'website/mobile_app_dev.html')
+    context = {
+        "service": service,
+        "seo_title": service["seo_title"],
+        "seo_description": service["seo_description"],
+        "seo_keywords": service["seo_keywords"],
+        "canonical_url": request.build_absolute_uri(),
+    }
+    return render(request, "website/service_detail.html", context)
 
 def do_not_call(request):
     """Do Not Call page view"""
@@ -532,6 +609,10 @@ def sitemap_xml(request):
         ("website:company", {}),
         ("website:clients", {}),
         ("website:services", {}),
+        ("website:service-detail", {"service_slug": "shopify"}),
+        ("website:service-detail", {"service_slug": "custom-web-apps"}),
+        ("website:service-detail", {"service_slug": "ios-apps"}),
+        ("website:service-detail", {"service_slug": "wix-websites"}),
         ("website:contact", {}),
         ("website:insights", {}),
         ("website:do-not-email", {}),
@@ -628,6 +709,7 @@ def contact_sales_page(request):
         'web': 'Web Development',
         'app': 'iOS App Development',
         'shopify': 'Shopify',
+        'wix': 'Wix',
         'wordpress': 'Wordpress',
         'general': 'General Inquiry',
     }

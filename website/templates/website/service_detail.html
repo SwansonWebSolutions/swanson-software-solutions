@@ -1,0 +1,135 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/service_detail.css' %}?v={% now 'U' %}">
+  {% if service.calculator_product_id %}
+  <link rel="stylesheet" href="{% static 'css/pricing_calculator.css' %}?v={% now 'U' %}">
+  {% endif %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "{{ service.eyebrow }}",
+    "provider": { "@type": "Organization", "name": "Swanson Software Solutions" },
+    "areaServed": "Global",
+    "url": "{{ canonical_url }}",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "USD",
+      "description": "{{ service.price_amount }}"
+    }
+  }
+  </script>
+  {% if service.calculator_product_id %}
+  <script src="{% static 'js/pricing_calculator.js' %}?v={% now 'U' %}" defer></script>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="svc-detail" style="--svc-accent: {{ service.accent }};">
+
+<!-- ── HERO ── -->
+<section class="svc-hero">
+  <div class="container svc-hero__inner">
+    <nav class="svc-breadcrumb" aria-label="Breadcrumb">
+      <a href="{% url 'website:index' %}">Home</a>
+      &rsaquo;
+      <a href="{% url 'website:services' %}">Services</a>
+      &rsaquo;
+      {{ service.nav_label }}
+    </nav>
+    <span class="svc-hero__eyebrow">
+      <i class="{{ service.icon }}" aria-hidden="true"></i> {{ service.eyebrow }}
+    </span>
+    <h1>{{ service.title }}</h1>
+    <p class="svc-hero__lead">{{ service.lead }}</p>
+    <div class="svc-hero__actions">
+      <a class="btn" href="{% url 'website:contact' %}?inquiry={{ service.inquiry_key }}">
+        {{ service.cta_label }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+      <a class="btn ghost invert" href="#included">See What's Included</a>
+    </div>
+  </div>
+</section>
+
+{% if service.images %}
+<!-- ── SHOWCASE ── -->
+<section class="svc-section svc-showcase">
+  <div class="container">
+    <div class="svc-showcase-grid">
+      {% for img in service.images %}
+      <figure class="svc-showcase-img">
+        <img src="{{ img.src }}" alt="{{ img.alt }}" loading="lazy">
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ── WHAT'S INCLUDED ── -->
+<section class="svc-section" id="included">
+  <div class="container">
+    <div class="svc-offer">
+      <div class="svc-offer__header">
+        <div>
+          <p class="svc-section__label">What's included</p>
+          <h2 class="svc-section__title">Everything you need to launch.</h2>
+        </div>
+        <div class="svc-price-badge">
+          <div class="svc-price-badge__num">{{ service.price_amount }}</div>
+          <div class="svc-price-badge__label">{{ service.price_label }}</div>
+        </div>
+      </div>
+      <div class="svc-checklist">
+        {% for item in service.included %}
+        <div class="svc-check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ item }}</div>
+        {% endfor %}
+      </div>
+      <p class="svc-offer__note">{{ service.price_note }}</p>
+    </div>
+  </div>
+</section>
+
+{% if service.calculator_product_id %}
+<!-- ── PRICING CALCULATOR ── -->
+{% include "website/partials/pricing_calculator.html" with calculator_product_id=service.calculator_product_id %}
+{% endif %}
+
+<!-- ── PROCESS ── -->
+<section class="svc-section svc-section--alt">
+  <div class="container">
+    <div class="svc-section__intro">
+      <p class="svc-section__label">The process</p>
+      <h2 class="svc-section__title">Simple. Fast. No surprises.</h2>
+      <p class="svc-section__lead">Three steps from first message to live product.</p>
+    </div>
+    <div class="svc-steps">
+      {% for step in service.process %}
+      <div class="svc-step">
+        <div class="svc-step__num">{{ step.num }}</div>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA (dark) ── -->
+<section class="svc-section svc-section--dark">
+  <div class="container svc-cta">
+    <h2>Ready to get started?</h2>
+    <p>Book a free 15-minute call and leave with a clear scope, timeline, and price for your project.</p>
+    <div class="svc-cta__actions">
+      <a class="btn secondary" href="https://calendly.com/admin-swantech/30min" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-calendar-check" aria-hidden="true"></i> Book a 15-min Call
+      </a>
+      <a class="btn ghost invert" href="{% url 'website:contact' %}?inquiry={{ service.inquiry_key }}">{{ service.cta_label }}</a>
+    </div>
+  </div>
+</section>
+
+</div>
+{% endblock %}

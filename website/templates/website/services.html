@@ -1,0 +1,36 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/service_detail.css' %}?v={% now 'U' %}">
+{% endblock %}
+
+{% block content %}
+<div class="svc-detail">
+
+<section class="svc-hero svc-hero--hub">
+  <div class="container svc-hero__inner">
+    <span class="svc-hero__eyebrow">— Services</span>
+    <h1>Everything We Build.</h1>
+    <p class="svc-hero__lead">Shopify stores, custom web applications, iOS apps, and Wix websites — built directly by a developer, no agency overhead.</p>
+  </div>
+</section>
+
+<section class="svc-section">
+  <div class="container">
+    <div class="svc-hub-grid">
+      {% for service in services %}
+      <a class="svc-hub-card" href="{% url 'website:service-detail' service_slug=service.slug %}" style="--svc-accent: {{ service.accent }};">
+        <div class="svc-hub-card__icon"><i class="{{ service.icon }}" aria-hidden="true"></i></div>
+        <h3>{{ service.nav_label }}</h3>
+        <p class="svc-hub-card__price">{{ service.price_amount }}</p>
+        <p>{{ service.lead }}</p>
+        <span class="svc-hub-card__link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+</div>
+{% endblock %}

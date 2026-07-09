@@ -1,0 +1,69 @@
+{% comment %}
+  Embedded pricing calculator. Include with:
+    {% include "website/partials/pricing_calculator.html" with calculator_product_id=service.calculator_product_id %}
+  Requires css/pricing_calculator.css and js/pricing_calculator.js to be loaded on the page.
+  calculator_product_id must match a product id in PRICING_CONFIG (static/js/pricing_calculator.js): "shopify", "wix", or "custom".
+{% endcomment %}
+<section class="svc-section svc-section--alt" id="pricing-calculator">
+  <div class="container">
+    <div class="svc-section__intro">
+      <p class="svc-section__label">Estimate your project</p>
+      <h2 class="svc-section__title">Build your estimate.</h2>
+      <p class="svc-section__lead">Adjust the options below to see live pricing. This is a starting point &mdash; final numbers are confirmed on a free call.</p>
+    </div>
+
+    <div class="calc-wrap calc" id="calc-{{ calculator_product_id }}" data-calc-root data-locked-product="{{ calculator_product_id }}">
+      <div class="calc-layout">
+
+        <div class="calc-main">
+          <fieldset class="calc-fieldset">
+            <legend>What's included</legend>
+            <ul class="calc-feature-list" data-calc-features></ul>
+          </fieldset>
+
+          <fieldset class="calc-fieldset">
+            <legend>Customize your project</legend>
+            <div class="calc-addon-list" data-calc-addons></div>
+          </fieldset>
+        </div>
+
+        <aside class="calc-summary" data-calc-summary aria-live="polite" aria-label="Estimated pricing summary">
+          <h3>Your Estimate</h3>
+
+          <ul class="calc-breakdown" data-calc-breakdown></ul>
+
+          <div class="calc-totals">
+            <div class="calc-total-row">
+              <div class="calc-total-label">Estimated one-time total</div>
+              <div class="calc-total-amount" data-calc-onetime>$0</div>
+            </div>
+            <div class="calc-total-row" data-calc-recurring-row hidden>
+              <div class="calc-total-label">Estimated recurring cost</div>
+              <div class="calc-total-amount calc-total-amount--recurring" data-calc-recurring>$0/month</div>
+            </div>
+          </div>
+
+          <p class="calc-note" data-calc-starting-note hidden>
+            Items marked "starting at" are estimated. Final pricing for these may vary based on project complexity.
+          </p>
+          <p class="calc-note" data-calc-quote-note hidden>
+            Some selected features require a custom quote and are not included in the total above.
+          </p>
+
+          <p class="calc-disclaimer">
+            This is a preliminary estimate. Final pricing is confirmed during a free consultation.
+          </p>
+
+          <form method="post" action="{% url 'website:submit-estimate' %}" data-calc-estimate-form>
+            {% csrf_token %}
+            <input type="hidden" name="service_label" value="{{ service.nav_label|default:calculator_product_id }}">
+            <input type="hidden" name="estimate_payload" data-calc-payload value="">
+            <button type="submit" class="btn calc-cta">Get an exact quote</button>
+          </form>
+          <button type="button" class="btn ghost calc-reset" data-calc-reset>Start over</button>
+        </aside>
+
+      </div>
+    </div>
+  </div>
+</section>
