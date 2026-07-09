@@ -14,10 +14,25 @@
     </div>
     <div class="footer-stack">
       <h4>Services</h4>
-      <a href="{% url 'website:index' %}#shopify">Shopify</a>
-      <a href="{% url 'website:index' %}#wordpress">WordPress</a>
-      <a href="{% url 'website:index' %}#saas">Custom Web</a>
-      <a href="{% url 'website:index' %}#ios-apps">iOS Apps</a>
+      <a href="{% url 'website:service-detail' service_slug='shopify' %}">Shopify</a>
+      <a href="{% url 'website:service-detail' service_slug='custom-web-apps' %}">Custom Web Apps</a>
+      <a href="{% url 'website:service-detail' service_slug='ios-apps' %}">iOS Apps</a>
+      <a href="{% url 'website:service-detail' service_slug='wix-websites' %}">Wix Websites</a>
+    </div>
+    <div class="footer-stack">
+      <h4>Locations</h4>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='ventura' %}">Ventura, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='oxnard' %}">Oxnard, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='camarillo' %}">Camarillo, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='thousand-oaks' %}">Thousand Oaks, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='santa-barbara' %}">Santa Barbara, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='los-angeles' %}">Los Angeles, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='agoura-hills' %}">Agoura Hills, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='calabasas' %}">Calabasas, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='simi-valley' %}">Simi Valley, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='moorpark' %}">Moorpark, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='westlake-village' %}">Westlake Village, CA</a>
+      <a href="{% url 'website:location-web-development' state_slug='california' city_slug='paso-robles' %}">Paso Robles, CA</a>
     </div>
     <div class="footer-stack">
       <h4>Contact</h4>

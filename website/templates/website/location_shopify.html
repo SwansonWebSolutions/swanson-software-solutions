@@ -1,11 +1,8 @@
 {% extends "website/base.html" %}
 {% load static %}
 
-{% block title %}Shopify Store Setup in {{ market.city }}, {{ market.state_id }} | SwanTech{% endblock %}
-
 {% block head_extra %}
   <link rel="stylesheet" href="{% static 'css/location.css' %}?v={% now 'U' %}">
-  <meta name="description" content="Professional Shopify store setup for businesses in {{ market.city }}, {{ market.state_id }}. From $1,000, delivered in 5–10 days. Theme, products, payments, SEO, and full launch support included.">
   {% if structured_data %}
     <script type="application/ld+json">{{ structured_data|safe }}</script>
   {% endif %}
@@ -162,6 +159,26 @@
     </div>
   </div>
 </section>
+
+{% if not seo_noindex %}
+<!-- ─── OTHER SERVICES, SAME CITY ─── -->
+<section class="loc-section">
+  <div class="container">
+    <div class="loc-section__header">
+      <h2>Other Services in {{ market.city }}</h2>
+      <p>We also build these for {{ market.city }} businesses.</p>
+    </div>
+    <div class="loc-cross-links">
+      <a class="btn ghost" href="{% url 'website:location-web-development' state_slug=market.slug_state city_slug=market.slug_city %}">
+        <i class="fa-solid fa-code" aria-hidden="true"></i> Web Development in {{ market.city }}
+      </a>
+      <a class="btn ghost" href="{% url 'website:location-ios-app' state_slug=market.slug_state city_slug=market.slug_city %}">
+        <i class="fa-brands fa-apple" aria-hidden="true"></i> iOS App Development in {{ market.city }}
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <!-- ─── FINAL CTA ─── -->
 <section class="loc-cta">

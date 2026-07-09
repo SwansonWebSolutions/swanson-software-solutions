@@ -607,8 +607,6 @@ def sitemap_xml(request):
     base_urls = [
         ("website:index", {}),
         ("website:company", {}),
-        ("website:clients", {}),
-        ("website:services", {}),
         ("website:service-detail", {"service_slug": "shopify"}),
         ("website:service-detail", {"service_slug": "custom-web-apps"}),
         ("website:service-detail", {"service_slug": "ios-apps"}),
@@ -617,7 +615,6 @@ def sitemap_xml(request):
         ("website:insights", {}),
         ("website:do-not-email", {}),
         ("website:stop-my-spam", {}),
-        ("website:faq", {}),
         ("website:privacy", {}),
         ("website:terms", {}),
     ]
@@ -868,6 +865,12 @@ def location_web_development(request, state_slug: str, city_slug: str):
         "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "Web Development"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
+        "seo_title": f"Web Development in {market.city}, {market.state_id} | SwanTech",
+        "seo_description": (
+            f"Custom web development, Shopify stores, and Wix websites for businesses in "
+            f"{market.city}, {market.state_id}. Professional, fast-turnaround delivery."
+        ),
+        "canonical_url": request.build_absolute_uri(),
     }
     return render(request, "website/location_web_development.html", context)
 
@@ -880,6 +883,12 @@ def location_ios_app(request, state_slug: str, city_slug: str):
         "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "iOS App Development"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
+        "seo_title": f"iOS App Development in {market.city}, {market.state_id} | SwanTech",
+        "seo_description": (
+            f"iOS app design, development, and App Store launch support for businesses in "
+            f"{market.city}, {market.state_id}. Swift/SwiftUI builds with hands-on developer access."
+        ),
+        "canonical_url": request.build_absolute_uri(),
     }
     return render(request, "website/location_ios_app.html", context)
 
@@ -892,6 +901,12 @@ def location_shopify(request, state_slug: str, city_slug: str):
         "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "Shopify Store Development"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
+        "seo_title": f"Shopify Store Setup in {market.city}, {market.state_id} | SwanTech",
+        "seo_description": (
+            f"Professional Shopify store setup for businesses in {market.city}, {market.state_id}. "
+            f"Theme, products, payments, SEO, and full launch support included."
+        ),
+        "canonical_url": request.build_absolute_uri(),
     }
     return render(request, "website/location_shopify.html", context)
 
@@ -924,6 +939,7 @@ def location_directory(request):
             }
             for key, states in groups.items()
         ],
+        "seo_title": "Location Directory | SwanTech",
     }
     return render(request, "website/location_directory.html", context)
 

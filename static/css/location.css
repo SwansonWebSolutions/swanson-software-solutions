@@ -195,6 +195,13 @@
 .loc-svc-card .btn { align-self: center; width: auto; margin-top: auto; padding-top: .25rem; }
 
 /* ═══════════════════════════════════════
+   OTHER SERVICES, SAME CITY (cross-links)
+═══════════════════════════════════════ */
+.loc-cross-links {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem;
+}
+
+/* ═══════════════════════════════════════
    WHY SECTION
 ═══════════════════════════════════════ */
 .loc-why-grid {
