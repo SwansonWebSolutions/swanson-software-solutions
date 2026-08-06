@@ -36,4 +36,6 @@ urlpatterns = [
     ),
     path('locations/', views.location_directory, name='location-directory'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap'),
+    path('broker-compliance/<uuid:tracking_token>/', views.broker_compliance, name='broker-compliance-token'),
+    path('broker-compliance/', views.broker_compliance, name='broker-compliance'),
 ]

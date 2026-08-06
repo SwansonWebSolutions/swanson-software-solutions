@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -138,7 +140,8 @@ class NewsletterSubscribeTests(TestCase):
         )
         self.assertEqual(resp.status_code, 200)
         self.assertTrue(NewsletterSubscriber.objects.filter(email="test@example.com").exists())
-        self.assertEqual(len(mail.outbox), 1)
+        # A welcome email to the subscriber plus an admin "new subscriber" notification.
+        self.assertEqual(len(mail.outbox), 2)
         self.assertIn("Welcome to the SwanTech newsletter", mail.outbox[0].subject)
 
     def test_invalid_email_shows_error(self):
@@ -175,11 +178,20 @@ class NewsletterCommandTests(TestCase):
         Insight.objects.create(title="Insight 3", description="Desc 3", topic=Insight.TOPIC_MARKETING)
 
     def test_command_sends_to_all_subscribers_with_latest_three_insights(self):
-        call_command("send_newsletter")
-        self.assertEqual(len(mail.outbox), 1)
+        today_name = timezone.localdate().strftime("%A")
+        # send_newsletter refreshes insights via the (OpenAI-backed) generate_insights
+        # command before sending; stub it out so the test stays offline/deterministic
+        # and only exercises the 4 insights already seeded in setUp.
+        with patch("website.management.commands.send_newsletter.call_command"):
+            call_command("send_newsletter", send_weekday=today_name)
+        # One individual email per subscriber (no bcc) — see send_newsletter.py.
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertCountEqual(
+            [message.to[0] for message in mail.outbox],
+            ["alice@example.com", "bob@example.com"],
+        )
         message = mail.outbox[0]
         self.assertIn("weekly insights", message.subject.lower())
-        self.assertCountEqual(message.bcc, ["alice@example.com", "bob@example.com"])
         body = message.body
         self.assertIn("Insight 1", body)
         self.assertIn("Insight 2", body)
