@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import (
     DoNotEmailRequest,
@@ -9,8 +10,29 @@ from .models import (
     EmailDripState,
     ConsumerBrokerStatus,
     NewsletterSubscriber,
+    SiteImage,
 )
 # Register your models here.
+
+
+@admin.register(SiteImage)
+class SiteImageAdmin(admin.ModelAdmin):
+    list_display = ("key", "title", "thumbnail", "alt_text", "updated_at")
+    search_fields = ("key", "title", "alt_text")
+    readonly_fields = ("thumbnail_preview", "uploaded_at", "updated_at")
+    fields = ("key", "title", "image", "thumbnail_preview", "alt_text", "uploaded_at", "updated_at")
+
+    def thumbnail(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="height:40px;border-radius:4px;object-fit:cover;">', obj.image.url)
+        return "—"
+    thumbnail.short_description = "Preview"
+
+    def thumbnail_preview(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height:240px;border-radius:8px;">', obj.image.url)
+        return "No image uploaded yet"
+    thumbnail_preview.short_description = "Preview"
 
 
 class DoNotEmailRequestAdmin(admin.ModelAdmin):

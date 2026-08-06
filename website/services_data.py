@@ -55,15 +55,9 @@ SERVICES = {
         "process": _PROCESS_STEPS,
         "inquiry_key": "shopify",
         "calculator_product_id": "shopify",
-        "images": [
-            {
-                "src": "/media/services/pexels-shoper-pl-550490863-16675632.jpg",
-                "alt": "Setting up a new online store on a laptop",
-            },
-            {
-                "src": "/media/services/pexels-mart-production-7679865.jpg",
-                "alt": "Customizing product listings for an online store",
-            },
+        "image_keys": [
+            "services-shopify-showcase-1",
+            "services-shopify-showcase-2",
         ],
         "cta_label": "Start My Shopify Store",
         "seo_title": "Professional Affordable Shopify Store Development | SwanTech",

@@ -1,7 +1,6 @@
 {% load static %}
 {% for insight in insights %}
-    <article class="insight-card topic-{{ insight.topic }}">
-        <span class="insight-topic">{{ insight.get_topic_display }}</span>
+    <article class="insight-card">
         {% if insight.slug %}
         <h2 class="insight-title">
             <a href="{% url 'website:insight-detail' slug=insight.slug %}" style="color:inherit; text-decoration:none;">

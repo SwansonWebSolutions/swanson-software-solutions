@@ -515,3 +515,29 @@ class ServiceMarket(models.Model):
 
     def __str__(self) -> str:
         return f"{self.city}, {self.state_id} — {self.get_service_type_display()}"
+
+
+class SiteImage(models.Model):
+    """General-purpose image library, manageable from the admin, for use anywhere on the site.
+
+    A page references an image by its stable `key` (e.g. via the `{% site_image %}` template
+    tag) rather than a hardcoded file path, so staff can upload/replace the actual photo from
+    the admin without needing a code change or deploy.
+    """
+
+    key = models.SlugField(
+        max_length=100,
+        unique=True,
+        help_text="Stable identifier referenced in code/templates, e.g. 'services-shopify-showcase-1'.",
+    )
+    title = models.CharField(max_length=200, blank=True, help_text="Internal label — not shown on the site.")
+    image = models.ImageField(upload_to="site_images/")
+    alt_text = models.CharField(max_length=300, blank=True, help_text="Accessibility alt text shown on the page.")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ("key",)
+
+    def __str__(self) -> str:
+        return self.title or self.key

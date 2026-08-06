@@ -9,12 +9,6 @@
     .insight-title { font-size: 20px; margin: 0; color: #0f172a; }
     .insight-date { font-size: 12px; color: #6b7280; }
     .insight-desc { margin: 0; color: #1f2937; line-height: 1.5; }
-    /* Topic color accents */
-    .topic-web-development .insight-topic { color: #0ea5e9; } /* teal-ish blue */
-    .topic-marketing .insight-topic { color: #ec4899; }      /* pink */
-    .topic-ios-development .insight-topic { color: #2563eb; }/* keep current blue */
-    .topic-ecommerce .insight-topic { color: #16a34a; }      /* green */
-    .topic-data-privacy .insight-topic { color: #f59e0b; }    /* amber */
     .filters { max-width: 860px; margin: 0 auto 24px; padding: 0 24px; display: flex; justify-content: center; }
     .filters form { display: flex; flex-direction: column; gap: 12px; align-items: center; width: 100%; }
     .filter-row { display: flex; flex-direction: column; gap: 12px; justify-content: center; width: 100%; }
@@ -51,15 +45,6 @@
     <form method="get">
         <div class="filter-row">
             <label>
-                Topic
-                <select name="topic">
-                    <option value="">All topics</option>
-                    {% for value, label in topics %}
-                        <option value="{{ value }}" {% if current_topic == value %}selected{% endif %}>{{ label }}</option>
-                    {% endfor %}
-                </select>
-            </label>
-            <label>
                 Sort
                 <select name="sort">
                     <option value="newest" {% if current_sort == "newest" %}selected{% endif %}>Newest</option>
@@ -69,7 +54,7 @@
         </div>
         <div class="filter-actions">
             <button type="submit">Apply</button>
-            {% if current_topic or current_sort != "newest" %}
+            {% if current_sort != "newest" %}
                 <a class="link" href="{% url 'website:insights' %}">Clear</a>
             {% endif %}
         </div>

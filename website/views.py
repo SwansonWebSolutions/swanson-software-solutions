@@ -359,14 +359,9 @@ def insight_detail(request, slug):
 
 def insights_page(request):
     """Insights page view"""
-    topic = request.GET.get("topic") or ""
     sort = request.GET.get("sort") or "newest"
 
     insights_qs = Insight.objects.filter(status=Insight.STATUS_PUBLISHED)
-    valid_topics = [choice[0] for choice in Insight.TOPIC_CHOICES]
-
-    if topic in valid_topics:
-        insights_qs = insights_qs.filter(topic=topic)
 
     if sort == "oldest":
         insights_qs = insights_qs.order_by("created_at")
@@ -393,9 +388,7 @@ def insights_page(request):
 
     context = {
         "insights": page_obj.object_list,
-        "current_topic": topic if topic in valid_topics else "",
         "current_sort": sort if sort in ["newest", "oldest"] else "newest",
-        "topics": Insight.TOPIC_CHOICES,
         "has_next": page_obj.has_next(),
         "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
         "base_query": request.META.get("QUERY_STRING", ""),
@@ -405,14 +398,24 @@ def insights_page(request):
 def service_detail(request, service_slug):
     """Individual service landing page (Shopify, Custom Web Apps, iOS Apps, Wix)."""
     from django.http import Http404
+    from .models import SiteImage
     from .services_data import SERVICES
 
     service = SERVICES.get(service_slug)
     if not service:
         raise Http404
 
+    image_keys = service.get("image_keys") or []
+    images_by_key = {img.key: img for img in SiteImage.objects.filter(key__in=image_keys)}
+    images = [
+        {"url": images_by_key[key].image.url, "alt": images_by_key[key].alt_text}
+        for key in image_keys
+        if key in images_by_key
+    ]
+
     context = {
         "service": service,
+        "images": images,
         "seo_title": service["seo_title"],
         "seo_description": service["seo_description"],
         "seo_keywords": service["seo_keywords"],

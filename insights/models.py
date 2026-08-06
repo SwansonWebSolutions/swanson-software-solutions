@@ -1,3 +1,4 @@
+import markdown
 from django.db import models
 from django.utils.text import slugify
 
@@ -8,6 +9,7 @@ class Insight(models.Model):
     TOPIC_IOS = "ios-development"
     TOPIC_ECOMMERCE = "ecommerce"
     TOPIC_DATA_PRIVACY = "data-privacy"
+    TOPIC_GENERAL = "general"
 
     TOPIC_CHOICES = [
         (TOPIC_MARKETING, "Marketing"),
@@ -15,7 +17,10 @@ class Insight(models.Model):
         (TOPIC_IOS, "iOS Development"),
         (TOPIC_ECOMMERCE, "eCommerce"),
         (TOPIC_DATA_PRIVACY, "Data Privacy"),
+        (TOPIC_GENERAL, "General"),
     ]
+
+    MARKDOWN_EXTENSIONS = ["extra", "codehilite", "toc"]
 
     STATUS_DRAFT = "draft"
     STATUS_PUBLISHED = "published"
@@ -95,6 +100,24 @@ class Insight(models.Model):
         ),
     )
 
+    # VibeSEO integration
+    vibeseo_post_id = models.IntegerField(
+        unique=True, null=True, blank=True, db_index=True,
+        help_text="VibeSEO's internal post ID. Set automatically by the webhook; blank for manually authored insights.",
+    )
+    body_markdown = models.TextField(
+        blank=True,
+        help_text="Raw markdown from VibeSEO. Auto-rendered into the first content section on every save.",
+    )
+    focus_keyword = models.CharField(max_length=255, blank=True)
+    seo_score = models.IntegerField(null=True, blank=True)
+    faq = models.JSONField(default=list, blank=True, help_text="List of {question, answer} dicts from VibeSEO.")
+    internal_links = models.JSONField(
+        default=list, blank=True,
+        help_text="List of {text, url} dicts from VibeSEO, rendered as a Related links block.",
+    )
+    vibeseo_published_at = models.DateTimeField(null=True, blank=True)
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -115,6 +138,13 @@ class Insight(models.Model):
                 n += 1
             self.slug = slug
         super().save(*args, **kwargs)
+
+        if self.body_markdown:
+            html = markdown.markdown(self.body_markdown, extensions=self.MARKDOWN_EXTENSIONS)
+            InsightSection.objects.update_or_create(
+                insight=self, order=0,
+                defaults={"heading": "", "content": html},
+            )
 
     def get_absolute_url(self):
         from django.urls import reverse
