@@ -34,8 +34,8 @@ cd "$PROJECT_DIR"
 
 if [ "$DO_PULL" -eq 1 ]; then
   step "Pulling latest code"
-  if [ -n "$(git status --porcelain)" ]; then
-    fail "Working tree has uncommitted changes in $PROJECT_DIR — commit or stash them first, otherwise 'git pull' may fail or clobber them."
+  if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+    fail "Tracked files in $PROJECT_DIR have uncommitted changes — commit or stash them first, otherwise 'git pull' may fail or clobber them."
   fi
   git pull
 fi
