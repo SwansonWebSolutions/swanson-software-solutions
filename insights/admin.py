@@ -36,13 +36,12 @@ class InsightSectionInline(admin.StackedInline):
 
 @admin.register(Insight)
 class InsightAdmin(admin.ModelAdmin):
-    list_display = ("title", "topic", "status", "seo_score", "published_at", "created_at", "view_link")
+    list_display = ("title", "topic", "status", "published_at", "created_at", "view_link")
     list_filter = ("topic", "status")
-    search_fields = ("title", "description", "slug", "focus_keyword")
+    search_fields = ("title", "description", "slug")
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = (
         "vibeseo_post_id",
-        "seo_score",
         "vibeseo_published_at",
         "created_at",
         "updated_at",
@@ -62,6 +61,7 @@ class InsightAdmin(admin.ModelAdmin):
                 "author",
                 "featured_image",
                 "featured_image_alt",
+                "featured_image_url",
                 "reading_time_minutes",
             ),
         }),
@@ -97,19 +97,6 @@ class InsightAdmin(admin.ModelAdmin):
                 "Must be a valid JSON object. Leave blank unless you know what you are doing."
             ),
             "fields": ("json_ld_extra",),
-        }),
-        ("VibeSEO Content", {
-            "classes": ("collapse",),
-            "description": (
-                "Raw markdown delivered by the VibeSEO webhook. Re-rendered into the first content "
-                "section automatically every time this post is saved."
-            ),
-            "fields": ("body_markdown", "focus_keyword", "seo_score"),
-        }),
-        ("Structured Data", {
-            "classes": ("collapse",),
-            "description": "FAQ and related-link data captured from VibeSEO.",
-            "fields": ("faq", "internal_links"),
         }),
         ("VibeSEO Metadata", {
             "classes": ("collapse",),

@@ -32,12 +32,6 @@
     .post-section-cta a { display: inline-flex; align-items: center; gap: 6px; background: #2563eb; color: #fff; padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.15s; }
     .post-section-cta a:hover { background: #1d4ed8; }
     .post-divider { border: none; border-top: 1px solid #e5e7eb; margin: 0 0 40px; }
-    .post-related { max-width: 760px; margin: 0 auto; padding: 0 24px 40px; }
-    .post-related h2 { font-size: 20px; font-weight: 700; color: #0f172a; margin: 0 0 12px; }
-    .post-related ul { margin: 0; padding-left: 20px; }
-    .post-related li { margin-bottom: 6px; }
-    .post-related a { color: #2563eb; text-decoration: none; }
-    .post-related a:hover { text-decoration: underline; }
     .post-footer { max-width: 760px; margin: 0 auto; padding: 0 24px 64px; border-top: 1px solid #e5e7eb; padding-top: 32px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
     .post-footer-meta { font-size: 13px; color: #6b7280; }
     .post-back { font-size: 14px; font-weight: 600; color: #2563eb; text-decoration: none; }
@@ -84,10 +78,10 @@
         <p class="post-excerpt">{{ insight.description }}</p>
     </header>
 
-    {% if insight.featured_image %}
+    {% if insight.featured_image or insight.featured_image_url %}
     <figure class="post-featured-image">
         <img
-            src="{{ insight.featured_image.url }}"
+            src="{% if insight.featured_image %}{{ insight.featured_image.url }}{% else %}{{ insight.featured_image_url }}{% endif %}"
             alt="{{ insight.featured_image_alt|default:insight.title }}"
             loading="eager"
         >
@@ -142,17 +136,6 @@
         <p style="color:#6b7280;">No content sections yet.</p>
         {% endfor %}
     </div>
-
-    {% if insight.internal_links %}
-    <section class="post-related">
-        <h2>Related</h2>
-        <ul>
-            {% for link in insight.internal_links %}
-            <li><a href="{{ link.url }}">{{ link.text }}</a></li>
-            {% endfor %}
-        </ul>
-    </section>
-    {% endif %}
 
     <footer class="post-footer">
         <a class="post-back" href="{% url 'website:insights' %}">

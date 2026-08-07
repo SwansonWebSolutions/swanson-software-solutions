@@ -1,4 +1,3 @@
-import markdown
 from django.db import models
 from django.utils.text import slugify
 
@@ -20,8 +19,6 @@ class Insight(models.Model):
         (TOPIC_GENERAL, "General"),
     ]
 
-    MARKDOWN_EXTENSIONS = ["extra", "codehilite", "toc"]
-
     STATUS_DRAFT = "draft"
     STATUS_PUBLISHED = "published"
     STATUS_CHOICES = [
@@ -39,6 +36,10 @@ class Insight(models.Model):
     author = models.CharField(max_length=100, blank=True, default="SwanTech")
     featured_image = models.ImageField(upload_to="insights/featured/", blank=True, help_text="Upload the featured/hero image.")
     featured_image_alt = models.CharField(max_length=255, blank=True)
+    featured_image_url = models.URLField(
+        blank=True,
+        help_text="Hotlinked hero image URL (e.g. from VibeSEO). Used only if no image is uploaded above.",
+    )
     reading_time_minutes = models.PositiveSmallIntegerField(
         null=True, blank=True,
         help_text="Estimated reading time in minutes. Leave blank to auto-calculate from section word count.",
@@ -103,18 +104,7 @@ class Insight(models.Model):
     # VibeSEO integration
     vibeseo_post_id = models.IntegerField(
         unique=True, null=True, blank=True, db_index=True,
-        help_text="VibeSEO's internal post ID. Set automatically by the webhook; blank for manually authored insights.",
-    )
-    body_markdown = models.TextField(
-        blank=True,
-        help_text="Raw markdown from VibeSEO. Auto-rendered into the first content section on every save.",
-    )
-    focus_keyword = models.CharField(max_length=255, blank=True)
-    seo_score = models.IntegerField(null=True, blank=True)
-    faq = models.JSONField(default=list, blank=True, help_text="List of {question, answer} dicts from VibeSEO.")
-    internal_links = models.JSONField(
-        default=list, blank=True,
-        help_text="List of {text, url} dicts from VibeSEO, rendered as a Related links block.",
+        help_text="VibeSEO's stable post ID. Set automatically by the sync command; blank for manually authored insights.",
     )
     vibeseo_published_at = models.DateTimeField(null=True, blank=True)
 
@@ -139,13 +129,6 @@ class Insight(models.Model):
             self.slug = slug
         super().save(*args, **kwargs)
 
-        if self.body_markdown:
-            html = markdown.markdown(self.body_markdown, extensions=self.MARKDOWN_EXTENSIONS)
-            InsightSection.objects.update_or_create(
-                insight=self, order=0,
-                defaults={"heading": "", "content": html},
-            )
-
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse("website:insight-detail", kwargs={"slug": self.slug})
@@ -166,7 +149,7 @@ class Insight(models.Model):
         return self.featured_image.url if self.featured_image else ""
 
     def get_effective_og_image(self):
-        return self.og_image_url or self.get_featured_image_url()
+        return self.og_image_url or self.featured_image_url or self.get_featured_image_url()
 
 
 class InsightSection(models.Model):

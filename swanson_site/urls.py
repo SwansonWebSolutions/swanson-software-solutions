@@ -23,7 +23,6 @@ from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('insights.urls')),
     path('', include('website.urls')),
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     # Ensure favicon is served at the root path for browsers that request /favicon.ico

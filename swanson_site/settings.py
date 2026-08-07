@@ -208,10 +208,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Base URL used when building absolute links in outbound emails
 PUBLIC_BASE_URL = os.getenv('PUBLIC_BASE_URL', 'http://127.0.0.1:8000')
 
-# Shared secret used to verify X-VibeSEO-Signature HMAC headers on incoming
-# VibeSEO webhook requests (see insights.views.vibeseo_webhook). Published
-# posts are upserted into the Insight model and appear at /insights/.
-VIBESEO_WEBHOOK_SECRET = os.environ.get("VIBESEO_WEBHOOK_SECRET", "")
+# API key for VibeSEO's read API (see insights.management.commands.sync_vibeseo_posts,
+# run on a schedule via cron). Published posts are pulled and upserted into
+# the Insight model, appearing at /insights/.
+VIBESEO_API_KEY = os.environ.get("VIBESEO_API_KEY", "")
 
 # Optional Django logging config (console only by default). App-specific
 # file logging is handled by email_service.logger.get_script_logger which writes
