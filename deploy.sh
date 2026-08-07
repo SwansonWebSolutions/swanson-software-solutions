@@ -1,15 +1,4 @@
-// Worker routes: swantech.org/insights, swantech.org/insights/* and swantech.org/_vibeseo/*
-export default {
-  async fetch(request) {
-    const url = new URL(request.url)
-    const publicHost = url.hostname
-    url.hostname = 'blog-proxy.vibeseo.dev'
-    const headers = new Headers(request.headers)
-    headers.set('Host', 'blog-proxy.vibeseo.dev')
-    headers.set('X-Forwarded-Host', publicHost)
-    return fetch(new Request(url, { method: request.method, headers, body: request.body, redirect: 'manual' }))
-  },
-}#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Deploy/CI script for running on the PythonAnywhere bash console.
 #
 # Usage:
