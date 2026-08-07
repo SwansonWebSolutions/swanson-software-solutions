@@ -94,7 +94,7 @@ def index(request):
     """Landing page view"""
     seo_image = request.build_absolute_uri(static("images/logo-text.png"))
     context = {
-        "seo_title": "Software Development for Web, Shopify, WordPress, and iOS development | SwanTech",
+        "seo_title": "Shopify, Web & iOS App Development | SwanTech",
         "seo_description": (
             "SwanTech builds privacy-first Shopify stores, WordPress sites, iOS apps, "
             "and compliance systems for teams that value data protection, performance, and conversion."
@@ -263,7 +263,15 @@ def newsletter_subscribe(request):
 
 def company_page(request):
     """Company page view"""
-    return render(request, 'website/company.html')
+    context = {
+        "seo_title": "About SwanTech | Software Development Studio",
+        "seo_description": (
+            "SwanTech is a software studio building Shopify stores, custom web apps, and iOS apps "
+            "with fast turnaround and full code ownership."
+        ),
+        "canonical_url": request.build_absolute_uri(),
+    }
+    return render(request, 'website/company.html', context)
 
 def services_page(request):
     """Services hub — links out to each individual service page."""
@@ -291,11 +299,25 @@ def clients_page(request):
 
 def privacy_policy_page(request):
     """Privacy Policy page view"""
-    return render(request, 'website/privacy_policy.html')
+    context = {
+        "seo_title": "Privacy Policy | SwanTech",
+        "seo_description": (
+            "How SwanTech collects, uses, and protects your information across our websites and services."
+        ),
+        "canonical_url": request.build_absolute_uri(),
+    }
+    return render(request, 'website/privacy_policy.html', context)
 
 def terms_of_service_page(request):
     """Terms of Service page view"""
-    return render(request, 'website/terms_of_service.html')
+    context = {
+        "seo_title": "Terms of Service | SwanTech",
+        "seo_description": (
+            "The terms governing your use of SwanTech's website, products, and services."
+        ),
+        "canonical_url": request.build_absolute_uri(),
+    }
+    return render(request, 'website/terms_of_service.html', context)
 
 def insight_detail(request, slug):
     insight = get_object_or_404(Insight, slug=slug)
@@ -392,6 +414,12 @@ def insights_page(request):
         "has_next": page_obj.has_next(),
         "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
         "base_query": request.META.get("QUERY_STRING", ""),
+        "seo_title": "Insights | SwanTech Blog on Web, iOS & Privacy",
+        "seo_description": (
+            "Curated perspectives on marketing, web development, iOS, ecommerce, and data privacy "
+            "from the SwanTech team."
+        ),
+        "canonical_url": request.build_absolute_uri(),
     }
     return render(request, 'website/insights.html', context)
 
@@ -716,6 +744,14 @@ def contact_sales_page(request):
     inquiry_param = request.GET.get('inquiry', '')
     inquiry_prefill = allowed.get(inquiry_param.lower().strip(), '') if inquiry_param else ''
 
+    seo_context = {
+        "seo_title": "Contact SwanTech | Get a Free Quote",
+        "seo_description": (
+            "Tell us about your project and get a fast, clear quote for Shopify, web, or iOS app development."
+        ),
+        "canonical_url": request.build_absolute_uri(),
+    }
+
     if request.method == 'POST':
         # Parse form data from the request
         name = request.POST.get('name', 'No Name Provided')
@@ -764,8 +800,8 @@ def contact_sales_page(request):
         confirmation_email.send()
 
         messages.success(request, "Your message has been sent! We'll get back to you soon.")
-        return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
-    return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill })
+        return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill, **seo_context })
+    return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill, **seo_context })
 
 
 def manage_preferences(request):
