@@ -92,7 +92,7 @@ def _ensure_consumer(email: str, first: str, last: str, phone: str, weekly_opt_i
 
 def index(request):
     """Landing page view"""
-    seo_image = request.build_absolute_uri(static("images/logo-text.png"))
+    seo_image = request.build_absolute_uri(static("images/swantech-swan-logo.png"))
     context = {
         "seo_title": "Shopify, Web & iOS App Development | SwanTech",
         "seo_description": (
@@ -342,7 +342,7 @@ def insight_detail(request, slug):
         "publisher": {
             "@type": "Organization",
             "name": "Swanson Software Solutions",
-            "logo": {"@type": "ImageObject", "url": request.build_absolute_uri(static("images/logo-text.png"))},
+            "logo": {"@type": "ImageObject", "url": request.build_absolute_uri(static("images/swantech-swan-logo.png"))},
         },
         "datePublished": published_iso,
         "dateModified": insight.updated_at.isoformat() if insight.updated_at else published_iso,
