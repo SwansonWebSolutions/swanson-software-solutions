@@ -41,7 +41,7 @@
     });
   }
 
-  // Prefill inquiry from URL query (?inquiry=Shopify etc.)
+  // Prefill inquiry from URL query (?inquiry=web, ai, or app)
   try {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('inquiry');

@@ -60,7 +60,7 @@ class SyncVibeSEOPostsTests(TestCase):
         self.assertEqual(InsightSection.objects.filter(insight__vibeseo_post_id=1208).count(), 1)
 
     @mock.patch("insights.management.commands.sync_vibeseo_posts.httpx.get")
-    def test_post_missing_from_pull_is_retired(self, mock_get):
+    def test_post_missing_from_pull_is_preserved(self, mock_get):
         mock_get.return_value = _mock_response([
             _post(post_id=1, slug="post-one", title="Post One"),
             _post(post_id=2, slug="post-two", title="Post Two"),
@@ -70,8 +70,8 @@ class SyncVibeSEOPostsTests(TestCase):
         mock_get.return_value = _mock_response([_post(post_id=1)])
         call_command("sync_vibeseo_posts")
 
-        retired = Insight.objects.get(vibeseo_post_id=2)
-        self.assertEqual(retired.status, Insight.STATUS_DRAFT)
+        preserved = Insight.objects.get(vibeseo_post_id=2)
+        self.assertEqual(preserved.status, Insight.STATUS_PUBLISHED)
         still_published = Insight.objects.get(vibeseo_post_id=1)
         self.assertEqual(still_published.status, Insight.STATUS_PUBLISHED)
 

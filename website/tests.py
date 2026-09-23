@@ -16,6 +16,80 @@ from website.models import (
 from insights.models import Insight
 
 
+class InsightsPageTests(TestCase):
+    def test_published_database_posts_are_listed(self):
+        Insight.objects.create(
+            title="A database-backed insight",
+            description="A published insight excerpt.",
+            topic=Insight.TOPIC_WEB_DEV,
+            status=Insight.STATUS_PUBLISHED,
+        )
+
+        response = self.client.get(reverse("website:insights"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "A database-backed insight")
+
+    def test_drafts_are_not_listed_publicly(self):
+        Insight.objects.create(
+            title="A draft insight",
+            description="This is not ready for publication.",
+            topic=Insight.TOPIC_GENERAL,
+        )
+
+        response = self.client.get(reverse("website:insights"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "A draft insight")
+
+
+class ContactPageTests(TestCase):
+    def test_contact_page_uses_current_services(self):
+        response = self.client.get(reverse("website:contact"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Web Design + SEO Strategy")
+        self.assertContains(response, "AI Automation")
+        self.assertContains(response, "iOS Apps")
+        self.assertNotContains(response, "Shopify Store")
+        self.assertNotContains(response, "Wix Website")
+
+    def test_legacy_web_prefill_maps_to_web_design(self):
+        response = self.client.get(reverse("website:contact") + "?inquiry=shopify")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<option value="Web Design" selected')
+
+
+class SeoMetadataTests(TestCase):
+    def test_web_design_page_targets_growth_search_intent(self):
+        response = self.client.get(reverse("website:service-detail", kwargs={"service_slug": "web-design"}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Web Design for Growing Online Businesses | SwanTech")
+        self.assertContains(response, "grow your online business")
+
+    def test_legacy_service_urls_redirect_to_current_service(self):
+        response = self.client.get(
+            reverse("website:service-detail", kwargs={"service_slug": "shopify"}),
+            follow=False,
+        )
+
+        self.assertEqual(response.status_code, 301)
+        self.assertTrue(response["Location"].endswith("/services/web-design/"))
+
+    def test_sitemap_and_robots_expose_current_crawl_paths(self):
+        sitemap = self.client.get(reverse("website:sitemap"))
+        robots = self.client.get("/robots.txt")
+
+        self.assertEqual(sitemap.status_code, 200)
+        self.assertContains(sitemap, "/services/")
+        self.assertContains(sitemap, "/services/web-design/")
+        self.assertNotContains(sitemap, "/services/shopify/")
+        self.assertEqual(robots.status_code, 200)
+        self.assertContains(robots, "Sitemap: https://www.swantech.org/sitemap.xml")
+
+
 class BrokerComplianceViewTests(TestCase):
     def setUp(self):
         self.broker = DataBrokers2025.objects.create(name="Acme Data", state="CA")

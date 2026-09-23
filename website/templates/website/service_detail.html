@@ -75,7 +75,7 @@
       <div class="svc-offer__header">
         <div>
           <p class="svc-section__label">What's included</p>
-          <h2 class="svc-section__title">Everything you need to launch.</h2>
+          <h2 class="svc-section__title">{{ service.included_title|default:"Everything you need to launch." }}</h2>
         </div>
         <div class="svc-price-badge">
           <div class="svc-price-badge__num">{{ service.price_amount }}</div>
@@ -102,8 +102,8 @@
   <div class="container">
     <div class="svc-section__intro">
       <p class="svc-section__label">The process</p>
-      <h2 class="svc-section__title">Simple. Fast. No surprises.</h2>
-      <p class="svc-section__lead">Three steps from first message to live product.</p>
+      <h2 class="svc-section__title">{{ service.process_title|default:"Simple. Fast. No surprises." }}</h2>
+      <p class="svc-section__lead">{{ service.process_lead|default:"Three steps from first message to live product." }}</p>
     </div>
     <div class="svc-steps">
       {% for step in service.process %}

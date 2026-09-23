@@ -14,17 +14,14 @@
           Services <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
         </button>
         <div class="dropdown-panel" id="servicesMenu" role="menu">
-          <a class="drop-item" href="{% url 'website:service-detail' service_slug='shopify' %}" role="menuitem">
-            <i class="fa-brands fa-shopify"></i><span>Shopify Stores</span>
+          <a class="drop-item" href="{% url 'website:service-detail' service_slug='web-design' %}" role="menuitem">
+            <i class="fa-solid fa-pen-ruler"></i><span>Web Design</span>
           </a>
-          <a class="drop-item" href="{% url 'website:service-detail' service_slug='custom-web-apps' %}" role="menuitem">
-            <i class="fa-solid fa-code"></i><span>Custom Web Apps</span>
+          <a class="drop-item" href="{% url 'website:service-detail' service_slug='ai-automation' %}" role="menuitem">
+            <i class="fa-solid fa-wand-magic-sparkles"></i><span>AI Automation</span>
           </a>
           <a class="drop-item" href="{% url 'website:service-detail' service_slug='ios-apps' %}" role="menuitem">
             <i class="fa-brands fa-apple"></i><span>iOS Apps</span>
-          </a>
-          <a class="drop-item" href="{% url 'website:service-detail' service_slug='wix-websites' %}" role="menuitem">
-            <i class="fa-solid fa-globe"></i><span>Wix Websites</span>
           </a>
         </div>
       </div>
@@ -57,10 +54,9 @@
       <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
     </button>
     <div class="mobile-submenu stack" id="mobileServices">
-      <a class="btn ghost" href="{% url 'website:service-detail' service_slug='shopify' %}"><i class="fa-brands fa-shopify"></i> Shopify Stores</a>
-      <a class="btn ghost" href="{% url 'website:service-detail' service_slug='custom-web-apps' %}"><i class="fa-solid fa-code"></i> Custom Web Apps</a>
+      <a class="btn ghost" href="{% url 'website:service-detail' service_slug='web-design' %}"><i class="fa-solid fa-pen-ruler"></i> Web Design</a>
+      <a class="btn ghost" href="{% url 'website:service-detail' service_slug='ai-automation' %}"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Automation</a>
       <a class="btn ghost" href="{% url 'website:service-detail' service_slug='ios-apps' %}"><i class="fa-brands fa-apple"></i> iOS Apps</a>
-      <a class="btn ghost" href="{% url 'website:service-detail' service_slug='wix-websites' %}"><i class="fa-solid fa-globe"></i> Wix Websites</a>
     </div>
 
     <a class="btn ghost" href="{% url 'website:company' %}">Company</a>

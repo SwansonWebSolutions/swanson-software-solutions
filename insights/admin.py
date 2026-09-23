@@ -98,7 +98,7 @@ class InsightAdmin(admin.ModelAdmin):
             ),
             "fields": ("json_ld_extra",),
         }),
-        ("VibeSEO Metadata", {
+        ("Legacy Import Metadata", {
             "classes": ("collapse",),
             "fields": ("vibeseo_post_id", "vibeseo_published_at"),
         }),

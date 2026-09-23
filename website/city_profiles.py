@@ -9,7 +9,7 @@ CITY_PROFILES = {
     "paso-robles": {
         "intro": [
             "Paso Robles is the heart of California's Central Coast wine country, with over 200 wineries and a tourism-driven economy that's grown significantly over the past decade. The city's historic downtown has become a genuine destination — drawing visitors for wine tasting, restaurants, events, and boutique retail — and that foot traffic creates real online opportunity for businesses that know how to capture it.",
-            "For Paso Robles wineries, tasting rooms, and wine-adjacent businesses, direct-to-consumer eCommerce is one of the highest-leverage investments available. A customer who visits your tasting room and has a great experience will buy again — but only if you make it easy. A Shopify store with wine club signups, online ordering, and a clean mobile experience turns one-time visitors into recurring revenue.",
+            "For Paso Robles wineries, tasting rooms, and wine-adjacent businesses, a high-quality online presence is one of the highest-leverage investments available. A customer who visits your tasting room and has a great experience will buy again — but only if you make it easy. A fast, conversion-focused website with clear calls to action and an ongoing SEO strategy turns one-time visitors into recurring revenue.",
             "Beyond wine, Paso Robles' growing hospitality, food, and artisan retail sector has the same need: a web presence that converts tourist curiosity into lasting customer relationships.",
         ],
         "fit": [
@@ -38,7 +38,7 @@ CITY_PROFILES = {
     "moorpark": {
         "intro": [
             "Moorpark is one of Ventura County's smaller cities — more agricultural in character, home to Moorpark College, and less commercially dense than its neighbors. That means businesses here often serve a loyal but limited local market, and those looking to grow typically need to reach customers beyond city limits.",
-            "A well-built Shopify store or professional website opens that door. It lets a Moorpark-based business sell to Simi Valley, Camarillo, Thousand Oaks, and beyond without adding overhead. For agricultural businesses, specialty food producers, and small artisan brands in the Moorpark area, eCommerce is often the most practical path to meaningful growth.",
+            "A well-built website with a thoughtful SEO strategy opens that door. It lets a Moorpark-based business reach customers in Simi Valley, Camarillo, Thousand Oaks, and beyond without adding overhead. For agricultural businesses, specialty food producers, and small artisan brands in the Moorpark area, a stronger online presence is often the most practical path to meaningful growth.",
         ],
         "fit": [
             "Agricultural & food producers",
@@ -66,7 +66,7 @@ CITY_PROFILES = {
         "intro": [
             "Calabasas is one of the most affluent communities in Los Angeles County — home to high-profile residents, gated neighborhoods, and a retail and dining culture that caters to a discerning, high-spending clientele. Businesses that operate here, or that target the Calabasas demographic, need a web presence that matches the expectation of quality the local market carries.",
             "That means more than just a functional website. It means thoughtful design, fast load times, polished product photography integration, and a checkout experience that doesn't give customers a reason to hesitate. For Calabasas-based brands — in beauty, lifestyle, luxury retail, fitness, or professional services — the website is often the first and strongest signal of brand quality.",
-            "SwanTech builds Shopify stores and web experiences for Calabasas businesses that take their brand seriously.",
+            "SwanTech builds high-quality websites and digital experiences for Calabasas businesses that take their brand seriously.",
         ],
         "fit": [
             "Luxury & lifestyle retail",
@@ -93,8 +93,8 @@ CITY_PROFILES = {
     "los-angeles": {
         "intro": [
             "Los Angeles is the second-largest city in the country and one of the most competitive markets in the world for online retail, apps, and digital services. The sheer size of the opportunity — and the density of potential customers — makes a strong web presence non-negotiable for any LA-area business with growth ambitions.",
-            "LA businesses also face a specific challenge: the market is flooded with agencies charging LA prices. SwanTech offers a direct alternative — professional Shopify stores, custom web apps, and iOS development at rates that make sense for growing businesses, not just funded startups. No account managers, no bloated retainers, no handoffs.",
-            "The industries we work with most in LA include fashion and apparel, food and beverage, creative and media-adjacent businesses, fitness and wellness, and product brands using Shopify as their primary sales channel.",
+            "LA businesses also face a specific challenge: the market is flooded with agencies charging LA prices. SwanTech offers a direct alternative — high-quality web design with advanced SEO, practical AI automation, and iOS development at rates that make sense for growing businesses, not just funded startups. No account managers, no bloated retainers, no handoffs.",
+            "The industries we work with most in LA include fashion and apparel, food and beverage, creative and media-adjacent businesses, fitness and wellness, and product brands that need a stronger online presence.",
         ],
         "fit": [
             "Fashion & apparel",
@@ -109,7 +109,7 @@ CITY_PROFILES = {
     "santa-barbara": {
         "intro": [
             "Santa Barbara operates at a different pace and price point than most of Southern California. Tourism is a pillar — the city draws millions of visitors annually to its white architecture, wine country, waterfront, and State Street retail — but it's also home to a deeply rooted community of independent business owners who've built something worth protecting.",
-            "For retail and hospitality businesses in Santa Barbara, the opportunity is in converting tourist interest into lasting online customers. A visitor who discovers a boutique on State Street should have an easy path to buying again from home. That requires a real Shopify store with a shopping experience that matches the quality of the in-person brand.",
+            "For retail and hospitality businesses in Santa Barbara, the opportunity is in converting tourist interest into lasting online customers. A visitor who discovers a boutique on State Street should have an easy path to buying again from home. That requires a polished website and online customer journey that matches the quality of the in-person brand.",
             "UCSB also feeds a steady pipeline of startups and small tech ventures into the area that often need their first professional web presence built quickly and affordably.",
         ],
         "fit": [
@@ -137,7 +137,7 @@ CITY_PROFILES = {
     "camarillo": {
         "intro": [
             "Camarillo has two distinct business personalities. The first is the Camarillo Premium Outlets — one of the busiest shopping destinations on the Central Coast, drawing visitors from across Southern California. The second is a quieter but growing professional and tech corridor, anchored in part by Cal State Channel Islands and a steady influx of businesses relocating from more expensive LA County markets.",
-            "Both sides of Camarillo create web development demand. Outlet-adjacent retail brands often need their own direct-to-consumer Shopify store alongside their physical presence. And the growing class of professional services firms, consultants, and small tech companies in Camarillo need credible, fast-loading websites that reflect the quality of their work.",
+            "Both sides of Camarillo create web design demand. Outlet-adjacent retail brands need a strong online presence alongside their physical locations. And the growing class of professional services firms, consultants, and small tech companies in Camarillo need credible, fast-loading websites that reflect the quality of their work.",
         ],
         "fit": [
             "Retail & outlet-adjacent brands",
@@ -150,7 +150,7 @@ CITY_PROFILES = {
     "oxnard": {
         "intro": [
             "Oxnard is Ventura County's largest city and one of the most economically diverse — a working port, one of the state's most productive agricultural regions, and a growing residential base that often gets overlooked by tech vendors focused on more affluent neighboring cities. That gap is an opportunity.",
-            "Businesses in Oxnard — from strawberry distributors to harbor-side seafood restaurants to retail shops serving the Navy base community at Point Mugu — frequently have strong local customer bases but minimal digital infrastructure. A well-built Shopify store or service website levels the playing field against competitors who got online earlier.",
+            "Businesses in Oxnard — from strawberry distributors to harbor-side seafood restaurants to retail shops serving the Navy base community at Point Mugu — frequently have strong local customer bases but minimal digital infrastructure. A well-built service website with advanced SEO levels the playing field against competitors who got online earlier.",
             "SwanTech builds for Oxnard businesses that are ready to stop relying entirely on foot traffic and word of mouth.",
         ],
         "fit": [
