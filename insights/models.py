@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 
@@ -127,6 +128,10 @@ class Insight(models.Model):
                 slug = f"{base_slug}-{n}"
                 n += 1
             self.slug = slug
+        # Publishing from Django Admin should create a usable publication date
+        # without requiring an external content provider.
+        if self.status == self.STATUS_PUBLISHED and self.published_at is None:
+            self.published_at = timezone.now()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

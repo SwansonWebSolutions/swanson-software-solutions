@@ -22,6 +22,113 @@ _PROCESS_STEPS = [
 ]
 
 SERVICES = {
+    "web-design": {
+        "slug": "web-design",
+        "nav_label": "Web Design",
+        "icon": "fa-solid fa-pen-ruler",
+        "accent": "#2563eb",
+        "eyebrow": "Web Design + SEO Strategy",
+        "title": "High-Quality Websites Built to Be Found.",
+        "lead": (
+            "We design and build fast, responsive websites with advanced SEO foundations — then help "
+            "you build an ongoing strategy so your visibility keeps moving after launch."
+        ),
+        "price_amount": "Custom quote",
+        "price_label": "scoped to your goals",
+        "included_title": "A website built for visibility and growth.",
+        "process_title": "A clear path from idea to a site that performs.",
+        "process_lead": "Three steps from first conversation to a website you can keep improving.",
+        "price_note": (
+            "We scope the work around your site, audience, and growth goals. You get a clear plan "
+            "for launch and a practical roadmap for what to improve next."
+        ),
+        "included": [
+            "Discovery, positioning & information architecture",
+            "Custom responsive UI/UX design",
+            "Semantic, accessible, performance-minded front end",
+            "Technical SEO foundations and structured data",
+            "On-page SEO and content structure",
+            "Analytics and Search Console readiness",
+            "Conversion-focused calls to action",
+            "Ongoing SEO strategy and content opportunities",
+            "Testing across devices and browsers",
+            "30 days of post-launch support",
+        ],
+        "process": _PROCESS_STEPS,
+        "inquiry_key": "web",
+        "cta_label": "Plan Your Website",
+        "seo_title": "Web Design for Growing Online Businesses | SwanTech",
+        "seo_description": (
+            "Looking for the best web design for a growing business? SwanTech builds high-quality, "
+            "SEO-ready websites and helps you grow your online business with an ongoing strategy."
+        ),
+        "seo_keywords": (
+            "best web design, web design for growing online businesses, grow my online business, "
+            "website design, advanced SEO, SEO strategy, responsive web design, technical SEO, "
+            "small business web design"
+        ),
+    },
+    "ai-automation": {
+        "slug": "ai-automation",
+        "nav_label": "AI Automation",
+        "icon": "fa-solid fa-wand-magic-sparkles",
+        "accent": "#0f766e",
+        "eyebrow": "AI Automation",
+        "title": "AI Automation That Gives Your Team Time Back.",
+        "lead": (
+            "Connect the tools you already use, automate repetitive work, and add reliable AI assistance "
+            "where it helps people make better decisions — not more noise."
+        ),
+        "price_amount": "Custom quote",
+        "price_label": "scoped to your workflow",
+        "included_title": "A workflow designed for real-world use.",
+        "process_title": "Practical automation, built with guardrails.",
+        "process_lead": "Three steps from repeated manual work to a workflow your team can trust.",
+        "price_note": (
+            "Every automation is scoped around the work your team actually does. You get a clear workflow "
+            "design, implementation plan, and handoff your team can use."
+        ),
+        "included": [
+            "Workflow audit and automation roadmap",
+            "Process mapping and opportunity prioritization",
+            "AI-assisted intake, triage, and content workflows",
+            "Tool and API integrations",
+            "Human review and approval steps",
+            "Secure handling of prompts and business data",
+            "Error handling and fallback paths",
+            "Usage guidance and team handoff",
+            "Testing, monitoring, and iteration plan",
+            "30 days of post-launch support",
+        ],
+        "process": [
+            {
+                "num": "Step 01",
+                "title": "We Map the Work",
+                "text": "We look at the repeated tasks, handoffs, and decisions that slow your team down, then identify where automation can help safely.",
+            },
+            {
+                "num": "Step 02",
+                "title": "You Get a Clear Workflow",
+                "text": "You receive a practical automation plan with the tools involved, human checkpoints, expected outcomes, and a fixed scope for the build.",
+            },
+            {
+                "num": "Step 03",
+                "title": "We Launch & Improve",
+                "text": "The workflow is tested with your team, launched with clear guardrails, and refined as real usage shows what works best.",
+            },
+        ],
+        "inquiry_key": "ai",
+        "cta_label": "Automate the Busywork",
+        "seo_title": "AI Automation Services | SwanTech",
+        "seo_description": (
+            "Practical AI automation for repetitive workflows, tool integrations, and team operations — "
+            "designed with human review and reliable handoffs."
+        ),
+        "seo_keywords": (
+            "AI automation, business process automation, workflow automation, AI integration, "
+            "automation consulting, business AI workflows, AI productivity"
+        ),
+    },
     "shopify": {
         "slug": "shopify",
         "nav_label": "Shopify Stores",
@@ -192,4 +299,4 @@ SERVICES = {
     },
 }
 
-SERVICE_ORDER = ["shopify", "custom-web-apps", "ios-apps", "wix-websites"]
+SERVICE_ORDER = ["web-design", "ai-automation", "ios-apps"]

@@ -208,9 +208,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Base URL used when building absolute links in outbound emails
 PUBLIC_BASE_URL = os.getenv('PUBLIC_BASE_URL', 'http://127.0.0.1:8000')
 
-# API key for VibeSEO's read API (see insights.management.commands.sync_vibeseo_posts,
-# run on a schedule via cron). Published posts are pulled and upserted into
-# the Insight model, appearing at /insights/.
+# Optional legacy importer setting. The public Insights page and Django Admin
+# use the Insight database directly; VibeSEO is no longer required.
 VIBESEO_API_KEY = os.environ.get("VIBESEO_API_KEY", "")
 
 # Optional Django logging config (console only by default). App-specific

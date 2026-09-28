@@ -10,7 +10,10 @@ SITE_LANGUAGE_CODE = "en"
 
 
 class Command(BaseCommand):
-    help = "Pull published posts from VibeSEO's read API and sync them into Insight."
+    help = (
+        "Legacy importer for VibeSEO posts. Existing database posts are never retired; "
+        "new and future posts should be managed in Django Admin."
+    )
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -39,8 +42,6 @@ class Command(BaseCommand):
             raise CommandError(f"Failed to fetch VibeSEO posts: {exc}")
 
         posts = response.json()
-        current_ids = {post["id"] for post in posts}
-
         created = updated = skipped = 0
 
         for post in posts:
@@ -77,17 +78,10 @@ class Command(BaseCommand):
             created += was_created
             updated += not was_created
 
-        if dry_run:
-            retired = Insight.objects.filter(
-                vibeseo_post_id__isnull=False
-            ).exclude(vibeseo_post_id__in=current_ids).count()
-        else:
-            retired = Insight.objects.filter(
-                vibeseo_post_id__isnull=False
-            ).exclude(vibeseo_post_id__in=current_ids).update(status=Insight.STATUS_DRAFT)
-
         logger.info(
-            "%sVibeSEO sync complete: created=%s updated=%s retired=%s skipped=%s",
+            "%sLegacy VibeSEO import complete: created=%s updated=%s skipped=%s",
             "[dry-run] " if dry_run else "",
-            created, updated, retired, skipped,
+            created,
+            updated,
+            skipped,
         )

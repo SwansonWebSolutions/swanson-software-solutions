@@ -94,14 +94,14 @@ def index(request):
     """Landing page view"""
     seo_image = request.build_absolute_uri(static("images/swantech-swan-logo.png"))
     context = {
-        "seo_title": "Shopify, Web & iOS App Development | SwanTech",
+        "seo_title": "Web Design, AI Automation & iOS Apps | SwanTech",
         "seo_description": (
-            "SwanTech builds privacy-first Shopify stores, WordPress sites, iOS apps, "
-            "and compliance systems for teams that value data protection, performance, and conversion."
+            "SwanTech builds high-quality websites with advanced SEO and ongoing strategy, "
+            "practical AI automation, and polished iOS apps that help growing businesses move forward."
         ),
         "seo_keywords": (
-            "Shopify development, WordPress development, iOS app development, privacy software, "
-            "data privacy compliance, software studio, web performance, custom software development, spam removal"
+            "web design, best web design, grow my online business, advanced SEO, SEO strategy, "
+            "AI automation, iOS app development, software studio"
         ),
         "canonical_url": request.build_absolute_uri(),
         "og_image": seo_image,
@@ -266,8 +266,8 @@ def company_page(request):
     context = {
         "seo_title": "About SwanTech | Software Development Studio",
         "seo_description": (
-            "SwanTech is a software studio building Shopify stores, custom web apps, and iOS apps "
-            "with fast turnaround and full code ownership."
+            "SwanTech is a software studio building high-quality websites, practical AI automations, "
+            "and polished iOS apps with fast turnaround and full code ownership."
         ),
         "canonical_url": request.build_absolute_uri(),
     }
@@ -279,15 +279,14 @@ def services_page(request):
 
     context = {
         "services": [SERVICES[slug] for slug in SERVICE_ORDER],
-        "seo_title": "Ecommerce, Software & iOS App Development | SwanTech",
+        "seo_title": "Web Design, AI Automation & iOS Apps | SwanTech",
         "seo_description": (
-            "Ecommerce store development, custom software development, and iOS app development "
-            "from an experienced software studio. Fixed pricing and fast delivery."
+            "Web design with advanced SEO, practical AI automation, and iOS app development "
+            "from an experienced software studio. Clear scope and direct developer access."
         ),
         "seo_keywords": (
-            "ecommerce development, ecommerce website development, custom software development, "
-            "software development company, iOS app development, iPhone app development, Shopify "
-            "development, web application development"
+            "web design, advanced SEO, SEO strategy, AI automation, iOS app development, "
+            "software development company, custom software development"
         ),
         "canonical_url": request.build_absolute_uri(),
     }
@@ -419,18 +418,26 @@ def insights_page(request):
             "Curated perspectives on marketing, web development, iOS, ecommerce, and data privacy "
             "from the SwanTech team."
         ),
-        "canonical_url": request.build_absolute_uri(),
+        "canonical_url": request.build_absolute_uri(request.path),
     }
     return render(request, 'website/insights.html', context)
 
 def service_detail(request, service_slug):
-    """Individual service landing page (Shopify, Custom Web Apps, iOS Apps, Wix)."""
+    """Individual service landing page for an active or legacy service."""
     from django.http import Http404
     from .models import SiteImage
-    from .services_data import SERVICES
+    from .services_data import SERVICES, SERVICE_ORDER
+
+    legacy_redirects = {
+        "shopify": "web-design",
+        "custom-web-apps": "web-design",
+        "wix-websites": "web-design",
+    }
+    if service_slug in legacy_redirects:
+        return redirect("website:service-detail", service_slug=legacy_redirects[service_slug], permanent=True)
 
     service = SERVICES.get(service_slug)
-    if not service:
+    if not service or service_slug not in SERVICE_ORDER:
         raise Http404
 
     image_keys = service.get("image_keys") or []
@@ -638,10 +645,10 @@ def sitemap_xml(request):
     base_urls = [
         ("website:index", {}),
         ("website:company", {}),
-        ("website:service-detail", {"service_slug": "shopify"}),
-        ("website:service-detail", {"service_slug": "custom-web-apps"}),
+        ("website:services", {}),
+        ("website:service-detail", {"service_slug": "web-design"}),
+        ("website:service-detail", {"service_slug": "ai-automation"}),
         ("website:service-detail", {"service_slug": "ios-apps"}),
-        ("website:service-detail", {"service_slug": "wix-websites"}),
         ("website:contact", {}),
         ("website:insights", {}),
         ("website:do-not-email", {}),
@@ -661,7 +668,6 @@ def sitemap_xml(request):
     _loc_url_name = {
         ST.WEB_DEVELOPMENT: "website:location-web-development",
         ST.IOS_APP: "website:location-ios-app",
-        ST.SHOPIFY: "website:location-shopify",
     }
     location_entries = []
     priority_markets = ServiceMarket.objects.filter(
@@ -735,6 +741,7 @@ def contact_sales_page(request):
     # Normalize and whitelist inquiry prefill from query string
     allowed = {
         'web': 'Web Development',
+        'webdesign': 'Web Development',
         'shopify': 'Web Development',
         'wix': 'Web Development',
         'wordpress': 'Web Development',
@@ -743,6 +750,7 @@ def contact_sales_page(request):
         'app': 'iOS Apps',
         'ios': 'iOS Apps',
         'support': 'Support',
+        # Keep older links usable without presenting retired services in the form.
         'general': 'General Inquiry',
     }
     inquiry_param = request.GET.get('inquiry', '')
@@ -751,9 +759,9 @@ def contact_sales_page(request):
     seo_context = {
         "seo_title": "Contact SwanTech | Get a Free Quote",
         "seo_description": (
-            "Tell us about your project and get a fast, clear quote for Shopify, web, or iOS app development."
+            "Tell us about your project and get a clear plan for web design, AI automation, or iOS app development."
         ),
-        "canonical_url": request.build_absolute_uri(),
+        "canonical_url": request.build_absolute_uri(request.path),
     }
 
     if request.method == 'POST':
@@ -914,12 +922,12 @@ def location_web_development(request, state_slug: str, city_slug: str):
     context = {
         "market": market,
         "city_profile": CITY_PROFILES.get(city_slug),
-        "structured_data": _location_structured_data(request, market, "Web Development"),
+        "structured_data": _location_structured_data(request, market, "Web Design & SEO Strategy"),
         "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
-        "seo_title": f"Web Development in {market.city}, {market.state_id} | SwanTech",
+        "seo_title": f"Web Design in {market.city}, {market.state_id} | SwanTech",
         "seo_description": (
-            f"Custom web development, Shopify stores, and Wix websites for businesses in "
-            f"{market.city}, {market.state_id}. Professional, fast-turnaround delivery."
+            f"High-quality web design with advanced SEO and ongoing strategy for businesses in "
+            f"{market.city}, {market.state_id}. Build a stronger online presence with SwanTech."
         ),
         "canonical_url": request.build_absolute_uri(),
     }
@@ -951,7 +959,7 @@ def location_shopify(request, state_slug: str, city_slug: str):
         "market": market,
         "city_profile": CITY_PROFILES.get(city_slug),
         "structured_data": _location_structured_data(request, market, "Shopify Store Development"),
-        "seo_noindex": city_slug not in _PRIORITY_CITY_SLUGS,
+        "seo_noindex": True,
         "seo_title": f"Shopify Store Setup in {market.city}, {market.state_id} | SwanTech",
         "seo_description": (
             f"Professional Shopify store setup for businesses in {market.city}, {market.state_id}. "

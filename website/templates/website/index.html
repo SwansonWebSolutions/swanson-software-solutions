@@ -13,7 +13,7 @@
         "name": "Swanson Software Solutions",
         "url": "{{ request.scheme|default:'https' }}://{{ request.get_host }}/",
         "logo": "{{ request.scheme|default:'https' }}://{{ request.get_host }}{% static 'images/swantech-swan-logo.png' %}",
-        "description": "SwanTech builds professional Shopify stores starting from $1,000, custom web applications, and iOS apps for small businesses and creators.",
+        "description": "SwanTech builds high-quality websites with advanced SEO and ongoing strategy, practical AI automation, and polished iOS apps for small businesses and creators.",
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "sales",
@@ -23,10 +23,9 @@
       {
         "@type": "ProfessionalService",
         "serviceType": [
-          "Shopify eCommerce development",
-          "Custom web application development",
-          "iOS app development",
-          "Wix website development"
+          "Web design and ongoing SEO strategy",
+          "AI automation",
+          "iOS app development"
         ],
         "provider": { "@id": "{{ request.scheme|default:'https' }}://{{ request.get_host }}/#organization" },
         "areaServed": "Global",
@@ -35,10 +34,9 @@
           "@type": "OfferCatalog",
           "name": "Core services",
           "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Shopify eCommerce Store" }, "price": "1000", "priceCurrency": "USD" },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Custom web applications and SaaS platforms" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "iOS application design and build" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wix website development" } }
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web design with advanced SEO and ongoing strategy" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI automation systems and workflows" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "iOS application design and build" } }
           ]
         }
       }
@@ -50,7 +48,7 @@
 {% block content %}
 <div class="page-index">
 
-<!-- ─── HERO (full-bleed video bg + two columns) ─── -->
+<!-- ─── HERO (full-bleed video background) ─── -->
 <section class="hero-section">
   <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
     <source src="{% static 'videos/hero_video1.mp4' %}" type="video/mp4">
@@ -58,70 +56,34 @@
   <div class="hero-overlay" aria-hidden="true"></div>
 
   <div class="container hero-grid">
-
-    <!-- Left: headline + stats -->
     <div class="hero-left">
       <span class="hero-kicker">
-        <i class="fa-brands fa-shopify" aria-hidden="true"></i>
-        Shopify · Web Apps · iOS
+        <i class="fa-solid fa-sparkles" aria-hidden="true"></i>
+        Web Design · AI Automation · iOS Apps
       </span>
-      <h1 class="hero-title">Your Store,<br>Live in Days.</h1>
-      <p class="hero-desc">Professional Shopify stores from $1,000. Custom web applications and iOS apps for when your business needs more. Built directly by a developer — no agency, no overhead.</p>
+      <h1 class="hero-title">Digital products<br>built to move you forward.</h1>
+      <p class="hero-desc">High-quality websites with advanced SEO and an ongoing strategy, practical AI automation that removes busywork, and polished iOS apps built around the way your business works.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#services">Explore services <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+        <a class="btn btn-outline btn-outline--light" href="#contact">Book a free consultation</a>
+      </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">$1,000</div>
-          <div class="stat-label">Shopify store</div>
+          <div class="stat-num">SEO-ready</div>
+          <div class="stat-label">from day one</div>
         </div>
         <div class="stat-divider" aria-hidden="true"></div>
         <div class="stat-item">
-          <div class="stat-num">5–10</div>
-          <div class="stat-label">Day delivery</div>
+          <div class="stat-num">Smarter</div>
+          <div class="stat-label">repeated workflows</div>
         </div>
         <div class="stat-divider" aria-hidden="true"></div>
         <div class="stat-item">
-          <div class="stat-num">100%</div>
-          <div class="stat-label">Store ownership</div>
+          <div class="stat-num">Direct</div>
+          <div class="stat-label">developer access</div>
         </div>
       </div>
     </div>
-
-    <!-- Right: consultation form -->
-    <div class="hero-right">
-      <div class="hero-form-card">
-        <div class="hfc-header">
-          <h2>Book a Free Consultation</h2>
-          <p>Tell us about your project — we'll respond within 24 hours.</p>
-        </div>
-        <form class="hfc-form" action="{% url 'website:book-consultation' %}" method="post">
-          {% csrf_token %}
-          <div class="form-field">
-            <label for="hf-name">Your name</label>
-            <input type="text" id="hf-name" name="name" placeholder="Jane Smith" required>
-          </div>
-          <div class="form-field">
-            <label for="hf-email">Email address</label>
-            <input type="email" id="hf-email" name="email" placeholder="jane@example.com" required>
-          </div>
-          <div class="form-field">
-            <label for="hf-service">What do you need?</label>
-            <select id="hf-service" name="inquiry">
-              <option value="Shopify">$1,000 Shopify Store</option>
-              <option value="web">Custom Web Application</option>
-              <option value="app">iOS App Development</option>
-              <option value="wix">Wix Website</option>
-            </select>
-          </div>
-          <button type="submit" class="btn btn-shopify btn-full">
-            Book 15-minute Consultation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-          </button>
-        </form>
-        <p class="hfc-note">
-          <i class="fa-solid fa-lock" aria-hidden="true"></i>
-          No commitment required. Response within 24 hours.
-        </p>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -155,27 +117,26 @@
   <div class="container">
     <div class="section-header">
       <h2>What We Build</h2>
-      <p class="lead">From your first online store to a fully custom platform — SwanTech covers every stage of your digital growth.</p>
+      <p class="lead">Focused digital services for businesses that want a better website, smarter operations, or a product their customers can keep in their pocket.</p>
     </div>
     <div class="services-grid">
-
-      <article class="svc-card svc-card--shopify" id="shopify">
-        <div class="svc-card__icon"><i class="fa-brands fa-shopify" aria-hidden="true"></i></div>
-        <h3>Shopify Stores</h3>
-        <p class="svc-card__price">From $1,000</p>
-        <p>Professional eCommerce stores — theme setup, product uploads, payments, SEO, and full launch support included.</p>
-        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='shopify' %}">
-          Start Your Store <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      <article class="svc-card svc-card--web" id="web-design">
+        <div class="svc-card__icon"><i class="fa-solid fa-pen-ruler" aria-hidden="true"></i></div>
+        <h3>Web Design</h3>
+        <p class="svc-card__price">Strategy + build</p>
+        <p>High-quality, responsive websites with advanced SEO foundations and a practical ongoing strategy to keep improving visibility and results.</p>
+        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='web-design' %}">
+          Plan Your Website <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
 
-      <article class="svc-card svc-card--web" id="custom-web">
-        <div class="svc-card__icon"><i class="fa-solid fa-code" aria-hidden="true"></i></div>
-        <h3>Custom Web Apps</h3>
+      <article class="svc-card svc-card--ai" id="ai-automation">
+        <div class="svc-card__icon"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i></div>
+        <h3>AI Automation</h3>
         <p class="svc-card__price">Custom quote</p>
-        <p>Dashboards, booking systems, SaaS platforms, and internal tools — built around your exact workflow.</p>
-        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='custom-web-apps' %}">
-          Plan a Build <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        <p>Useful AI workflows that connect your tools, reduce repetitive work, and help your team spend more time on decisions that matter.</p>
+        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='ai-automation' %}">
+          Automate the Busywork <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
 
@@ -189,59 +150,6 @@
         </a>
       </article>
 
-      <article class="svc-card svc-card--wix" id="wix">
-        <div class="svc-card__icon"><i class="fa-solid fa-globe" aria-hidden="true"></i></div>
-        <h3>Wix Websites</h3>
-        <p class="svc-card__price">Affordable pricing</p>
-        <p>Simple, professional websites for service businesses and creators — easy to manage and quick to launch.</p>
-        <a class="svc-card__link" href="{% url 'website:service-detail' service_slug='wix-websites' %}">
-          Get a Quote <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </a>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── SHOPIFY OFFER: $1,000 ─── -->
-<section class="section section-offer" id="whats-included">
-  <div class="container">
-    <div class="offer-card">
-      <div class="offer-header">
-        <div class="offer-header-text">
-          <span class="eyebrow shopify-eyebrow">
-            <i class="fa-brands fa-shopify" aria-hidden="true"></i> Featured Offer
-          </span>
-          <h2>What's Included in Your $1,000 Shopify Store</h2>
-          <p>A complete, professional Shopify setup — theme, pages, products, payments, SEO, and launch support. Additional features are available at extra cost.</p>
-        </div>
-        <div class="offer-price-badge" aria-label="Starting from $1,000">
-          <div class="price-num">$1,000</div>
-          <div class="price-label">starting price</div>
-        </div>
-      </div>
-      <div class="offer-checklist">
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Shopify theme setup &amp; customization</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Mobile-responsive design</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Home, About, Shop &amp; Contact pages</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Privacy Policy, Terms &amp; Refund Policy</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Up to 10 products uploaded</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Product collections setup</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Payment gateway configuration</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Basic shipping setup</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Navigation &amp; menu setup</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Contact form setup</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Newsletter signup form</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Basic SEO setup</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Social media links</div>
-        <div class="check-item"><i class="fa-solid fa-check" aria-hidden="true"></i> Launch support</div>
-      </div>
-      <div class="offer-cta">
-        <a class="btn btn-shopify btn-lg" href="{% url 'website:contact' %}?inquiry=Shopify">
-          <i class="fa-brands fa-shopify" aria-hidden="true"></i> Start My Shopify Store
-        </a>
-        <p class="offer-note">Typically delivered in 5–10 business days. You keep full ownership of your store. Additional features priced separately.</p>
-      </div>
     </div>
   </div>
 </section>
@@ -251,29 +159,77 @@
   <div class="container">
     <div class="section-header">
       <h2>Why SwanTech?</h2>
-      <p class="lead">Speed, flat pricing, and a direct line to the developer — not a ticket queue.</p>
+      <p class="lead">The goal is not just to launch something that looks good. It is to build a foundation you can keep using, improving, and growing.</p>
     </div>
     <div class="why-grid">
       <div class="why-card">
-        <div class="why-icon"><i class="fa-solid fa-bolt" aria-hidden="true"></i></div>
-        <h3>Fast Launch</h3>
-        <p>Your store or app online in days, not months. We move fast so you can start selling sooner.</p>
+        <div class="why-icon"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i></div>
+        <h3>Search-ready foundations</h3>
+        <p>Your website is structured for people and search engines, with a clear path for ongoing SEO improvements after launch.</p>
       </div>
       <div class="why-card">
-        <div class="why-icon"><i class="fa-solid fa-tag" aria-hidden="true"></i></div>
-        <h3>Starting at $1,000</h3>
-        <p>Clear, upfront pricing. A professional Shopify store without the five-figure agency bill. Additional features available as needed.</p>
+        <div class="why-icon"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></div>
+        <h3>Built to improve</h3>
+        <p>We leave you with a practical next-step roadmap so your site, automation, or app keeps getting more useful over time.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-robot" aria-hidden="true"></i></div>
+        <h3>Practical automation</h3>
+        <p>AI is applied where it can make work simpler and more reliable—not added as a gimmick.</p>
       </div>
       <div class="why-card">
         <div class="why-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></div>
-        <h3>Personal Service</h3>
-        <p>You work directly with the developer. Real communication, real results — no handoffs.</p>
+        <h3>Direct partnership</h3>
+        <p>You work directly with the developer for clear communication, thoughtful decisions, and fewer handoffs.</p>
       </div>
-      <div class="why-card">
-        <div class="why-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div>
-        <h3>Marketing-Focused</h3>
-        <p>SEO, social links, and email capture built in from day one so you can grow from launch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONSULTATION ─── -->
+<section class="section section-consultation" id="contact">
+  <div class="container consultation-grid">
+    <div class="consultation-copy">
+      <span class="eyebrow">Start with a conversation</span>
+      <h2>Let’s build what your business needs next.</h2>
+      <p class="lead">Tell us where you want to go. We’ll help you turn the next step into a clear, practical plan.</p>
+      <ul class="consultation-points">
+        <li><i class="fa-solid fa-check" aria-hidden="true"></i> A website with an SEO foundation and ongoing strategy</li>
+        <li><i class="fa-solid fa-check" aria-hidden="true"></i> AI automation that fits your actual workflow</li>
+        <li><i class="fa-solid fa-check" aria-hidden="true"></i> An iOS app shaped around your customers</li>
+      </ul>
+    </div>
+    <div class="hero-form-card">
+      <div class="hfc-header">
+        <h2>Book a Free Consultation</h2>
+        <p>Tell us about your project—we’ll respond within 24 hours.</p>
       </div>
+      <form class="hfc-form" action="{% url 'website:book-consultation' %}" method="post">
+        {% csrf_token %}
+        <div class="form-field">
+          <label for="hf-name">Your name</label>
+          <input type="text" id="hf-name" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-field">
+          <label for="hf-email">Email address</label>
+          <input type="email" id="hf-email" name="email" placeholder="jane@example.com" required>
+        </div>
+        <div class="form-field">
+          <label for="hf-service">What do you need?</label>
+          <select id="hf-service" name="inquiry">
+            <option value="web">Web Design + SEO Strategy</option>
+            <option value="ai">AI Automation</option>
+            <option value="app">iOS App Development</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+          Book 15-minute Consultation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </button>
+      </form>
+      <p class="hfc-note">
+        <i class="fa-solid fa-lock" aria-hidden="true"></i>
+        No commitment required. Response within 24 hours.
+      </p>
     </div>
   </div>
 </section>
@@ -281,13 +237,11 @@
 <!-- ─── FINAL CTA ─── -->
 <section class="section section-cta">
   <div class="container section-cta__inner">
-    <h2>Ready to launch?</h2>
-    <p class="lead">Book a free consultation today — no commitment, just a conversation about your project.</p>
+    <h2>Ready to build what’s next?</h2>
+    <p class="lead">Get a clear plan for your website, your workflows, or the next app your customers need.</p>
     <div class="cta-actions">
-      <a class="btn btn-shopify btn-lg" href="{% url 'website:contact' %}?inquiry=Shopify">
-        <i class="fa-brands fa-shopify" aria-hidden="true"></i> Get a Free Quote
-      </a>
-      <a class="btn btn-outline btn-outline--light" href="#whats-included">See What's Included</a>
+      <a class="btn btn-primary btn-lg" href="#contact">Book a Free Consultation</a>
+      <a class="btn btn-outline btn-outline--light" href="#services">Explore Services</a>
     </div>
   </div>
 </section>
@@ -297,10 +251,10 @@
   <div class="container newsletter-grid">
     <div class="stack" style="--stack-gap:1rem">
       <span class="badge">Stay in the loop</span>
-      <h2>Tips for growing your online store.</h2>
-      <p class="lead">A weekly email featuring eCommerce tips, Shopify guides, and digital marketing insights.</p>
+      <h2>Ideas for building a better digital business.</h2>
+      <p class="lead">Practical notes on web design, SEO, AI automation, and product development.</p>
       <ul class="newsletter-points">
-        <li><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Freshest insights every week</li>
+        <li><i class="fa-solid fa-newspaper" aria-hidden="true"></i> Fresh ideas for growing online</li>
         <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Unsubscribe anytime</li>
       </ul>
     </div>
