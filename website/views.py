@@ -727,18 +727,22 @@ def contact_sales_page(request):
 
     Accepts one of the dropdown options:
     - Web Development
-    - iOS App Development
-    - Shopify
-    - Wordpress
+    - AI Automation
+    - iOS Apps
+    - Support
     - General Inquiry
     """
     # Normalize and whitelist inquiry prefill from query string
     allowed = {
         'web': 'Web Development',
-        'app': 'iOS App Development',
-        'shopify': 'Shopify',
-        'wix': 'Wix',
-        'wordpress': 'Wordpress',
+        'shopify': 'Web Development',
+        'wix': 'Web Development',
+        'wordpress': 'Web Development',
+        'ai': 'AI Automation',
+        'automation': 'AI Automation',
+        'app': 'iOS Apps',
+        'ios': 'iOS Apps',
+        'support': 'Support',
         'general': 'General Inquiry',
     }
     inquiry_param = request.GET.get('inquiry', '')
@@ -800,8 +804,16 @@ def contact_sales_page(request):
         confirmation_email.send()
 
         messages.success(request, "Your message has been sent! We'll get back to you soon.")
-        return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill, **seo_context })
-    return render(request, 'website/contact_sales.html', { 'inquiry_prefill': inquiry_prefill, **seo_context })
+        return render(request, 'website/contact_sales.html', {
+            'inquiry_prefill': inquiry_prefill,
+            'contact_submitted': True,
+            **seo_context,
+        })
+    return render(request, 'website/contact_sales.html', {
+        'inquiry_prefill': inquiry_prefill,
+        'contact_submitted': False,
+        **seo_context,
+    })
 
 
 def manage_preferences(request):
