@@ -62,6 +62,30 @@ class ContactPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<option value="Web Development" selected')
 
+    def test_contact_submission_uses_swantech_sender_and_copy(self):
+        response = self.client.post(
+            reverse("website:contact"),
+            {
+                "name": "Jane Doe",
+                "email": "jane@example.com",
+                "company": "Acme Corp",
+                "inquiry_type": "Web Development",
+                "message": "I need a new website.",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 2)
+
+        notification, confirmation = mail.outbox
+        expected_from = "Dylan from Swantech <contact@swantech.org>"
+        self.assertEqual(notification.from_email, expected_from)
+        self.assertEqual(confirmation.from_email, expected_from)
+        self.assertEqual(confirmation.subject, "Thanks for contacting Swantech!")
+        self.assertIn("Swantech", confirmation.body)
+        self.assertNotIn("Swanson Software Solutions", confirmation.body)
+        self.assertIn("Swantech", confirmation.alternatives[0][0])
+
 
 class SeoMetadataTests(TestCase):
     def test_web_design_page_targets_growth_search_intent(self):

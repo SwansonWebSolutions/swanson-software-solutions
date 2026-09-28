@@ -1,10 +1,10 @@
 Hi {{ name }},
 
-Thank you for reaching out to Swanson Technologies.
+Thank you for reaching out to Swantech.
 
 We've received your message and will get back to you within the next 24 hours.
 
 Manage preferences: {{ manage_url }}
 Support: {{ support_email }}
 
--- The Swanson Technologies Team
+-- The Swantech Team

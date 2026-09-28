@@ -784,14 +784,14 @@ def contact_sales_page(request):
             f"Inquiry Type: {inquiry_type}\n"
             f"Message: {message_body}"
         )
-        from_email = "SwanTech Sales <contact@swantech.org>"
+        from_email = "Dylan from Swantech <contact@swantech.org>"
         recipient_list = ["admin@swantech.org"]
 
         # Send notification email to your team
         send_mail(subject, message, from_email, recipient_list)
 
         # --- Send confirmation email to the user ---
-        confirmation_subject = "Thanks for contacting Swanson Software Solutions!"
+        confirmation_subject = "Thanks for contacting Swantech!"
         context = {
             "name": name,
             "company": company,
