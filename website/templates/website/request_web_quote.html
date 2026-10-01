@@ -1,0 +1,155 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{% static 'css/request_web_quote.css' %}?v={% now 'U' %}">
+<script src="{% static 'js/request_web_quote.js' %}?v={% now 'U' %}" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="quote-page">
+  <div class="quote-content">
+    {% if submitted %}
+      <div class="quote-result" role="status">
+        <div class="quote-success__icon"><i class="fa-solid fa-check" aria-hidden="true"></i></div>
+        <h1>Your preliminary estimate</h1>
+        <p>Thanks for sharing your project. We’ll review the details and follow up with a clear scope and final quote.</p>
+
+        <div class="estimate-result">
+          <div class="estimate-total-row">
+            <span>Estimated one-time project cost</span>
+            <strong>${{ estimate.one_time_total|floatformat:0 }}</strong>
+          </div>
+          {% if estimate.monthly_total %}
+          <div class="estimate-total-row estimate-total-row--monthly">
+            <span>Estimated recurring maintenance</span>
+            <strong>${{ estimate.monthly_total|floatformat:0 }}/month</strong>
+          </div>
+          {% endif %}
+          <ul class="estimate-lines">
+            {% for line in estimate.one_time_lines %}
+            <li><span>{{ line.label }}</span><span>${{ line.amount|floatformat:0 }}</span></li>
+            {% endfor %}
+          </ul>
+          {% if estimate.maintenance_lines %}
+          <h2>Selected maintenance rates</h2>
+          <ul class="estimate-lines">
+            {% for line in estimate.maintenance_lines %}
+            <li><span>{{ line.label }}</span><span>${{ line.amount|floatformat:0 }}/{{ line.unit }}</span></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        <p class="estimate-note">This is a preliminary estimate. Final pricing is confirmed after we review your project details.</p>
+      </div>
+    {% else %}
+      {% if form.non_field_errors %}
+        <div class="quote-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="quote-progress" role="progressbar" aria-label="Quote request progress" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1">
+        <div class="quote-progress__track"><span class="quote-progress__fill" data-progress-fill></span></div>
+        <span class="quote-progress__label" data-progress-label>Step 1 of 4</span>
+      </div>
+
+      <form class="quote-form" method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="utm_source" value="{{ request.GET.utm_source }}">
+        <input type="hidden" name="utm_medium" value="{{ request.GET.utm_medium }}">
+        <input type="hidden" name="utm_campaign" value="{{ request.GET.utm_campaign }}">
+        <input type="hidden" name="utm_term" value="{{ request.GET.utm_term }}">
+        <input type="hidden" name="utm_content" value="{{ request.GET.utm_content }}">
+        <input type="hidden" name="gclid" value="{{ request.GET.gclid }}">
+        {{ form.website }}
+
+        <div class="quote-step is-active" data-step="1">
+          <h1>What kind of website project do you need?</h1>
+          <p class="quote-help">Every standard project starts at $800. Custom websites with advanced functionality start at $3,000.</p>
+          <div class="choice-grid choice-grid--project">
+            {% for value, label in project_type_choices %}
+            <label class="choice-option">
+              <input type="radio" name="project_type" value="{{ value }}" {% if form.project_type.value == value %}checked{% endif %} required>
+              <span>{{ label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+          {% if form.project_type.errors %}<p class="field-error">{{ form.project_type.errors|striptags }}</p>{% endif %}
+        </div>
+
+        <div class="quote-step" data-step="2" hidden>
+          <h2>What should your website do?</h2>
+
+          <fieldset class="quote-fieldset">
+            <legend>What is the primary goal of your website?</legend>
+            <div class="choice-list">
+              {% for value, label in primary_goal_choices %}
+              <label class="choice-option">
+                <input type="radio" name="primary_goal" value="{{ value }}" {% if form.primary_goal.value == value %}checked{% endif %} required>
+                <span>{{ label }}</span>
+              </label>
+              {% endfor %}
+            </div>
+            <div class="conditional-field" data-show-for="primary_goal" data-show-value="other" hidden>
+              <label for="primary_goal_other">Tell us what you’re looking for</label>
+              <textarea id="primary_goal_other" name="primary_goal_other" rows="3" maxlength="500">{{ form.primary_goal_other.value|default:'' }}</textarea>
+              {% if form.primary_goal_other.errors %}<p class="field-error">{{ form.primary_goal_other.errors|striptags }}</p>{% endif %}
+            </div>
+          </fieldset>
+
+          <fieldset class="quote-fieldset">
+            <legend>How many pages do you expect?</legend>
+            <div class="choice-list choice-list--inline">
+              {% for value, label in page_count_choices %}
+              <label class="choice-option"><input type="radio" name="page_count" value="{{ value }}" {% if form.page_count.value == value %}checked{% endif %} required><span>{{ label }}</span></label>
+              {% endfor %}
+            </div>
+          </fieldset>
+
+          <fieldset class="quote-fieldset">
+            <legend>Which features do you need?</legend>
+            <div class="choice-list">
+              {% for value, label in feature_choices %}
+              <label class="choice-option"><input type="checkbox" name="features" value="{{ value }}" {% if form.features.value and value in form.features.value %}checked{% endif %}><span>{{ label }}</span></label>
+              {% endfor %}
+            </div>
+            <div class="conditional-field" data-show-for="features" data-show-value="other" hidden>
+              <label for="features_other">Tell us what feature or functionality you need</label>
+              <textarea id="features_other" name="features_other" rows="3" maxlength="500">{{ form.features_other.value|default:'' }}</textarea>
+              {% if form.features_other.errors %}<p class="field-error">{{ form.features_other.errors|striptags }}</p>{% endif %}
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="quote-step" data-step="3" hidden>
+          <h2>Would you like ongoing website help?</h2>
+          <p class="quote-help">Choose any services you may want after launch.</p>
+          <div class="choice-list">
+            {% for value, label in maintenance_choices %}
+            <label class="choice-option"><input type="checkbox" name="maintenance" value="{{ value }}" {% if form.maintenance.value and value in form.maintenance.value %}checked{% endif %}><span>{{ label }}</span></label>
+            {% endfor %}
+          </div>
+          <div class="maintenance-rate-note">Hosting, SEO blog posts, automated reporting, and content updates are monthly. New product additions are priced per product.</div>
+        </div>
+
+        <div class="quote-step" data-step="4" hidden>
+          <h2>Where should we send your quote?</h2>
+          <div class="field-grid">
+            <div class="quote-field"><label for="full_name">Full name <span>*</span></label><input id="full_name" name="full_name" value="{{ form.full_name.value|default:'' }}" autocomplete="name" required>{% if form.full_name.errors %}<p class="field-error">{{ form.full_name.errors|striptags }}</p>{% endif %}</div>
+            <div class="quote-field"><label for="email">Email <span>*</span></label><input id="email" name="email" type="email" value="{{ form.email.value|default:'' }}" autocomplete="email" required>{% if form.email.errors %}<p class="field-error">{{ form.email.errors|striptags }}</p>{% endif %}</div>
+            <div class="quote-field"><label for="phone">Phone <span>*</span></label><input id="phone" name="phone" type="tel" value="{{ form.phone.value|default:'' }}" autocomplete="tel" required>{% if form.phone.errors %}<p class="field-error">{{ form.phone.errors|striptags }}</p>{% endif %}</div>
+            <div class="quote-field"><label for="company">Company <span>*</span></label><input id="company" name="company" value="{{ form.company.value|default:'' }}" autocomplete="organization" required>{% if form.company.errors %}<p class="field-error">{{ form.company.errors|striptags }}</p>{% endif %}</div>
+          </div>
+          <div class="quote-field"><label for="current_url">Current website URL <small>(if applicable)</small></label><input id="current_url" name="current_url" type="url" value="{{ form.current_url.value|default:'' }}" placeholder="https://example.com">{% if form.current_url.errors %}<p class="field-error">{{ form.current_url.errors|striptags }}</p>{% endif %}</div>
+        </div>
+
+        <div class="quote-actions">
+          <button class="quote-button quote-button--back" type="button" data-prev hidden>Back</button>
+          <button class="quote-button" type="button" data-next>Continue <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          <button class="quote-button" type="submit" data-submit hidden>Get my estimate <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+        </div>
+        <p class="quote-privacy"><i class="fa-solid fa-lock" aria-hidden="true"></i> By submitting, you agree to be contacted about your request. We don’t sell your data.</p>
+      </form>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -476,6 +476,34 @@ class NewsletterSubscriber(models.Model):
         return self.email
 
 
+class WebQuoteRequest(models.Model):
+    """A submitted web design/development quote request."""
+
+    project_type = models.CharField(max_length=40)
+    primary_goal = models.CharField(max_length=40)
+    primary_goal_other = models.CharField(max_length=500, blank=True)
+    page_count = models.CharField(max_length=20)
+    features = models.JSONField(default=list)
+    features_other = models.CharField(max_length=500, blank=True)
+    maintenance = models.JSONField(default=list)
+    full_name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=40)
+    company = models.CharField(max_length=200)
+    current_url = models.URLField(max_length=500, blank=True)
+    one_time_total = models.PositiveIntegerField(default=0)
+    monthly_total = models.PositiveIntegerField(default=0)
+    estimate_lines = models.JSONField(default=dict)
+    attribution = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self) -> str:
+        return f"{self.full_name} — ${self.one_time_total:,} web quote"
+
+
 @receiver(post_save, sender=Consumer)
 def auto_initialize_brokers(sender, instance: Consumer, created: bool, **kwargs):
     if created:

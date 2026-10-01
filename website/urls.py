@@ -10,6 +10,7 @@ urlpatterns = [
     path('services/', views.services_page, name='services'),
     path('services/<slug:service_slug>/', views.service_detail, name='service-detail'),
     path('contact/', views.contact_sales_page, name='contact'),
+    path('request-web-quote/', views.request_web_quote, name='request-web-quote'),
     path('insights/', views.insights_page, name='insights'),
     path('insights/<slug:slug>/', views.insight_detail, name='insight-detail'),
     path('book-consultation/', views.book_consultation, name='book-consultation'),

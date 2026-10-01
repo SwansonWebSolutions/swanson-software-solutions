@@ -29,6 +29,18 @@ from .models import (
     NewsletterSubscriber,
     ServiceMarket,
     DataBrokers2025,
+    WebQuoteRequest,
+)
+from .forms import RequestWebQuoteForm
+from .quote_config import (
+    FEATURE_CHOICES,
+    MAINTENANCE_CHOICES,
+    PAGE_COUNT_CHOICES,
+    PRIMARY_GOAL_CHOICES,
+    PROJECT_TYPE_CHOICES,
+    FRONTEND_PRICING,
+    calculate_quote,
+    choice_label,
 )
 from insights.models import Insight
 from django.http import HttpResponseBadRequest
@@ -190,6 +202,107 @@ def submit_estimate(request):
     )
 
     return redirect(CALENDLY_URL)
+
+
+def request_web_quote(request):
+    """Collect a web project brief, save it, and email the preliminary estimate."""
+    form = RequestWebQuoteForm(request.POST or None)
+    estimate = None
+
+    if request.method == "POST" and form.is_valid():
+        cleaned = form.cleaned_data
+        estimate = calculate_quote(cleaned)
+        attribution = {
+            key: (request.POST.get(key) or "").strip()
+            for key in ("utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid")
+            if request.POST.get(key)
+        }
+        quote_request = WebQuoteRequest.objects.create(
+            project_type=cleaned["project_type"],
+            primary_goal=cleaned["primary_goal"],
+            primary_goal_other=cleaned.get("primary_goal_other", "").strip(),
+            page_count=cleaned["page_count"],
+            features=cleaned.get("features", []),
+            features_other=cleaned.get("features_other", "").strip(),
+            maintenance=cleaned.get("maintenance", []),
+            full_name=cleaned["full_name"].strip(),
+            email=cleaned["email"].strip(),
+            phone=cleaned["phone"].strip(),
+            company=cleaned["company"].strip(),
+            current_url=cleaned.get("current_url", "").strip(),
+            one_time_total=estimate["one_time_total"],
+            monthly_total=estimate["monthly_total"],
+            estimate_lines=estimate,
+            attribution=attribution,
+        )
+
+        one_time_text = "\n".join(
+            f"  - {line['label']}: ${line['amount']:,}"
+            for line in estimate["one_time_lines"]
+        )
+        maintenance_text = "\n".join(
+            f"  - {line['label']}: ${line['amount']:,}/{line['unit']}"
+            for line in estimate["maintenance_lines"]
+        ) or "  - No ongoing maintenance selected"
+        variable_note = ""
+        if estimate["variable_rates"]:
+            variable_note = "\nVariable maintenance rates are shown per unit; no quantities were requested in the form."
+
+        send_mail(
+            subject=f"New Web Quote Request: {quote_request.company}",
+            message=(
+                "A new web design/development quote request was submitted.\n\n"
+                f"Name: {quote_request.full_name}\n"
+                f"Email: {quote_request.email}\n"
+                f"Phone: {quote_request.phone}\n"
+                f"Company: {quote_request.company}\n"
+                f"Current URL: {quote_request.current_url or 'Not provided'}\n\n"
+                f"Project type: {choice_label(PROJECT_TYPE_CHOICES, quote_request.project_type)}\n"
+                f"Primary goal: {choice_label(PRIMARY_GOAL_CHOICES, quote_request.primary_goal)}\n"
+                f"Primary goal details: {quote_request.primary_goal_other or 'None'}\n"
+                f"Expected pages: {choice_label(PAGE_COUNT_CHOICES, quote_request.page_count)}\n"
+                f"Features: {', '.join(choice_label(FEATURE_CHOICES, item) for item in quote_request.features) or 'None selected'}\n"
+                f"Other feature details: {quote_request.features_other or 'None'}\n\n"
+                f"One-time estimate:\n{one_time_text}\n"
+                f"One-time total: ${quote_request.one_time_total:,}\n\n"
+                f"Ongoing maintenance:\n{maintenance_text}\n"
+                f"Monthly recurring total: ${quote_request.monthly_total:,}/month"
+                f"{variable_note}\n\n"
+                f"Attribution: {json.dumps(attribution) if attribution else 'None'}\n"
+                f"Saved request ID: {quote_request.id}"
+            ),
+            from_email="SwanTech Site <contact@swantech.org>",
+            recipient_list=[getattr(settings, "ADMIN_NOTIFICATION_EMAIL", "admin@swantech.org")],
+            fail_silently=True,
+        )
+
+        return render(request, "website/request_web_quote.html", {
+            "form": RequestWebQuoteForm(),
+            "estimate": estimate,
+            "submitted": True,
+            "seo_title": "Your SwanTech Web Quote Estimate",
+            "seo_description": "Review your preliminary SwanTech web design and development estimate.",
+            "canonical_url": request.build_absolute_uri(request.path),
+            "quote_pricing": FRONTEND_PRICING,
+            "hide_site_chrome": True,
+        })
+
+    return render(request, "website/request_web_quote.html", {
+        "form": form,
+        "estimate": estimate,
+        "submitted": False,
+        "project_type_choices": PROJECT_TYPE_CHOICES,
+        "primary_goal_choices": PRIMARY_GOAL_CHOICES,
+        "page_count_choices": PAGE_COUNT_CHOICES,
+        "feature_choices": FEATURE_CHOICES,
+        "maintenance_choices": MAINTENANCE_CHOICES,
+        "seo_title": "Request a Web Design Quote | SwanTech",
+        "seo_description": "Tell SwanTech what you need and get a preliminary web design or development estimate.",
+        "seo_keywords": "web design quote, website development quote, website redesign quote",
+        "canonical_url": request.build_absolute_uri(request.path),
+        "quote_pricing": FRONTEND_PRICING,
+        "hide_site_chrome": True,
+    })
 
 
 def newsletter_subscribe(request):

@@ -12,7 +12,9 @@ from website.models import (
     DataBrokers2025,
     BrokerCompliance,
     NewsletterSubscriber,
+    WebQuoteRequest,
 )
+from website.quote_config import calculate_quote
 from insights.models import Insight
 
 
@@ -85,6 +87,95 @@ class ContactPageTests(TestCase):
         self.assertIn("Swantech", confirmation.body)
         self.assertNotIn("Swanson Software Solutions", confirmation.body)
         self.assertIn("Swantech", confirmation.alternatives[0][0])
+
+
+class RequestWebQuoteTests(TestCase):
+    def setUp(self):
+        mail.outbox.clear()
+
+    def test_quote_page_renders_multistep_form(self):
+        response = self.client.get(reverse("website:request-web-quote"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Request a Web Design Quote")
+        self.assertContains(response, "Generate leads")
+        self.assertContains(response, "Hosting and website maintenance")
+        self.assertContains(response, "$800")
+        self.assertContains(response, 'role="progressbar"')
+        self.assertNotContains(response, "quote-summary")
+        self.assertNotContains(response, "<nav")
+        self.assertNotContains(response, "<footer")
+        self.assertNotContains(response, "Preliminary project estimate")
+
+    def test_other_choices_require_descriptions(self):
+        response = self.client.post(
+            reverse("website:request-web-quote"),
+            {
+                "project_type": "new_website",
+                "primary_goal": "other",
+                "page_count": "1_5",
+                "features": ["other"],
+                "maintenance": [],
+                "full_name": "Jane Doe",
+                "email": "jane@example.com",
+                "phone": "555-555-5555",
+                "company": "Acme Corp",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Please describe what you are looking for.")
+        self.assertEqual(WebQuoteRequest.objects.count(), 0)
+        self.assertEqual(len(mail.outbox), 0)
+
+    def test_updated_pricing_rules_are_applied(self):
+        estimate = calculate_quote(
+            {
+                "project_type": "new_website",
+                "page_count": "1_5",
+                "features": ["accounts"],
+                "maintenance": ["blog_post", "product_upload", "content_update"],
+            }
+        )
+
+        self.assertEqual(estimate["one_time_total"], 1050)
+        self.assertEqual(estimate["monthly_total"], 150)
+        self.assertEqual(estimate["variable_rates"][0]["amount"], 5)
+
+    def test_valid_submission_is_saved_emailed_and_estimated(self):
+        response = self.client.post(
+            reverse("website:request-web-quote"),
+            {
+                "project_type": "custom_advanced",
+                "primary_goal": "leads",
+                "page_count": "6_10",
+                "features": ["booking", "blog", "integrations", "other"],
+                "features_other": "A custom client portal",
+                "maintenance": ["hosting", "blog_post", "reporting"],
+                "full_name": "Jane Doe",
+                "email": "jane@example.com",
+                "phone": "555-555-5555",
+                "company": "Acme Corp",
+                "current_url": "https://example.com",
+                "utm_source": "google",
+                "gclid": "test-click-id",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Your preliminary estimate")
+        self.assertContains(response, "Custom website with advanced functionality base project")
+        self.assertEqual(WebQuoteRequest.objects.count(), 1)
+        quote = WebQuoteRequest.objects.get()
+        self.assertEqual(quote.one_time_total, 3850)
+        self.assertEqual(quote.monthly_total, 200)
+        self.assertEqual(quote.attribution["utm_source"], "google")
+        self.assertEqual(quote.attribution["gclid"], "test-click-id")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].from_email, "SwanTech Site <contact@swantech.org>")
+        self.assertEqual(mail.outbox[0].to, ["admin@swantech.org"])
+        self.assertIn("Acme Corp", mail.outbox[0].body)
+        self.assertIn("One-time total: $3,850", mail.outbox[0].body)
 
 
 class SeoMetadataTests(TestCase):

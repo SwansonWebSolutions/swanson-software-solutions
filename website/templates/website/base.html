@@ -56,7 +56,9 @@
     <script src="{% static 'js/newsletter_confirm.js' %}?v={% now 'U' %}" defer></script>
 </head>
 <body>
-    {% include 'includes/navbar.html' %}
+    {% if not hide_site_chrome %}
+        {% include 'includes/navbar.html' %}
+    {% endif %}
 
     <main>
         {% if messages %}
@@ -71,7 +73,9 @@
         {% endblock %}
     </main>
 
-    {% include 'includes/footer.html' %}
+    {% if not hide_site_chrome %}
+        {% include 'includes/footer.html' %}
+    {% endif %}
     
 </body>
 </html>

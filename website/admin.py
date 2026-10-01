@@ -11,6 +11,7 @@ from .models import (
     ConsumerBrokerStatus,
     NewsletterSubscriber,
     SiteImage,
+    WebQuoteRequest,
 )
 # Register your models here.
 
@@ -54,6 +55,22 @@ class ConsumerAdmin(admin.ModelAdmin):
 admin.site.register(BrokerContactLog)
 admin.site.register(EmailDripState)
 admin.site.register(NewsletterSubscriber)
+
+
+@admin.register(WebQuoteRequest)
+class WebQuoteRequestAdmin(admin.ModelAdmin):
+    list_display = (
+        "full_name",
+        "company",
+        "email",
+        "project_type",
+        "one_time_total",
+        "monthly_total",
+        "created_at",
+    )
+    search_fields = ("full_name", "company", "email", "phone", "current_url")
+    list_filter = ("project_type", "created_at")
+    readonly_fields = ("created_at", "one_time_total", "monthly_total", "estimate_lines", "attribution")
 
 
 @admin.register(ConsumerBrokerStatus)
