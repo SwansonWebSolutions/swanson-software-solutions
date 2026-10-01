@@ -48,7 +48,13 @@
       <a class="btn" href="{% url 'website:contact' %}?inquiry={{ service.inquiry_key }}">
         {{ service.cta_label }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
       </a>
-      <a class="btn ghost invert" href="#included">See What's Included</a>
+      {% if service.slug == 'web-design' %}
+      <div class="svc-hero__quote-action">
+        <a class="btn secondary" href="{% url 'website:request-web-quote' %}">
+          Build your quote <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+      {% endif %}
     </div>
   </div>
 </section>

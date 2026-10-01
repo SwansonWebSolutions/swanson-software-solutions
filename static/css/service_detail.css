@@ -53,6 +53,7 @@
   margin: 0;
 }
 .svc-hero__actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .5rem; }
+.svc-hero__quote-action { flex-basis: 100%; }
 .svc-hero .btn { --bgc: var(--svc-accent, var(--brand)); --bgh: var(--svc-accent, var(--brand)); }
 .svc-hero--hub { text-align: left; }
 

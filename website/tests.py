@@ -185,6 +185,8 @@ class SeoMetadataTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Web Design for Growing Online Businesses | SwanTech")
         self.assertContains(response, "grow your online business")
+        self.assertContains(response, 'href="/request-web-quote/"')
+        self.assertContains(response, "Build your quote")
 
     def test_legacy_service_urls_redirect_to_current_service(self):
         response = self.client.get(
